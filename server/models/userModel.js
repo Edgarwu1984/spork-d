@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 const userSchema = mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
     },
@@ -19,6 +19,7 @@ const userSchema = mongoose.Schema(
     picture: {
       type: String,
       required: true,
+      default: '/images/user_picture.jpg',
     },
     isAdmin: {
       type: Boolean,

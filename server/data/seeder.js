@@ -11,17 +11,13 @@ connectDB();
 
 const importData = async () => {
   try {
+    // Delete Existing Data
     await User.deleteMany();
     await Restaurant.deleteMany();
 
-    const createUsers = await User.insertMany(users);
-    const adminUser = createUsers[0]._id;
-
-    const sampleRestaurants = restaurants.map(restaurant => {
-      return { ...restaurant, user: adminUser };
-    });
-
-    await Restaurant.insertMany(sampleRestaurants);
+    // Add New Data
+    await User.insertMany(users);
+    await Restaurant.insertMany(restaurants);
 
     console.log('Data Imported.');
     process.exit();

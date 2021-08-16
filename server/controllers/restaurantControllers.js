@@ -46,7 +46,6 @@ const createRestaurantReview = asyncHandler(async (req, res) => {
     }
 
     const review = {
-      name: req.user.name,
       rating: Number(rating),
       comment,
       user: req.user.id,
@@ -55,7 +54,7 @@ const createRestaurantReview = asyncHandler(async (req, res) => {
     // Add new review to restaurant reviews
     restaurant.reviews.push(review);
     // Update numReviews
-    restaurant.numReviews = product.reviews.length;
+    restaurant.numReviews = restaurant.reviews.length;
     // Calculate rating (Total rating / numReviews)
     restaurant.rating =
       restaurant.reviews.reduce((acc, item) => item.rating + acc, 0) /
