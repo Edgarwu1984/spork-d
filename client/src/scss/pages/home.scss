@@ -1,0 +1,49 @@
+@use '../utils/' as *;
+
+section {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg);
+  border-radius: rem(8);
+  margin-bottom: rem(40);
+  width: 100%;
+
+  &:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+  @include breakpoint-down(small) {
+    flex-direction: column;
+    &:nth-child(even) {
+      flex-direction: column;
+    }
+  }
+
+  .section-image,
+  .section-text {
+    width: 50%;
+    padding: rem(40);
+    @include breakpoint-down(small) {
+      width: 100%;
+    }
+  }
+  .section-image {
+    img {
+      border-radius: rem(8);
+    }
+  }
+
+  .section-text {
+    display: flex;
+    flex-direction: column;
+
+    &__content {
+      margin-bottom: rem(24);
+    }
+
+    &__link {
+      margin-top: auto;
+      text-align: right;
+      text-decoration: underline;
+    }
+  }
+}

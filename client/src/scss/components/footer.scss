@@ -1,0 +1,15 @@
+@use '../utils' as *;
+
+footer {
+  // flex-shrink: 0;
+  margin-top: auto;
+  background-color: var(--dark-bg-dark);
+  color: var(--dark-text2);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: rem(40) rem(10);
+}

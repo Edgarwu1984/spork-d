@@ -1,0 +1,86 @@
+@use '../utils' as *;
+
+.post {
+  position: relative;
+  background: var(--bg);
+  color: var(--dark-text1);
+  border-radius: rem(8);
+  overflow: hidden;
+  max-width: rem(360);
+  @include shadow();
+
+  &:hover {
+    @include transition;
+    transform: translateY(rem(-6));
+    .post {
+      &__body {
+        &-title {
+          @include transition;
+          color: var(--primary);
+        }
+      }
+    }
+  }
+
+  &__image-container {
+    width: 100%;
+    // height: rem(200);
+    overflow: hidden;
+    object-fit: cover;
+  }
+  &__body {
+    padding: rem(16);
+    &-title {
+      // color: var(--light-text1);
+      font-size: rem(20);
+      font-weight: 700;
+      margin-bottom: rem(6);
+    }
+
+    &-date {
+      font-size: rem(14);
+      color: var(--text3);
+      margin: rem(6) 0;
+    }
+
+    &-description {
+      font-size: rem(16);
+    }
+
+    &-link {
+      display: block;
+      text-align: right;
+      text-decoration: underline;
+      transition: 0.2s ease-in-out;
+    }
+  }
+}
+
+.category__badge {
+  position: absolute;
+  color: var(--white);
+  font-size: rem(14);
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: rem(4);
+  background-color: var(--primary);
+  padding: rem(4) rem(8);
+  top: rem(10);
+  right: rem(10);
+}
+
+.react {
+  background-color: var(--primary);
+}
+
+.javascript {
+  background-color: var(--warning);
+}
+
+.html {
+  background-color: var(--danger);
+}
+
+.css {
+  background-color: var(--info);
+}

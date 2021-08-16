@@ -1,0 +1,13 @@
+@use '../utils/' as *;
+
+.loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    filter: invert(55%) sepia(53%) saturate(619%) hue-rotate(112deg)
+      brightness(94%) contrast(86%);
+  }
+}

@@ -1,0 +1,103 @@
+@use '../utils' as *;
+
+body {
+  color: var(--text2);
+}
+
+strong {
+  color: var(--info);
+  font-weight: 600;
+}
+
+pre {
+  width: 100%;
+  height: max-content;
+}
+
+code {
+  background-color: var(--bg-light);
+  overflow: hidden;
+  display: block;
+  padding: 1rem;
+  margin: rem(20);
+  overflow-x: scroll;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: var(--text1);
+  font-family: var(--font-inter);
+}
+
+h1 {
+  font-size: rem(48);
+  @include breakpoint-down(medium) {
+    font-size: rem(42);
+  }
+  @include breakpoint-down(small) {
+    font-size: rem(36);
+  }
+}
+
+h2 {
+  font-size: rem(38);
+  @include breakpoint-down(medium) {
+    font-size: rem(32);
+  }
+  @include breakpoint-down(small) {
+    font-size: rem(26);
+  }
+}
+
+h3 {
+  font-size: rem(30);
+  @include breakpoint-down(medium) {
+    font-size: rem(24);
+  }
+  @include breakpoint-down(small) {
+    font-size: rem(20);
+  }
+}
+
+body,
+input,
+textarea {
+  font-family: var(--font-popping);
+}
+
+p {
+  font-size: rem(18);
+  margin-bottom: rem(20);
+  line-height: 1.6;
+  color: var(--text2);
+  @include breakpoint-down(medium) {
+    font-size: rem(16);
+  }
+  @include breakpoint-down(small) {
+    font-size: rem(14);
+  }
+}
+
+a,
+a:visited,
+a:active {
+  color: var(--text1);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--primary);
+    @include transition;
+  }
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-danger {
+  color: var(--danger);
+}

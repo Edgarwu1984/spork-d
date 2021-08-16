@@ -1,0 +1,30 @@
+@use '../utils/' as *;
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  height: 100vh;
+  width: rem(960);
+
+  @include breakpoint-down(medium) {
+    width: 100%;
+  }
+}
+
+.site-brand {
+  display: flex;
+  align-items: center;
+  margin-bottom: rem(36);
+
+  .site-logo {
+    width: rem(72);
+    height: rem(72);
+    margin-right: rem(16);
+  }
+  .site-name {
+    color: var(--text1);
+  }
+}

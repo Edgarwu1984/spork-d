@@ -1,0 +1,25 @@
+@use '../utils/' as *;
+
+.dark {
+  --bg: var(--dark-bg);
+  --bg-light: var(--dark-bg-light);
+  --bg-dark: var(--dark-bg-dark);
+  --text1: var(--dark-text1);
+  --text2: var(--dark-text2);
+  --text3: var(--dark-text3);
+  --grey: var(--dark-grey);
+  --scrollbar-bg: hsl(233, 12%, 20%);
+  --scrollbar-thumb: hsl(233, 12%, 30%);
+}
+
+.light {
+  --bg: var(--light-bg);
+  --bg-light: var(--light-bg-light);
+  --bg-dark: var(--light-bg-dark);
+  --text1: var(--light-text1);
+  --text2: var(--light-text2);
+  --text3: var(--light-text3);
+  --grey: var(--light-grey);
+  --scrollbar-bg: hsl(0, 0%, 60%);
+  --scrollbar-thumb: hsl(0, 0%, 80%);
+}

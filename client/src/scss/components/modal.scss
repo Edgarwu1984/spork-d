@@ -1,0 +1,52 @@
+@use '../utils/' as *;
+
+.modal__container {
+  position: relative;
+  background: var(--bg);
+  border-radius: rem(6);
+  width: rem(600);
+  height: auto;
+  padding: rem(30);
+
+  @include breakpoint-down(small) {
+    width: 90%;
+  }
+
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    &-btn {
+      background: none;
+      outline: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--text2);
+      cursor: pointer;
+
+      &:hover {
+        transition: all 0.3s ease;
+        color: var(--primary);
+      }
+    }
+  }
+
+  .body,
+  .title {
+    padding: 1rem;
+  }
+}
+
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}

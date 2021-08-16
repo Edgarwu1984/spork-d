@@ -1,0 +1,78 @@
+@use '../utils/' as *;
+
+.form__wrapper {
+  @include shadow;
+  background-color: var(--bg);
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: rem(6);
+  padding: rem(30);
+  color: var(--text1);
+
+  @include breakpoint-down(small) {
+    width: 90%;
+  }
+}
+
+.offsetTop {
+  @include offsetY($top: -100px);
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: rem(36);
+}
+
+.form-group {
+  margin-bottom: rem(36);
+}
+
+.form-link,
+.form-link:visited {
+  margin: 0 rem(8);
+  font-weight: 600;
+  color: var(--primary);
+}
+
+label {
+  color: var(--text2);
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  padding: rem(8);
+  margin-top: rem(4);
+  margin-bottom: rem(24);
+  font-size: rem(16) !important;
+  background-color: var(--bg-body);
+  color: var(--text2);
+  border-radius: rem(6);
+  border: 1px solid var(--grey);
+  @include transition;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: rem(24);
+  width: 100%;
+
+  &-input {
+    width: max-content;
+    margin: 0 rem(12) 0 0;
+  }
+}
+
+input[type='checkbox'] {
+  width: rem(20);
+  height: rem(20);
+}
