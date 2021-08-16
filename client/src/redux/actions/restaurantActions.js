@@ -5,15 +5,15 @@ import {
   GET_RESTAURANT_LIST_SUCCESS,
 } from '../constants/restaurantConstants';
 
-export const listTask = () => async dispatch => {
+export const listRestaurant = () => async dispatch => {
   try {
-    dispatch({ type: GET_RESTAURANT_LIST_FAIL });
+    dispatch({ type: GET_RESTAURANT_LIST_REQUEST });
     const { data } = await axios.get('/api/restaurants');
 
-    dispatch({ type: GET_RESTAURANT_LIST_REQUEST, payload: data });
+    dispatch({ type: GET_RESTAURANT_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
-      type: GET_RESTAURANT_LIST_SUCCESS,
+      type: GET_RESTAURANT_LIST_FAIL,
       payload: error.response,
     });
   }

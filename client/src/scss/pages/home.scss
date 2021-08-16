@@ -1,49 +1,33 @@
 @use '../utils/' as *;
 
-section {
-  display: flex;
-  align-items: center;
-  background-color: var(--bg);
-  border-radius: rem(8);
-  margin-bottom: rem(40);
+.feature {
   width: 100%;
-
-  &:nth-child(even) {
-    flex-direction: row-reverse;
-  }
-  @include breakpoint-down(small) {
-    flex-direction: column;
-    &:nth-child(even) {
-      flex-direction: column;
-    }
-  }
-
-  .section-image,
-  .section-text {
-    width: 50%;
-    padding: rem(40);
-    @include breakpoint-down(small) {
-      width: 100%;
-    }
-  }
-  .section-image {
-    img {
-      border-radius: rem(8);
-    }
-  }
-
-  .section-text {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: rem(40) rem(12);
+  margin-bottom: rem(40);
+  &-element {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: rem(24);
 
-    &__content {
-      margin-bottom: rem(24);
+    &__icon {
+      font-size: rem(40);
     }
 
-    &__link {
-      margin-top: auto;
-      text-align: right;
-      text-decoration: underline;
+    &__title {
+      font-size: rem(24);
     }
   }
+}
+
+.center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: rem(64) 0;
 }

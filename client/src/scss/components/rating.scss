@@ -1,0 +1,19 @@
+@use '../utils' as *;
+
+.rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-block-end: auto;
+
+  &-star {
+    & > * {
+      margin-right: rem(3);
+    }
+
+    .value {
+      margin-left: rem(6);
+      font-size: rem(18);
+    }
+  }
+}
