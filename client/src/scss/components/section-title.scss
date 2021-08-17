@@ -1,0 +1,28 @@
+@use '../utils' as *;
+
+.main-section-title {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: rem(46);
+
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: var(--primary);
+    width: rem(64);
+    height: rem(4);
+    bottom: rem(-12);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.sub-section-title {
+  font-size: rem(24);
+  border-left: 4px solid var(--primary);
+  padding-left: rem(12);
+  margin-top: rem(40);
+  margin-bottom: rem(12);
+}

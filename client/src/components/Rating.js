@@ -51,7 +51,7 @@ function Rating({ value, text }) {
             <FaRegStar />
           )}
         </span>
-        <span className='value'>{value}</span>
+        {/* <span className='value'>{value}</span> */}
       </div>
       <div className='rating-review'>
         {text && text} {text > 1 ? 'reviews' : 'review'}

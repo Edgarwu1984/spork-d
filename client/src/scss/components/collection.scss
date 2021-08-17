@@ -1,0 +1,62 @@
+@use '../utils' as *;
+
+.collection__layout-col2 {
+  display: flex;
+  gap: rem(24);
+
+  @include breakpoint-down(small) {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.collection {
+  position: relative;
+  height: rem(250);
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: rem(24);
+
+  &::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba($color: #2e2617, $alpha: 0.3);
+  }
+
+  & > * > * {
+    z-index: 2;
+  }
+
+  &-container {
+    height: 100%;
+    width: 90%;
+    margin: auto;
+    padding: rem(24);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // margin-left: auto;
+    &-title {
+      color: var(--white);
+      text-transform: uppercase;
+      text-align: center;
+      font-weight: 400;
+      margin-bottom: rem(24);
+    }
+  }
+}

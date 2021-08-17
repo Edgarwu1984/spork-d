@@ -1,10 +1,10 @@
 @use '../utils/' as *;
 
 .btn {
-  display: inline-block;
   font-family: var(--font-popping);
   font-size: rem(16);
   font-weight: 500;
+  height: max-content;
   background-color: var(--default);
   padding: rem(4) rem(16);
   color: var(--light-text1);
@@ -17,7 +17,7 @@
 }
 
 .btn-outline {
-  background-color: var(--white);
+  background-color: var(--bg-light);
   color: var(--primary) !important;
   border-color: var(--primary);
   &:hover {
@@ -35,7 +35,7 @@
   border-color: var(--primary);
   &:hover {
     @include transition;
-    background-color: var(--white);
+    background-color: var(--bg-light);
     color: var(--primary) !important;
     border-color: var(--primary);
     filter: brightness(1) !important;

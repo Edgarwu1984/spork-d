@@ -1,0 +1,23 @@
+@use '../utils' as *;
+
+.breadcrumb {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  padding: rem(16) 0;
+
+  &__item {
+    margin-right: rem(12);
+    &::before {
+      content: '/';
+      font-size: rem(12);
+      font-weight: 600;
+      margin-right: rem(6);
+    }
+
+    &:last-child {
+      pointer-events: none;
+    }
+  }
+}

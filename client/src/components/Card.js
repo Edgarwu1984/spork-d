@@ -5,17 +5,20 @@ import { Link } from 'react-router-dom';
 
 function Card({ url, image, title, address, category, value, text }) {
   return (
-    <div className='card'>
-      <img className='card-image' src={image} alt={title} />
-      <div className='card-body'>
-        <Link className='card-body__title' to={url}>
-          {title}
-        </Link>
-        <div className='card-body__address'>{address}</div>
-        <div className='card-body__category'>{category}</div>
+    <Link to={url} className='card'>
+      <div className='card__image-container'>
+        <div className='card-rating'>{value}</div>
+        <img className='card-image' src={image} alt={title} />
+      </div>
+      <div className='card__container'>
+        <div className='card__body'>
+          <div className='card__body-title'>{title}</div>
+          <div className='card__body-address'>{address}</div>
+          <div className='card__body-category'>{category}</div>
+        </div>
         <Rating value={value} text={text} />
       </div>
-    </div>
+    </Link>
   );
 }
 

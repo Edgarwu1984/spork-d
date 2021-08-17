@@ -1,9 +1,15 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { restaurantListReducer } from './reducers/restaurantReducers';
+import {
+  restaurantListReducer,
+  restaurantReducer,
+} from './reducers/restaurantReducers';
 
-const reducer = combineReducers({ restaurantList: restaurantListReducer });
+const reducer = combineReducers({
+  restaurantList: restaurantListReducer,
+  restaurantDetails: restaurantReducer,
+});
 
 const initialState = {};
 

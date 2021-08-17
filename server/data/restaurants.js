@@ -5,7 +5,12 @@ const restaurants = [
     rating: 4.8,
     numReviews: 20,
     phoneNumber: '395323779',
-    address: '477 Warrigal Road, Moorabbin, Melbourne',
+    address: {
+      street: '477 Warrigal Road',
+      suburb: 'Moorabbin',
+      state: 'VIC',
+      postcode: '3189',
+    },
     geolocation: '-37.945584531932155, 145.07775554957087',
     openHour: {
       Monday: '11:00AM - 9:00PM',
@@ -46,8 +51,12 @@ const restaurants = [
     rating: 4.3,
     numReviews: 5,
     phoneNumber: '397201935',
-    address:
-      'Mountain High Centre, Shop 25, 7 High Street, Bayswater, Melbourne',
+    address: {
+      street: 'Mountain High Centre, Shop 25, 7 High Street',
+      suburb: 'Bayswater',
+      state: 'VIC',
+      postcode: '3153',
+    },
     geolocation: '-37.8431898621124, 145.26647729518325',
     openHour: {
       Monday: '11:00AM - 9:00PM',
@@ -89,7 +98,12 @@ const restaurants = [
     rating: 4.1,
     numReviews: 29,
     phoneNumber: '480260209',
-    address: '48 Jackson Court, Doncaster East, Melbourne',
+    address: {
+      street: '48 Jackson Court',
+      suburb: 'Doncaster East',
+      state: 'VIC',
+      postcode: '3109',
+    },
     geolocation: '-37.78815182744635, 145.15051240892717',
     openHour: {
       Monday: '11:00AM - 9:00PM',
@@ -132,7 +146,12 @@ const restaurants = [
     rating: 4.6,
     numReviews: 274,
     phoneNumber: '396548933',
-    address: 'Lower Ground Level, 45 Collins Street, CBD, Melbourne',
+    address: {
+      street: 'Lower Ground Level, 45 Collins Street',
+      suburb: 'CBD, Melbourne',
+      state: 'VIC',
+      postcode: '3000',
+    },
     geolocation: '-37.81154493192468, 144.9694430724554',
     openHour: {
       Monday: '11:00AM - 9:00PM',
@@ -175,7 +194,12 @@ const restaurants = [
     rating: 4.5,
     numReviews: 520,
     phoneNumber: '393471138',
-    address: '19 Lincoln Square South, Carlton, Melbourne',
+    address: {
+      street: '19 Lincoln Square South',
+      suburb: 'Carlton',
+      state: 'VIC',
+      postcode: '3053',
+    },
     geolocation: '-37.80286487669005, 144.9605204493587',
     openHour: {
       Monday: '11:00AM - 9:00PM',
@@ -217,7 +241,12 @@ const restaurants = [
     rating: 4.7,
     numReviews: 47,
     phoneNumber: '396637994',
-    address: '275 Exhibition Street, CBD, Melbourne',
+    address: {
+      street: '275 Exhibition Street',
+      suburb: 'CBD, Melbourne',
+      state: 'VIC',
+      postcode: '3000',
+    },
     geolocation: '-37.80801878073069, 144.96781622105635',
     openHour: {
       Monday: '11:00AM - 9:00PM',
@@ -259,7 +288,12 @@ const restaurants = [
     rating: 4.6,
     numReviews: 162,
     phoneNumber: '396637890',
-    address: '37 Little Collins Street, CBD, Melbourne',
+    address: {
+      street: '37 Little Collins Street',
+      suburb: 'CBD, Melbourne',
+      state: 'VIC',
+      postcode: '3000',
+    },
     geolocation: '-37.81307990564888, 144.97184202970652',
     openHour: {
       Monday: '11:00AM - 9:00PM',
@@ -300,7 +334,12 @@ const restaurants = [
     rating: 4.5,
     numReviews: 162,
     phoneNumber: '396022273',
-    address: '37 Little Collins Street, CBD, Melbourne',
+    address: {
+      street: '15 Warburton Ln',
+      suburb: 'CBD, Melbourne',
+      state: 'VIC',
+      postcode: '3000',
+    },
     geolocation: '-37.81262986708975, 144.961298940391',
     openHour: {
       Monday: '11:00AM - 9:00PM',

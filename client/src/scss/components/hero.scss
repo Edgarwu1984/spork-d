@@ -46,6 +46,13 @@
   font-size: rem(64);
   text-transform: uppercase;
   margin-bottom: rem(36);
+
+  @include breakpoint-down(medium) {
+    font-size: rem(50);
+  }
+  @include breakpoint-down(small) {
+    font-size: rem(40);
+  }
 }
 
 .hero-subtitle {

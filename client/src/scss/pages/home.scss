@@ -7,19 +7,33 @@
   align-items: center;
   padding: rem(40) rem(12);
   margin-bottom: rem(40);
+
+  @include breakpoint-down(small) {
+    flex-direction: column;
+  }
+
   &-element {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: rem(24);
+    @include breakpoint-down(medium) {
+      margin: rem(12);
+    }
 
     &__icon {
       font-size: rem(40);
+      @include breakpoint-down(medium) {
+        font-size: rem(30);
+      }
     }
 
     &__title {
       font-size: rem(24);
+      @include breakpoint-down(medium) {
+        font-size: rem(20);
+      }
     }
   }
 }

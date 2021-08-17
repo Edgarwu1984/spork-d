@@ -1,0 +1,160 @@
+@use '../utils/' as *;
+
+.top__restaurant {
+  background-color: var(--bg-light);
+  height: rem(250);
+  margin-bottom: rem(100);
+  width: 100%;
+}
+
+.top__list {
+  height: 100%;
+  display: flex;
+  gap: rem(24);
+  padding: rem(24) 0;
+
+  &-item {
+    position: relative;
+    width: rem(300);
+    border-radius: rem(12);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+
+    &:hover {
+      @include transition;
+      transform: scale(1.02);
+
+      .category-text {
+        @include transition;
+        text-decoration: underline;
+      }
+    }
+
+    &::before {
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background-color: rgba($color: #161a29, $alpha: 0.4);
+      z-index: -1;
+    }
+    .top-text {
+      color: var(--primary);
+      z-index: 1;
+    }
+    .category-text {
+      color: var(--white);
+      margin-top: rem(12);
+      text-transform: capitalize;
+    }
+  }
+}
+
+.restaurant__card {
+  display: flex;
+  background-color: var(--bg-light);
+  height: max-content;
+
+  @include breakpoint-down(medium) {
+    flex-direction: column;
+
+    .restaurant__card-image,
+    .restaurant__card-content {
+      width: 100%;
+    }
+
+    .restaurant__card-image {
+      height: rem(200);
+    }
+  }
+
+  &-image {
+    width: 50%;
+    height: rem(400);
+    object-fit: cover;
+  }
+
+  &-content {
+    width: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: rem(20) rem(40);
+  }
+
+  .restaurant__rating {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 0;
+    top: 0;
+    font-size: 1.8em;
+    padding: rem(2) rem(8);
+    background-color: var(--danger);
+    color: var(--white);
+
+    @include breakpoint-down(small) {
+      font-size: 1.4em;
+    }
+  }
+
+  &-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    list-style: none;
+    height: 100%;
+    padding: 0;
+
+    li {
+      width: 100%;
+      margin-bottom: rem(4);
+      display: flex;
+      align-items: center;
+
+      &:nth-child(2) {
+        margin-top: rem(12);
+        margin-bottom: rem(24);
+        & > * {
+          width: 100%;
+        }
+      }
+
+      .list__icon {
+        font-size: rem(20);
+        margin-right: rem(10);
+      }
+    }
+  }
+
+  &-button {
+    display: flex;
+    list-style: none;
+    padding: 0;
+
+    @include breakpoint-down(small) {
+      flex-direction: column;
+      li {
+        width: 100%;
+        margin-bottom: rem(20);
+        & > * {
+          width: inherit;
+          display: block;
+        }
+      }
+    }
+    li {
+      margin-right: rem(20);
+    }
+  }
+}

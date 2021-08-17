@@ -41,8 +41,26 @@ const restaurantSchema = mongoose.Schema({
     default: '400000000',
   },
   address: {
-    type: String,
-    required: true,
+    street: {
+      type: String,
+      required: true,
+      default: '10 street',
+    },
+    suburb: {
+      type: String,
+      required: true,
+      default: 'Melbourne',
+    },
+    state: {
+      type: String,
+      required: true,
+      default: 'VIC',
+    },
+    postcode: {
+      type: String,
+      required: true,
+      default: '3000',
+    },
   },
   geolocation: {
     type: String,

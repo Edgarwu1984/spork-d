@@ -1,10 +1,10 @@
 @use '../utils' as *;
 
 .rating {
+  // margin-top: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-block-end: auto;
 
   &-star {
     & > * {

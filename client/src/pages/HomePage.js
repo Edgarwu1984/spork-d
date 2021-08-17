@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { listRestaurant } from '../redux/actions/restaurantActions';
 import Layout from '../components/Layout';
 import Hero from '../components/Layout/Hero';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import Loader from '../components/Loader';
 import { FiArrowRight, FiSearch, FiStar, FiPhone } from 'react-icons/fi';
-import { listRestaurant } from '../redux/actions/restaurantActions';
+import Collection from '../components/Collection';
+import MainSectionTitle from '../components/MainSectionTitle';
 
 function HomePage({ history }) {
   const dispatch = useDispatch();
@@ -17,10 +19,6 @@ function HomePage({ history }) {
   useEffect(() => {
     dispatch(listRestaurant());
   }, [dispatch]);
-
-  // console.log(restaurants);
-
-  const top5Res = restaurants.filter(res => res.rating > 4.5);
 
   return (
     <Layout pageTitle=''>
@@ -58,18 +56,20 @@ function HomePage({ history }) {
         </section>
 
         <section className='top-restaurant'>
+          <MainSectionTitle title='Popular Restaurant' />
           {loading ? (
             <Loader />
           ) : error ? (
             <div>{error.message}</div>
           ) : (
             <div className='grid'>
-              {top5Res.map(restaurant => (
+              {restaurants.map(restaurant => (
                 <Card
+                  url={`/restaurants/${restaurant._id}/${restaurant.name}`}
                   key={restaurant._id}
                   image={restaurant.coverImage}
                   title={restaurant.name}
-                  address={restaurant.address}
+                  address={`${restaurant.address.suburb},${restaurant.address.state}`}
                   category={restaurant.category}
                   value={restaurant.rating}
                   text={restaurant.numReviews}
@@ -78,9 +78,52 @@ function HomePage({ history }) {
             </div>
           )}
           <div className='center'>
-            <Button text='Find more' styles='uppercase btn-primary' />
+            <Button
+              text='Find more'
+              styles='uppercase btn-outline'
+              onClick={() => history.push('/restaurants')}
+            />
           </div>
         </section>
+
+        <Collection bgImage='/images/sushi-event.jpg'>
+          <div className='collection__content'>
+            <h2 className='collection__content-title'>
+              Sushi Week Get 20% off
+            </h2>
+            <Button
+              text='Explore'
+              styles='uppercase btn-primary'
+              onClick={() => history.push('/restaurants')}
+            />
+          </div>
+        </Collection>
+
+        <div
+          className='collection__layout-col2'
+          style={{ marginBottom: '4rem' }}
+        >
+          <Collection bgImage='/images/spanish-event.jpg'>
+            <div className='collection__content'>
+              <h2 className='collection__content-title'>Spanish Collection</h2>
+              <Button
+                text='Explore'
+                styles='uppercase btn-primary'
+                onClick={() => history.push('/restaurants')}
+              />
+            </div>
+          </Collection>
+          <Collection bgImage='/images/italian-event.jpg'>
+            <div className='collection__content'>
+              <h2 className='collection__content-title'>Italian Collection</h2>
+              <Button
+                text='Explore'
+                styles='uppercase btn-primary'
+                onClick={() => history.push('/restaurants')}
+              />
+            </div>
+          </Collection>
+        </div>
       </div>
     </Layout>
   );
