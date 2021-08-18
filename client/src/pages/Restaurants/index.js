@@ -59,8 +59,8 @@ function RestaurantsPage() {
             <div className='grid'>
               {restaurants.map(restaurant => (
                 <Card
-                  url={`/restaurants/${restaurant._id}/${restaurant.name}`}
-                  key={restaurant._id}
+                  url={`/restaurants/${restaurant.id}/${restaurant.name}`}
+                  key={restaurant.id}
                   image={restaurant.coverImage}
                   title={restaurant.name}
                   address={`${restaurant.address.suburb},${restaurant.address.state}`}

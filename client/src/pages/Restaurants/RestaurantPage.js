@@ -28,7 +28,7 @@ function RestaurantPage({ match }) {
       {loading ? (
         <Loader />
       ) : error ? (
-        <div>{error.message}</div>
+        <div>{error}</div>
       ) : (
         <div className='container'>
           <ul className='breadcrumb'>

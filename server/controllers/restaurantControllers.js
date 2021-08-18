@@ -1,71 +1,42 @@
-import asyncHandler from 'express-async-handler';
-import Restaurant from '../models/restaurantModel.js';
+import { Restaurants } from '../config/index.js';
 
 // @description Fetch all Restaurants
 // @route GET /api/restaurants
 // @access Public
-const getRestaurants = asyncHandler(async (req, res) => {
-  const restaurants = await Restaurant.find();
-
-  if (restaurants) {
-    res.json(restaurants);
-  } else {
-    res.status(404);
-    throw new Error('Restaurants not Found.');
+const getRestaurants = async (req, res) => {
+  const snapshot = await Restaurants.get();
+  try {
+    const restaurants = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    if (restaurants) {
+      res.status(200).json(restaurants);
+    } else {
+      res.status(400).send({ messages: 'No restaurants' });
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
   }
-});
+};
 
 // @description Fetch all Restaurants by ID
 // @route GET /api/restaurants/:id
 // @access Public
-const getRestaurantsByID = asyncHandler(async (req, res) => {
-  const restaurant = await Restaurant.findById(req.params.id);
+const getRestaurantsById = async (req, res) => {
+  const snapshot = await Restaurants.doc(req.params.id).get();
 
-  if (restaurant) {
-    res.json(restaurant);
-  } else {
-    res.status(404);
-    throw new Error('Restaurant not Found.');
-  }
-});
-
-// @description Create new review
-// @route PUT /api/restaurants/:id/reviews
-// @access Private
-const createRestaurantReview = asyncHandler(async (req, res) => {
-  const { rating, comment } = req.body;
-  const restaurant = await Restaurant.findById(req.params.id);
-  if (restaurant) {
-    const alreadyReviewed = restaurant.reviews.find(
-      review => review.user.toString() === req.user.id.toString()
-    );
-
-    if (alreadyReviewed) {
-      res.status(404);
-      throw new Error('Restaurant already reviewed.');
+  try {
+    const id = snapshot.id;
+    const data = snapshot.data();
+    if (id && data) {
+      res.status(200).json({ id, ...data });
+    } else {
+      res.status(400).send({ message: 'Restaurant Not Found' });
     }
-
-    const review = {
-      rating: Number(rating),
-      comment,
-      user: req.user.id,
-    };
-
-    // Add new review to restaurant reviews
-    restaurant.reviews.push(review);
-    // Update numReviews
-    restaurant.numReviews = restaurant.reviews.length;
-    // Calculate rating (Total rating / numReviews)
-    restaurant.rating =
-      restaurant.reviews.reduce((acc, item) => item.rating + acc, 0) /
-      restaurant.reviews.length;
-
-    await restaurant.save();
-    res.status(201).json({ message: 'New reviews added.' });
-  } else {
-    res.status(404);
-    throw new Error('Restaurant not found.');
+  } catch (error) {
+    res.status(400).send('An error occurred. ' + error);
   }
-});
+};
 
-export { getRestaurants, getRestaurantsByID, createRestaurantReview };
+export { getRestaurants, getRestaurantsById };

@@ -60,13 +60,13 @@ function HomePage({ history }) {
           {loading ? (
             <Loader />
           ) : error ? (
-            <div>{error.message}</div>
+            <div>{error}</div>
           ) : (
             <div className='grid'>
               {restaurants.map(restaurant => (
                 <Card
-                  url={`/restaurants/${restaurant._id}/${restaurant.name}`}
-                  key={restaurant._id}
+                  url={`/restaurants/${restaurant.id}/${restaurant.name}`}
+                  key={restaurant.id}
                   image={restaurant.coverImage}
                   title={restaurant.name}
                   address={`${restaurant.address.suburb},${restaurant.address.state}`}

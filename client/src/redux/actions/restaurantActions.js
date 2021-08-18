@@ -17,9 +17,7 @@ export const listRestaurant = () => async dispatch => {
   } catch (error) {
     dispatch({
       type: GET_RESTAURANT_LIST_FAIL,
-      payload: error.response.data.message
-        ? error.response.data.message
-        : error.message,
+      payload: error.response.data.message,
     });
   }
 };
@@ -33,9 +31,7 @@ export const getRestaurantDetails = id => async dispatch => {
   } catch (error) {
     dispatch({
       type: GET_RESTAURANT_FAIL,
-      payload: error.response.data.message
-        ? error.response.data.message
-        : error.message,
+      payload: error.response.data.message,
     });
   }
 };
