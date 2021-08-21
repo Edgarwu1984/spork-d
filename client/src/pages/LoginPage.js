@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { loginUser } from '../redux/actions/userActions';
+import Loader from '../components/Loader';
 
-function LoginPage({ history }) {
+function LoginPage({ history, location }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
   const getCurrentYear = new Date().getFullYear();
+
+  const redirect = location.search ? location.search.split('=')[1] : '/';
+  const dispatch = useDispatch();
+  const userLogin = useSelector(state => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
+
   useEffect(() => {
+    // Load Theme
     const root = document.documentElement.classList;
     const currentTheme = localStorage.getItem('theme');
     if (currentTheme === 'light') {
@@ -19,6 +29,15 @@ function LoginPage({ history }) {
     }
   }, []);
 
+  useEffect(() => {
+    if (userInfo) {
+      history.push(redirect);
+      console.log(userInfo);
+    } else if (error) {
+      toast.error(error);
+    }
+  }, [history, userInfo, redirect, error]);
+
   const submitHandler = e => {
     e.preventDefault();
     if (!email || !password) {
@@ -26,7 +45,7 @@ function LoginPage({ history }) {
     } else if (!emailFormat) {
       toast.error('Invalid email format.');
     } else {
-      history.push('/');
+      dispatch(loginUser(email, password));
     }
   };
   return (
@@ -41,6 +60,7 @@ function LoginPage({ history }) {
         <div className='form__wrapper'>
           <h3 className='form-title'>Login</h3>
           <form onSubmit={submitHandler}>
+            {loading && <Loader />}
             <div className='form-group'>
               <label htmlFor='name' className='form-label'>
                 Email

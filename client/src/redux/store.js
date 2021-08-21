@@ -5,13 +5,21 @@ import {
   restaurantListReducer,
   restaurantReducer,
 } from './reducers/restaurantReducers';
+import { userLoginReducer } from './reducers/userReducers';
 
 const reducer = combineReducers({
   restaurantList: restaurantListReducer,
   restaurantDetails: restaurantReducer,
+  userLogin: userLoginReducer,
 });
 
-const initialState = {};
+const userInfoFromStorage = localStorage.getItem('userInfo')
+  ? JSON.parse(localStorage.getItem('userInfo'))
+  : null;
+
+const initialState = {
+  userLogin: { userInfo: userInfoFromStorage },
+};
 
 const middleware = [thunk];
 

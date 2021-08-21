@@ -4,11 +4,16 @@ import Joi from 'joi';
 /* ============================ USER CONTROLLERS ============================ */
 const registerUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, photo, email, password } = req.body;
     const authData = await Auth.createUserWithEmailAndPassword(email, password);
+    const userData = await Users.doc(authData.user.uid).set({
+      username,
+      photo,
+    });
 
     if (authData) {
       res.status(201).send(authData);
+      res.status(201).send(userData);
     } else {
       res.status(400).send({ message: 'Error, not valid email or password' });
     }
@@ -21,8 +26,12 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const authData = await Auth.signInWithEmailAndPassword(email, password);
+    const uid = authData.user.uid;
+    const userDoc = await Users.doc(uid).get();
+    const userData = { uid, ...userDoc.data() };
+
     if (authData) {
-      res.status(200).send(authData);
+      res.status(201).send({ ...authData, userData });
     } else {
       res.status(400).send({ message: 'Error, not valid email or password' });
     }
@@ -33,8 +42,11 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    await Auth.signOut();
-    res.status(200).send({ message: 'sign out.' });
+    const logout = await Auth.signOut();
+    console.log(logout);
+    if (logout) {
+      res.status(200).send({ message: 'sign out.' });
+    }
   } catch (error) {
     res.status(400).send(error);
   }

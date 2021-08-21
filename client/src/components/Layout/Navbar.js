@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FaBars, FaTimes, FaUser } from 'react-icons/fa';
 import { IoMdSunny, IoMdMoon } from 'react-icons/io';
@@ -41,6 +42,10 @@ function Navbar() {
     }
   };
 
+  // Get UserInfo
+  const userLogin = useSelector(state => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
+
   return (
     <nav className='navbar'>
       <div className='navbar__menu'>
@@ -60,7 +65,8 @@ function Navbar() {
         <ul className='nav-list'>
           <li className='nav-list-item'>
             <Link to='/login' className='' onClick={handleClose}>
-              <FaUser /> Login
+              <FaUser />{' '}
+              {userInfo ? userInfo.userData.username : <span>Login</span>}
             </Link>
           </li>
           <li className='dark__mode-toggler'>
