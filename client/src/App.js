@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage';
 import RestaurantsPage from './pages/Restaurants';
 import RestaurantPage from './pages/Restaurants/RestaurantPage';
 import NotFoundPage from './pages/NotFoundPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route exact path='/restaurants' component={RestaurantsPage} />
         <Route path='/restaurants/:id/:name' component={RestaurantPage} />
         <Route path='/login' component={LoginPage} />
+        <Route path='/profile' component={ProfilePage} />
         <Route path='/404' component={NotFoundPage} />
         <Redirect to='/404' />
       </Switch>

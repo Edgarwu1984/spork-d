@@ -25,6 +25,7 @@ function HomePage({ history }) {
       <Hero>
         <div className='hero-text_content'>
           <h1 className='hero-title'>Find delicious dishes</h1>
+
           <Button
             text='Go explore'
             styles='uppercase btn-primary btn-lg'

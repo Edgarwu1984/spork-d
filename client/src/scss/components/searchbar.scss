@@ -1,0 +1,70 @@
+@use '../utils/' as *;
+
+.search {
+  position: relative;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  background-color: rgba($color: #000000, $alpha: 0.8);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+
+  & > * {
+    z-index: 999;
+  }
+
+  &-close__btn {
+    position: absolute;
+    top: rem(32);
+    right: rem(32);
+    background: none;
+    border: none;
+    color: var(--dark-text1);
+    font-size: rem(36);
+    cursor: pointer;
+
+    &:hover {
+      @include transition;
+      color: var(--primary);
+    }
+  }
+
+  h1 {
+    color: var(--primary);
+    margin-bottom: rem(32);
+  }
+
+  .searchbar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    &__input {
+      width: 60%;
+      margin: 0;
+      padding: 1rem;
+      border: none;
+    }
+    &__btn {
+      font-size: 2rem;
+      background: var(--primary);
+      border: none;
+      display: flex;
+      align-items: center;
+      padding: rem(16);
+      cursor: pointer;
+    }
+  }
+}
+
+.show {
+  @include transition;
+  opacity: 1;
+  pointer-events: all;
+}

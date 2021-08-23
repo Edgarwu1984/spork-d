@@ -49,16 +49,16 @@ blockquote {
 }
 
 // Scrollbar
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 0.9em;
 }
 
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
   background-color: var(--scrollbar-bg);
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb);
   border-radius: 4px;
 }

@@ -5,17 +5,17 @@
   background: var(--bg);
   border-radius: rem(6);
   width: rem(600);
-  height: auto;
-  padding: rem(30);
-
+  max-height: 90%;
+  padding: rem(30) rem(40);
   @include breakpoint-down(small) {
     width: 90%;
   }
 
-  .header {
+  .modal__header {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 1rem;
+    margin-bottom: rem(16);
+
     &-btn {
       background: none;
       outline: none;
@@ -30,10 +30,8 @@
       }
     }
   }
-
-  .body,
-  .title {
-    padding: 1rem;
+  .modal__title {
+    margin-bottom: rem(32);
   }
 }
 

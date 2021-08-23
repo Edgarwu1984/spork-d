@@ -115,21 +115,3 @@ input[type='submit'] {
     color: var(--primary);
   }
 }
-
-.dark__mode-toggler {
-  .dark__mode-btn {
-    border: none;
-    background: none;
-    outline: none;
-    cursor: pointer;
-  }
-
-  .icon {
-    font-size: rem(20);
-    color: var(--dark-text2);
-    &-active {
-      @include transition($duration: 0.2s);
-      color: var(--primary);
-    }
-  }
-}

@@ -1,23 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+// REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { getRestaurantDetails } from '../../redux/actions/restaurantActions';
+
+// COMPONENTS
 import Layout from '../../components/Layout';
 import SubSectionTitle from '../../components/SubSectionTitle';
 import Rating from '../../components/Rating';
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
+import ReviewModal from '../../components/Modal/ReviewModal';
+import MenuModal from '../../components/Modal/MenuModal';
+
+// REACT-ICONS
 import { BiRestaurant, BiTime } from 'react-icons/bi';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FiPhone } from 'react-icons/fi';
 
-function RestaurantPage({ match }) {
+function RestaurantPage({ match, history }) {
+  // RESTAURANT ID
   const restaurantId = match.params.id;
 
-  const dispatch = useDispatch();
+  // MODAL HANDLER
+  const [showReview, setShowReview] = useState(false);
+  const showReviewHandler = () => setShowReview(!showReview);
+  const [showMenu, setShowMenu] = useState(false);
+  const showMenuHandler = () => setShowMenu(!showMenu);
 
+  // REDUX
+  const dispatch = useDispatch();
   const restaurantDetails = useSelector(state => state.restaurantDetails);
-  const { loading, error, restaurant } = restaurantDetails;
+  const {
+    loading: restaurantLoading,
+    error: restaurantError,
+    restaurant,
+  } = restaurantDetails;
+  const userLogin = useSelector(state => state.userLogin);
+  const {
+    loading: userInfoLoading,
+    error: userInfoError,
+    userInfo,
+  } = userLogin;
 
   useEffect(() => {
     dispatch(getRestaurantDetails(restaurantId));
@@ -25,10 +50,10 @@ function RestaurantPage({ match }) {
 
   return (
     <Layout>
-      {loading ? (
+      {restaurantLoading ? (
         <Loader />
-      ) : error ? (
-        <div>{error}</div>
+      ) : restaurantError ? (
+        <div>{restaurantError}</div>
       ) : (
         <div className='container'>
           <ul className='breadcrumb'>
@@ -80,10 +105,35 @@ function RestaurantPage({ match }) {
               </ul>
               <ul className='restaurant__card-button'>
                 <li>
-                  <Button text='Add Review' styles='btn-primary' />
+                  {userInfoLoading ? (
+                    <Loader />
+                  ) : userInfoError ? (
+                    <div>{userInfoError}</div>
+                  ) : (
+                    <ReviewModal
+                      show={showReview}
+                      onClose={() => setShowReview(false)}
+                      data={userInfo}
+                    />
+                  )}
+
+                  <Button
+                    text='Add Review'
+                    styles='btn-primary'
+                    onClick={
+                      userInfo
+                        ? showReviewHandler
+                        : () => history.push('/login')
+                    }
+                  />
                 </li>
                 <li>
-                  <Button text='Menu' />
+                  <MenuModal
+                    data={restaurant.menu}
+                    show={showMenu}
+                    onClose={() => setShowMenu(false)}
+                  />
+                  <Button text='Menu' onClick={showMenuHandler} />
                 </li>
                 <li>
                   <Button text='Get Direction' />
