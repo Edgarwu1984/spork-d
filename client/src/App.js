@@ -7,6 +7,7 @@ import {
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import RestaurantsPage from './pages/Restaurants';
 import RestaurantPage from './pages/Restaurants/RestaurantPage';
@@ -32,6 +33,7 @@ function App() {
         <Route exact path='/' component={HomePage} />
         <Route exact path='/restaurants' component={RestaurantsPage} />
         <Route path='/restaurants/:id/:name' component={RestaurantPage} />
+        <Route path='/register' component={RegisterPage} />
         <Route path='/login' component={LoginPage} />
         <Route path='/profile' component={ProfilePage} />
         <Route path='/404' component={NotFoundPage} />

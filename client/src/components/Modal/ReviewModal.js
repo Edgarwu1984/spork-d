@@ -35,18 +35,18 @@ function ReviewModal({ show, onClick, onClose, data }) {
           </div>
           <form>
             <div className='form-group'>
-              <label htmlFor='name' className='form-label'>
-                Rating
-              </label>
-              <input type='number' max={5} />
+              <label className='form-label'>Rating</label>
+              <input
+                className='form-control'
+                type='number'
+                max={5}
+                min={1}
+                defaultValue={5}
+              />
             </div>
             <div className='form-group'>
-              <textarea
-                className='form-control'
-                placeholder='comment..'
-                cols='30'
-                rows='10'
-              />
+              <label className='form-label'>Comment</label>
+              <textarea className='form-control' cols='30' rows='10' />
             </div>
             <div className='from-group'>
               <input className='btn btn-primary' type='button' value='Submit' />

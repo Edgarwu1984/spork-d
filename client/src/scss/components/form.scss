@@ -28,6 +28,10 @@
   margin-bottom: rem(36);
 }
 
+.form-control {
+  display: block;
+}
+
 .form-link,
 .form-link:visited {
   margin: 0 rem(8);
@@ -35,28 +39,31 @@
   color: var(--primary);
 }
 
-label {
+.form-label {
   color: var(--text2);
+  display: block;
+  margin-bottom: rem(4);
 }
 
-input,
-textarea {
+.form-control {
   display: block;
   width: 100%;
   padding: rem(8);
-  margin-top: rem(4);
-  margin-bottom: rem(24);
-  font-size: rem(16) !important;
+  font-size: rem(16);
   background-color: var(--bg-light);
   color: var(--text2);
   border: 1px solid var(--grey);
   @include transition;
 }
 
-input:focus,
-textarea:focus {
+.form-control:focus {
   outline: none;
   border-color: var(--primary);
+}
+
+.option-form {
+  padding: rem(12) rem(8);
+  font-size: rem(16);
 }
 
 .form-check {
@@ -71,7 +78,7 @@ textarea:focus {
   }
 }
 
-input[type='checkbox'] {
+.form-control[type='checkbox'] {
   width: rem(20);
   height: rem(20);
 }
