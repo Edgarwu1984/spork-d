@@ -5,7 +5,6 @@
   background: var(--bg);
   border-radius: rem(6);
   width: rem(600);
-  max-height: 90%;
   padding: rem(30) rem(40);
   @include breakpoint-down(small) {
     width: 90%;

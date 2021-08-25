@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
-import { getRestaurantDetails } from '../../redux/actions/restaurantActions';
+import {
+  getRestaurantDetails,
+  listRestaurantReviews,
+} from '../../redux/actions/restaurantActions';
 
 // COMPONENTS
 import Layout from '../../components/Layout';
@@ -19,6 +22,7 @@ import { BiRestaurant, BiTime } from 'react-icons/bi';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FiPhone } from 'react-icons/fi';
 import MapModal from '../../components/Modal/MapModal';
+import { timeFormatter } from '../../utils/timeFormatter';
 
 function RestaurantPage({ match, history }) {
   // RESTAURANT ID
@@ -40,6 +44,14 @@ function RestaurantPage({ match, history }) {
     error: restaurantError,
     restaurant,
   } = restaurantDetails;
+
+  const restaurantReviews = useSelector(state => state.restaurantReviews);
+  const {
+    loading: reviewsLoading,
+    error: reviewsError,
+    reviews,
+  } = restaurantReviews;
+
   const userLogin = useSelector(state => state.userLogin);
   const {
     loading: userInfoLoading,
@@ -49,6 +61,7 @@ function RestaurantPage({ match, history }) {
 
   useEffect(() => {
     dispatch(getRestaurantDetails(restaurantId));
+    dispatch(listRestaurantReviews(restaurantId));
   }, [dispatch, restaurantId]);
 
   return (
@@ -163,12 +176,32 @@ function RestaurantPage({ match, history }) {
           </div>
           <div>
             <SubSectionTitle title='Reviews' />
-            {restaurant.reviews ? (
-              restaurant.reviews.map(review => (
-                <li key={review._id}>{review.comment}</li>
-              ))
-            ) : (
+            {reviewsLoading ? (
+              <Loader />
+            ) : reviewsError ? (
+              <div>{reviewsError}</div>
+            ) : reviews.length === 0 ? (
               <p>No review.</p>
+            ) : (
+              reviews.map(review => (
+                <div className='review' key={review.id}>
+                  <div className='review__rating'>{review.rating}</div>
+                  <div className='review__author'>
+                    <img
+                      className='review__author-photo'
+                      src={review.author.photo && review.author.photo}
+                      alt='user_photo'
+                    />{' '}
+                    <div>
+                      <div className='review__author-username'>
+                        {review.author.username && review.author.username}
+                      </div>
+                      <small>{timeFormatter(review.reviewedAt.seconds)}</small>
+                    </div>
+                  </div>
+                  <p className='review__comment'>{review.comment}</p>
+                </div>
+              ))
             )}
           </div>
         </div>

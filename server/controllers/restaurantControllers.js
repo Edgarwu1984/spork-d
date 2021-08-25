@@ -39,4 +39,54 @@ const getRestaurantsById = async (req, res) => {
   }
 };
 
-export { getRestaurants, getRestaurantsById };
+// @description Get Restaurant Reviews
+// @route GET /api/restaurants/:id/reviews
+// @access Public
+const getRestaurantReviews = async (req, res) => {
+  try {
+    const snapshot = await Restaurants.doc(req.params.id)
+      .collection('reviews')
+      .get();
+
+    const reviews = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    if (!reviews) {
+      res.status(400).send({ message: 'Reviews Not Found' });
+    } else {
+      res.status(200).send(reviews);
+    }
+  } catch (error) {
+    res.status(400).send('An error occurred. ' + error);
+  }
+};
+
+// @description Create Restaurant Review
+// @route POST /api/restaurants/:id/reviews
+// @access Private
+// const createRestaurantReview = async (req, res) => {
+//   try {
+//     const { rating, comment } = req.body;
+//     const uid = Auth.onAuthStateChanged(user => {
+//       return user.uid;
+//     });
+//     const snapshot = await Restaurants.doc(req.params.id).get();
+//     const data = snapshot.data();
+
+//     const reviews = [{ uid, rating, comment }];
+
+//     await Restaurants.doc(req.params.id).update(data, reviews);
+//     res.status(200).send('Review has been added');
+//   } catch (error) {
+//     res.status(400).send('An error occurred. ' + error);
+//   }
+// };
+
+export {
+  getRestaurants,
+  getRestaurantsById,
+  // createRestaurantReview,
+  getRestaurantReviews,
+};

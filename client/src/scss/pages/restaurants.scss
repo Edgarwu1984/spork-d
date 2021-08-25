@@ -158,3 +158,44 @@
     }
   }
 }
+
+.review {
+  position: relative;
+  background-color: var(--bg-light);
+  margin: rem(24);
+  padding: rem(16) rem(24);
+  @include shadow;
+
+  &__rating {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: rem(20);
+    background-color: var(--danger);
+    color: var(--white);
+    padding: rem(6) rem(8);
+  }
+
+  &__author {
+    display: flex;
+    align-items: center;
+
+    &-photo {
+      border-radius: 50%;
+      width: rem(96);
+      height: auto;
+      margin-right: rem(24);
+    }
+
+    &-username {
+      font-weight: 600;
+      font-size: rem(18);
+      text-transform: capitalize;
+    }
+  }
+
+  &__comment {
+    padding: rem(8) rem(16);
+    font-size: rem(16);
+  }
+}

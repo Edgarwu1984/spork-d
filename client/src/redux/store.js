@@ -4,12 +4,14 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   restaurantListReducer,
   restaurantReducer,
+  restaurantReviewsReducer,
 } from './reducers/restaurantReducers';
 import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 
 const reducer = combineReducers({
   restaurantList: restaurantListReducer,
   restaurantDetails: restaurantReducer,
+  restaurantReviews: restaurantReviewsReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
 });
