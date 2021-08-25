@@ -120,7 +120,7 @@ function RegisterPage({ history, location }) {
               </label>
               <select
                 className='form-control option-form'
-                onChange={e => console.log(e.target.value)}
+                onChange={e => setPhoto(e.target.value)}
               >
                 <option value='' hidden>
                   Select Your Photo

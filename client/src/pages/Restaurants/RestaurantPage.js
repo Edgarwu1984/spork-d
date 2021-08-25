@@ -18,6 +18,7 @@ import MenuModal from '../../components/Modal/MenuModal';
 import { BiRestaurant, BiTime } from 'react-icons/bi';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FiPhone } from 'react-icons/fi';
+import MapModal from '../../components/Modal/MapModal';
 
 function RestaurantPage({ match, history }) {
   // RESTAURANT ID
@@ -28,6 +29,8 @@ function RestaurantPage({ match, history }) {
   const showReviewHandler = () => setShowReview(!showReview);
   const [showMenu, setShowMenu] = useState(false);
   const showMenuHandler = () => setShowMenu(!showMenu);
+  const [showMapMenu, setShowMapMenu] = useState(false);
+  const showMapMenuHandler = () => setShowMapMenu(!showMapMenu);
 
   // REDUX
   const dispatch = useDispatch();
@@ -136,7 +139,12 @@ function RestaurantPage({ match, history }) {
                   <Button text='Menu' onClick={showMenuHandler} />
                 </li>
                 <li>
-                  <Button text='Get Direction' />
+                  <MapModal
+                    restaurant={restaurant}
+                    show={showMapMenu}
+                    onClose={() => setShowMapMenu(false)}
+                  />
+                  <Button text='Get Direction' onClick={showMapMenuHandler} />
                 </li>
               </ul>
             </div>

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import SubSectionTitle from '../components/SubSectionTitle';
 import Button from '../components/Button';
+import Loader from '../components/Loader';
 
 function ProfilePage() {
   const getTime = date => {
@@ -29,25 +30,34 @@ function ProfilePage() {
             <Link to='/profile'>Profile</Link>
           </li>
         </ul>
-        <div className='profile__banner'>
-          <div className='profile__banner-wrap'>
-            <div className='text-info'>
-              <h2 className='title'>
-                G'day, <span>{userInfo.userData.username}</span>
-              </h2>
-              <div className='date'>
-                Last Login: <span>{getTime(userInfo.user.lastLoginAt)}</span>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <div>{error}</div>
+        ) : (
+          <>
+            <div className='profile__banner'>
+              <div className='profile__banner-wrap'>
+                <div className='text-info'>
+                  <h2 className='title'>
+                    G'day, <span>{userInfo.userData.username}</span>
+                  </h2>
+                  <div className='date'>
+                    Last Login:{' '}
+                    <span>{getTime(userInfo.user.lastLoginAt)}</span>
+                  </div>
+                  <Button text='Edit Profile' styles='btn-primary' />
+                </div>
+                <img
+                  className='image-info'
+                  src={userInfo.userData.photo}
+                  alt='user_photo'
+                />
               </div>
-              <Button text='Edit Profile' styles='btn-primary' />
             </div>
-            <img
-              className='image-info'
-              src={userInfo.userData.photo}
-              alt='user_photo'
-            />
-          </div>
-        </div>
-        <SubSectionTitle title='My Reviews' />
+            <SubSectionTitle title='My Reviews' />
+          </>
+        )}
       </div>
     </Layout>
   );
