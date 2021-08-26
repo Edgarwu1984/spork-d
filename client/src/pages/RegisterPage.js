@@ -17,7 +17,7 @@ function RegisterPage({ history, location }) {
   const emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
 
   // REDIRECT DIRECTORY
-  const redirect = location.search ? location.search.split('=')[1] : '/';
+  // const redirect = location.search ? location.search.split('=')[1] : '/';
 
   // REDUX
   const dispatch = useDispatch();
@@ -40,12 +40,11 @@ function RegisterPage({ history, location }) {
   // LOGIN CHECK
   useEffect(() => {
     if (userInfo) {
-      history.push(redirect);
-      toast.success("Welcome to Spork'S");
+      history.push('/login');
     } else if (error) {
       toast.error(error);
     }
-  }, [history, userInfo, redirect, error]);
+  }, [history, userInfo, error]);
 
   // LOGIN FORM HANDLER
   const submitHandler = e => {

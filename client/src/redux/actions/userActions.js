@@ -51,8 +51,8 @@ export const registerUser =
       );
 
       dispatch({ type: REGISTER_USER_SUCCESS, payload: data });
-      dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      // dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
+      // localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
       dispatch({
         type: REGISTER_USER_FAIL,
