@@ -1,9 +1,9 @@
-import express from 'express';
-import {
+const express = require('express');
+const {
   getRestaurantReviews,
   getRestaurants,
   getRestaurantsById,
-} from '../controllers/restaurantControllers.js';
+} = require('../controllers/restaurantControllers');
 
 const router = express.Router();
 
@@ -11,4 +11,4 @@ router.route('/').get(getRestaurants);
 router.route('/:id').get(getRestaurantsById);
 router.route('/:id/reviews').get(getRestaurantReviews);
 
-export default router;
+module.exports = router;

@@ -1,10 +1,11 @@
-import { Restaurants } from '../config/index.js';
+// import { Restaurants } from '../config/index.js';
+const { db } = require('../config/db');
 
 // @description Fetch all Restaurants
 // @route GET /api/restaurants
 // @access Public
 const getRestaurants = async (req, res) => {
-  const snapshot = await Restaurants.get();
+  const snapshot = await db.collection('restaurants').get();
   try {
     const restaurants = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -24,7 +25,7 @@ const getRestaurants = async (req, res) => {
 // @route GET /api/restaurants/:id
 // @access Public
 const getRestaurantsById = async (req, res) => {
-  const snapshot = await Restaurants.doc(req.params.id).get();
+  const snapshot = await db.collection('restaurants').doc(req.params.id).get();
 
   try {
     const id = snapshot.id;
@@ -44,7 +45,9 @@ const getRestaurantsById = async (req, res) => {
 // @access Public
 const getRestaurantReviews = async (req, res) => {
   try {
-    const snapshot = await Restaurants.doc(req.params.id)
+    const snapshot = await db
+      .collection('restaurants')
+      .doc(req.params.id)
       .collection('reviews')
       .get();
 
@@ -84,7 +87,7 @@ const getRestaurantReviews = async (req, res) => {
 //   }
 // };
 
-export {
+module.exports = {
   getRestaurants,
   getRestaurantsById,
   // createRestaurantReview,

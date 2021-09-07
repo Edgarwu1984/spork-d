@@ -1,14 +1,16 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import dotenv from 'dotenv';
-// Routes
-import restaurantRoutes from './routes/restaurantRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
+
+// ROUTES
+const restaurantRoutes = require('./routes/restaurantRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 dotenv.config();
 const app = express();
 
+// MIDDLEWARE
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
