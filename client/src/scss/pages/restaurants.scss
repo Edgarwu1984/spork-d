@@ -133,6 +133,7 @@
       margin-bottom: rem(4);
       display: flex;
       align-items: center;
+      text-transform: capitalize;
 
       &:nth-child(2) {
         margin-top: rem(12);
@@ -168,6 +169,20 @@
     li {
       margin-right: rem(20);
     }
+  }
+}
+
+.more__info {
+  width: 80%;
+  margin-right: auto;
+  gap: rem(10) rem(40);
+
+  li {
+    position: relative;
+    padding-left: rem(24);
+    font-size: rem(18);
+    color: var(--text);
+    width: 100%;
   }
 }
 

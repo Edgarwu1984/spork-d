@@ -18,6 +18,11 @@ img {
   height: auto;
 }
 
+section {
+  margin-top: rem(60);
+  margin-bottom: rem(60);
+}
+
 blockquote {
   color: darken(#fff, 10);
   border-left: rem(4) solid var(--primary);

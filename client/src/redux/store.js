@@ -2,14 +2,18 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import {
+  restaurantCategoryListReducer,
   restaurantListReducer,
   restaurantReducer,
   restaurantReviewsReducer,
+  restaurantTopListReducer,
 } from './reducers/restaurantReducers';
 import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 
 const reducer = combineReducers({
   restaurantList: restaurantListReducer,
+  restaurantCategoryList: restaurantCategoryListReducer,
+  restaurantTopList: restaurantTopListReducer,
   restaurantDetails: restaurantReducer,
   restaurantReviews: restaurantReviewsReducer,
   userLogin: userLoginReducer,

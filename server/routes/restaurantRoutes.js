@@ -3,12 +3,16 @@ const {
   getRestaurantReviews,
   getRestaurants,
   getRestaurantsById,
+  getTopRestaurants,
+  getRestaurantsByCategory,
 } = require('../controllers/restaurantControllers');
 
 const router = express.Router();
 
 router.route('/').get(getRestaurants);
-router.route('/:id').get(getRestaurantsById);
-router.route('/:id/reviews').get(getRestaurantReviews);
+router.route('/top').get(getTopRestaurants);
+router.route('/:category').get(getRestaurantsByCategory);
+router.route('/:category/:id').get(getRestaurantsById);
+router.route('/:category/:id/reviews').get(getRestaurantReviews);
 
 module.exports = router;

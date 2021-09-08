@@ -23,10 +23,12 @@ import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FiPhone } from 'react-icons/fi';
 import MapModal from '../../components/Modal/MapModal';
 import { timeFormatter } from '../../utils/timeFormatter';
+import Breadcrumb from '../../components/Breadcrumb';
 
 function RestaurantPage({ match, history }) {
   // RESTAURANT ID
   const restaurantId = match.params.id;
+  const restaurantCategory = match.params.category;
 
   // MODAL HANDLER
   const [showReview, setShowReview] = useState(false);
@@ -60,9 +62,9 @@ function RestaurantPage({ match, history }) {
   } = userLogin;
 
   useEffect(() => {
-    dispatch(getRestaurantDetails(restaurantId));
-    dispatch(listRestaurantReviews(restaurantId));
-  }, [dispatch, restaurantId]);
+    dispatch(getRestaurantDetails(restaurantCategory, restaurantId));
+    dispatch(listRestaurantReviews(restaurantCategory, restaurantId));
+  }, [dispatch, restaurantCategory, restaurantId]);
 
   return (
     <Layout>
@@ -72,17 +74,9 @@ function RestaurantPage({ match, history }) {
         <div>{restaurantError}</div>
       ) : (
         <div className='container'>
-          <ul className='breadcrumb'>
-            <li className='breadcrumb__item'>
-              <Link to='/'>Home</Link>
-            </li>
-            <li className='breadcrumb__item'>
-              <Link to='/restaurants'>Restaurants</Link>
-            </li>
-            <li className='breadcrumb__item'>
-              <Link to='/restaurants'>{match.params.name}</Link>
-            </li>
-          </ul>
+          <div className='container'>
+            <Breadcrumb match={match} />
+          </div>
           <div className='restaurant__card'>
             <img
               className='restaurant__card-image'
@@ -163,18 +157,18 @@ function RestaurantPage({ match, history }) {
             </div>
           </div>
 
-          <div>
+          <section>
             <SubSectionTitle title='About this place' />
             <p>{restaurant.description}</p>
-          </div>
-          <div>
+          </section>
+          <section>
             <SubSectionTitle title='More Info' />
-            <ul>
+            <div className='grid col-2 more__info'>
               {restaurant.info &&
                 restaurant.info.map((i, index) => <li key={index}>{i}</li>)}
-            </ul>
-          </div>
-          <div>
+            </div>
+          </section>
+          <section>
             <SubSectionTitle title='Reviews' />
             {reviewsLoading ? (
               <Loader />
@@ -203,7 +197,7 @@ function RestaurantPage({ match, history }) {
                 </div>
               ))
             )}
-          </div>
+          </section>
         </div>
       )}
     </Layout>

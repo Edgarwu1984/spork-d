@@ -12,12 +12,13 @@ try {
   });
 
   console.log('Database connected.');
-
   const db = admin.firestore();
-  //   const bucket = admin.storage.bucket();
+
+  const bucket = admin.storage().bucket();
+
   const auth = admin.auth();
 
-  module.exports = { db, auth };
+  module.exports = { db, auth, bucket };
 } catch (error) {
   console.log(error);
 }

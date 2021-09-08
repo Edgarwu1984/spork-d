@@ -1,23 +1,26 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { listRestaurant } from '../redux/actions/restaurantActions';
+// COMPONENTS
 import Layout from '../components/Layout';
 import Hero from '../components/Layout/Hero';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import Loader from '../components/Loader';
-import { FiArrowRight, FiSearch, FiStar, FiPhone } from 'react-icons/fi';
 import Collection from '../components/Collection';
 import MainSectionTitle from '../components/MainSectionTitle';
+// REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { listTopRestaurant } from '../redux/actions/restaurantActions';
+// REACT ICONS
+import { FiArrowRight, FiSearch, FiStar, FiPhone } from 'react-icons/fi';
 
 function HomePage({ history }) {
+  // REDUX - Get top 4 restaurant
   const dispatch = useDispatch();
-
-  const restaurantList = useSelector(state => state.restaurantList);
-  const { loading, error, restaurants } = restaurantList;
+  const restaurantTopList = useSelector(state => state.restaurantTopList);
+  const { loading, error, restaurants } = restaurantTopList;
 
   useEffect(() => {
-    dispatch(listRestaurant());
+    dispatch(listTopRestaurant());
   }, [dispatch]);
 
   return (
@@ -63,10 +66,10 @@ function HomePage({ history }) {
           ) : error ? (
             <div>{error}</div>
           ) : (
-            <div className='grid'>
+            <div className='grid col-4'>
               {restaurants.map(restaurant => (
                 <Card
-                  url={`/restaurants/${restaurant.id}/${restaurant.name}`}
+                  url={`/restaurants/${restaurant.category}/${restaurant.name}&${restaurant.id}`}
                   key={restaurant.id}
                   image={restaurant.coverImage}
                   title={restaurant.name}
@@ -86,7 +89,6 @@ function HomePage({ history }) {
             />
           </div>
         </section>
-
         <Collection bgImage='/images/sushi-event.jpg'>
           <div className='collection__content'>
             <h2 className='collection__content-title'>
@@ -95,11 +97,10 @@ function HomePage({ history }) {
             <Button
               text='Explore'
               styles='uppercase btn-primary'
-              onClick={() => history.push('/restaurants')}
+              onClick={() => history.push('/restaurants/japanese')}
             />
           </div>
         </Collection>
-
         <div
           className='collection__layout-col2'
           style={{ marginBottom: '4rem' }}
@@ -110,7 +111,7 @@ function HomePage({ history }) {
               <Button
                 text='Explore'
                 styles='uppercase btn-primary'
-                onClick={() => history.push('/restaurants')}
+                onClick={() => history.push('/restaurants/spanish')}
               />
             </div>
           </Collection>
@@ -120,7 +121,7 @@ function HomePage({ history }) {
               <Button
                 text='Explore'
                 styles='uppercase btn-primary'
-                onClick={() => history.push('/restaurants')}
+                onClick={() => history.push('/restaurants/italian')}
               />
             </div>
           </Collection>

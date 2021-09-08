@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +17,12 @@ import { IoMdSunny, IoMdMoon } from 'react-icons/io';
 import { FiSearch } from 'react-icons/fi';
 
 function Navbar() {
+  // Get UserInfo
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+  const dispatch = useDispatch();
+
+  const history = useHistory();
   const [collapse, setCollapse] = useState(true);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -54,13 +60,9 @@ function Navbar() {
     }
   };
 
-  // Get UserInfo
-  const userLogin = useSelector(state => state.userLogin);
-  const { userInfo } = userLogin;
-  const dispatch = useDispatch();
-
   const handleLogout = () => {
     dispatch(logoutUser());
+    history.push('/');
     toast.success('Logged out');
   };
 

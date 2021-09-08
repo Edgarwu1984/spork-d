@@ -2,7 +2,6 @@
 
 .hero {
   position: relative;
-  height: rem(500);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -22,6 +21,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   max-width: rem(1400);
   height: 100%;
   margin-left: auto;
@@ -53,6 +53,11 @@
   @include breakpoint-down(small) {
     font-size: rem(40);
   }
+}
+
+.hero-title-small {
+  color: var(--white);
+  text-transform: capitalize;
 }
 
 .hero-subtitle {

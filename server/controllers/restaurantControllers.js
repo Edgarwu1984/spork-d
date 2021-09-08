@@ -21,6 +21,70 @@ const getRestaurants = async (req, res) => {
   }
 };
 
+// @description Get Top 4 Restaurants
+// @route GET /api/restaurants/top
+// @access Public
+const getTopRestaurants = async (req, res) => {
+  const snapshot = await db
+    .collection('restaurants')
+    .where('rating', '>=', 4.6)
+    .orderBy('rating', 'desc')
+    .limit(4)
+    .get();
+  try {
+    const restaurants = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // const restaurants = snapshot.docs
+    //   .map(doc => ({
+    //     id: doc.id,
+    //     ...doc.data(),
+    //   }))
+    //   .sort((a, b) => b.rating - a.rating)
+    //   .slice(0, 4);
+    if (restaurants) {
+      res.status(200).json(restaurants);
+    } else {
+      res.status(400).send({ messages: 'No restaurants' });
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
+// @description Get Restaurants By Category
+// @route GET /api/restaurants/top
+// @access Public
+const getRestaurantsByCategory = async (req, res) => {
+  const snapshot = await db
+    .collection('restaurants')
+    .where('category', '==', req.params.category)
+    .get();
+  try {
+    const restaurants = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // const restaurants = snapshot.docs
+    //   .map(doc => ({
+    //     id: doc.id,
+    //     ...doc.data(),
+    //   }))
+    //   .filter(re => re.category === req.params.category);
+
+    if (restaurants) {
+      res.status(200).json(restaurants);
+    } else {
+      res.status(400).send({ messages: 'No restaurants' });
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
 // @description Fetch all Restaurants by ID
 // @route GET /api/restaurants/:id
 // @access Public
@@ -57,7 +121,7 @@ const getRestaurantReviews = async (req, res) => {
     }));
 
     if (!reviews) {
-      res.status(400).send({ message: 'Reviews Not Found' });
+      res.status(200).send({ message: 'No reviews' });
     } else {
       res.status(200).send(reviews);
     }
@@ -90,6 +154,8 @@ const getRestaurantReviews = async (req, res) => {
 module.exports = {
   getRestaurants,
   getRestaurantsById,
-  // createRestaurantReview,
+  getRestaurantsByCategory,
   getRestaurantReviews,
+  getTopRestaurants,
+  // createRestaurantReview,
 };

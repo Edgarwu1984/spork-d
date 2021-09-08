@@ -9,7 +9,8 @@
 
   &__item {
     margin-right: rem(12);
-    &::before {
+    text-transform: capitalize;
+    &:not(:first-child)::before {
       content: '/';
       font-size: rem(12);
       font-weight: 600;

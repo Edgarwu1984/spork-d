@@ -8,7 +8,7 @@ import Loader from '../../components/Loader';
 import Card from '../../components/Card';
 import TopRestaurantCard from '../../components/TopRestaurantCard';
 
-function RestaurantsPage() {
+function RestaurantsPage({ match }) {
   const dispatch = useDispatch();
 
   const restaurantList = useSelector(state => state.restaurantList);
@@ -20,28 +20,28 @@ function RestaurantsPage() {
   return (
     <Layout>
       <div className='container'>
-        <Breadcrumb currentPage='Restaurants' />
+        <Breadcrumb match={match} />
       </div>
       <div className='top__restaurant'>
         <div className='container'>
           <div className='top__list'>
             <TopRestaurantCard
-              url='/'
+              url='restaurants/japanese'
               bgImage='/images/japanese-restaurant.jpg'
               category='Japanese Restaurant'
             />
             <TopRestaurantCard
-              url='/'
+              url='restaurants/asian'
               bgImage='/images/chinese-restaurant.jpg'
               category='Chinese Restaurant'
             />
             <TopRestaurantCard
-              url='/'
+              url='restaurants/italian'
               bgImage='/images/italian-restaurant.jpg'
               category='Italian Restaurant'
             />
             <TopRestaurantCard
-              url='/'
+              url='restaurants/spanish'
               bgImage='/images/spanish-restaurant.jpg'
               category='Spanish Restaurant'
             />
@@ -56,10 +56,10 @@ function RestaurantsPage() {
           ) : error ? (
             <div>{error.message}</div>
           ) : (
-            <div className='grid'>
+            <div className='grid col-4'>
               {restaurants.map(restaurant => (
                 <Card
-                  url={`/restaurants/${restaurant.id}/${restaurant.name}`}
+                  url={`/restaurants/${restaurant.category}/${restaurant.name}&&${restaurant.id}`}
                   key={restaurant.id}
                   image={restaurant.coverImage}
                   title={restaurant.name}
