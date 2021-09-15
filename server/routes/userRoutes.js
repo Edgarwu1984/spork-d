@@ -9,10 +9,9 @@ const {
 
 const router = express.Router();
 
+// Route '/api/users'
 router.route('/').get(getUsers);
-
 router.route('/:id').get(getUserById).delete(deleteUserById);
-
 router.route('/login').post(loginUser);
 router.route('/register').post(registerUser);
 

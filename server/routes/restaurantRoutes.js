@@ -9,6 +9,7 @@ const {
 
 const router = express.Router();
 
+// Route '/api/restaurants'
 router.route('/').get(getRestaurants);
 router.route('/top').get(getTopRestaurants);
 router.route('/:category').get(getRestaurantsByCategory);

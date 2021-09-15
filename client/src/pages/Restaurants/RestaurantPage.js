@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
@@ -73,132 +72,136 @@ function RestaurantPage({ match, history }) {
       ) : restaurantError ? (
         <div>{restaurantError}</div>
       ) : (
-        <div className='container'>
+        restaurant && (
           <div className='container'>
-            <Breadcrumb match={match} />
-          </div>
-          <div className='restaurant__card'>
-            <img
-              className='restaurant__card-image'
-              src={restaurant.coverImage}
-              alt={restaurant.name}
-            />
-            <div className='restaurant__card-content'>
-              <div className='restaurant__rating'>{restaurant.rating}</div>
-              <ul className='restaurant__card-list'>
-                <li>
-                  <h3>{restaurant.name}</h3>
-                </li>
-                <li>
-                  <Rating
-                    value={restaurant.rating}
-                    text={restaurant.numReviews}
-                  />
-                </li>
-                <li>
-                  <BiRestaurant className='list__icon' />
-                  {restaurant.category}
-                </li>
-                <li>
-                  <HiOutlineLocationMarker className='list__icon' />
-                  {restaurant.address &&
-                    `${restaurant.address.street}, ${restaurant.address.suburb}, ${restaurant.address.state} ${restaurant.address.postcode}`}
-                </li>
-                <li>
-                  <FiPhone className='list__icon' />
-                  {`+61 ${restaurant.phoneNumber}`}
-                </li>
-                <li>
-                  <BiTime className='list__icon' />
-                  Open Hour
-                </li>
-              </ul>
-              <ul className='restaurant__card-button'>
-                <li>
-                  {userInfoLoading ? (
-                    <Loader />
-                  ) : userInfoError ? (
-                    <div>{userInfoError}</div>
-                  ) : (
-                    <ReviewModal
-                      show={showReview}
-                      onClose={() => setShowReview(false)}
-                      data={userInfo}
+            <div className='container'>
+              <Breadcrumb match={match} />
+            </div>
+            <div className='restaurant__card'>
+              <img
+                className='restaurant__card-image'
+                src={restaurant.coverImage}
+                alt={restaurant.name}
+              />
+              <div className='restaurant__card-content'>
+                <div className='restaurant__rating'>{restaurant.rating}</div>
+                <ul className='restaurant__card-list'>
+                  <li>
+                    <h3>{restaurant.name}</h3>
+                  </li>
+                  <li>
+                    <Rating
+                      value={restaurant.rating}
+                      text={restaurant.numReviews}
                     />
-                  )}
+                  </li>
+                  <li>
+                    <BiRestaurant className='list__icon' />
+                    {restaurant.category}
+                  </li>
+                  <li>
+                    <HiOutlineLocationMarker className='list__icon' />
+                    {restaurant.address &&
+                      `${restaurant.address.street}, ${restaurant.address.suburb}, ${restaurant.address.state} ${restaurant.address.postcode}`}
+                  </li>
+                  <li>
+                    <FiPhone className='list__icon' />
+                    {`+61 ${restaurant.phoneNumber}`}
+                  </li>
+                  <li>
+                    <BiTime className='list__icon' />
+                    Open Hour
+                  </li>
+                </ul>
+                <ul className='restaurant__card-button'>
+                  <li>
+                    {userInfoLoading ? (
+                      <Loader />
+                    ) : userInfoError ? (
+                      <div>{userInfoError}</div>
+                    ) : (
+                      <ReviewModal
+                        show={showReview}
+                        onClose={() => setShowReview(false)}
+                        data={userInfo}
+                      />
+                    )}
 
-                  <Button
-                    text='Add Review'
-                    styles='btn-primary'
-                    onClick={
-                      userInfo
-                        ? showReviewHandler
-                        : () => history.push('/login')
-                    }
-                  />
-                </li>
-                <li>
-                  <MenuModal
-                    data={restaurant.menu}
-                    show={showMenu}
-                    onClose={() => setShowMenu(false)}
-                  />
-                  <Button text='Menu' onClick={showMenuHandler} />
-                </li>
-                <li>
-                  <MapModal
-                    restaurant={restaurant}
-                    show={showMapMenu}
-                    onClose={() => setShowMapMenu(false)}
-                  />
-                  <Button text='Get Direction' onClick={showMapMenuHandler} />
-                </li>
-              </ul>
+                    <Button
+                      text='Add Review'
+                      styles='btn-primary'
+                      onClick={
+                        userInfo
+                          ? showReviewHandler
+                          : () => history.push('/login')
+                      }
+                    />
+                  </li>
+                  <li>
+                    <MenuModal
+                      data={restaurant.menu}
+                      show={showMenu}
+                      onClose={() => setShowMenu(false)}
+                    />
+                    <Button text='Menu' onClick={showMenuHandler} />
+                  </li>
+                  <li>
+                    <MapModal
+                      restaurant={restaurant}
+                      show={showMapMenu}
+                      onClose={() => setShowMapMenu(false)}
+                    />
+                    <Button text='Get Direction' onClick={showMapMenuHandler} />
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
 
-          <section>
-            <SubSectionTitle title='About this place' />
-            <p>{restaurant.description}</p>
-          </section>
-          <section>
-            <SubSectionTitle title='More Info' />
-            <div className='grid col-2 more__info'>
-              {restaurant.info &&
-                restaurant.info.map((i, index) => <li key={index}>{i}</li>)}
-            </div>
-          </section>
-          <section>
-            <SubSectionTitle title='Reviews' />
-            {reviewsLoading ? (
-              <Loader />
-            ) : reviewsError ? (
-              <div>{reviewsError}</div>
-            ) : reviews.length === 0 ? (
-              <p>No review.</p>
-            ) : (
-              reviews.map(review => (
-                <div className='review' key={review.id}>
-                  <div className='review__rating'>{review.rating}</div>
-                  <div className='review__author'>
-                    <img
-                      className='review__author-photo'
-                      src={review.author.photo && review.author.photo}
-                      alt='user_photo'
-                    />{' '}
-                    <div>
-                      <div className='review__author-username'>
-                        {review.author.username && review.author.username}
+            <section>
+              <SubSectionTitle title='About this place' />
+              <p>{restaurant.description}</p>
+            </section>
+            <section>
+              <SubSectionTitle title='More Info' />
+              <div className='grid col-2 more__info'>
+                {restaurant.info &&
+                  restaurant.info.map((i, index) => <li key={index}>{i}</li>)}
+              </div>
+            </section>
+            <section>
+              <SubSectionTitle title='Reviews' />
+              {reviewsLoading ? (
+                <Loader />
+              ) : reviewsError ? (
+                <div>{reviewsError}</div>
+              ) : !reviews ? (
+                <p>No review.</p>
+              ) : (
+                reviews.map(review => (
+                  <div className='review' key={review.id}>
+                    <div className='review__rating'>{review.rating}</div>
+                    <div className='review__author'>
+                      <img
+                        className='review__author-photo'
+                        src={review.author.photo && review.author.photo}
+                        alt='user_photo'
+                      />{' '}
+                      <div>
+                        <div className='review__author-username'>
+                          {review.author.username && review.author.username}
+                        </div>
+                        <small>
+                          {timeFormatter(review.reviewedAt.seconds)}
+                        </small>
                       </div>
-                      <small>{timeFormatter(review.reviewedAt.seconds)}</small>
                     </div>
+                    <p className='review__comment'>{review.comment}</p>
                   </div>
-                  <p className='review__comment'>{review.comment}</p>
-                </div>
-              ))
-            )}
-          </section>
-        </div>
+                ))
+              )}
+            </section>
+          </div>
+        )
       )}
     </Layout>
   );

@@ -65,6 +65,7 @@ function RestaurantsPage({ match }) {
                   title={restaurant.name}
                   address={`${restaurant.address.suburb},${restaurant.address.state}`}
                   category={restaurant.category}
+                  price={restaurant.avgPrice}
                   value={restaurant.rating}
                   text={restaurant.numReviews}
                 />

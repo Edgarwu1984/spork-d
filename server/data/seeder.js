@@ -1,14 +1,19 @@
-import { Users, Restaurants } from '../config/index.js';
-// import users from '../users.js';
-// import restaurants from './restaurants.js';
+const { Users, Restaurants } = require('../config');
+const users = require('../users');
+const restaurants = require('./restaurants');
 
 const seeder = () => {
   Restaurants.doc()
-    .set(rest)
+    .set(restaurants)
     .then(() => {
-      console.log('Document successfully written!');
-      process.exit();
+      console.log('Restaurant document successfully written!');
     });
+  Users.doc()
+    .set(users)
+    .then(() => {
+      console.log('User document successfully written!');
+    });
+  process.exit();
 };
 
 seeder();

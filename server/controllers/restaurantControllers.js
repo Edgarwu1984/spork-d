@@ -1,134 +1,125 @@
-// import { Restaurants } from '../config/index.js';
 const { db } = require('../config/db');
+const asyncHandler = require('../utils/asyncHandler');
 
 // @description Fetch all Restaurants
 // @route GET /api/restaurants
 // @access Public
-const getRestaurants = async (req, res) => {
-  const snapshot = await db.collection('restaurants').get();
-  try {
-    const restaurants = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    if (restaurants) {
-      res.status(200).json(restaurants);
-    } else {
-      res.status(400).send({ messages: 'No restaurants' });
-    }
-  } catch (error) {
-    res.status(400).send(error.message);
+const getRestaurants = asyncHandler(async (req, res) => {
+  const doc = db.collection('restaurants');
+  const restaurants = await doc.get();
+  const data = restaurants.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  if (data.empty) {
+    res.status(200).send({ message: 'No restaurants.' });
+  } else {
+    res.status(200).json({
+      status: 'success',
+      result: data.length,
+      data,
+    });
   }
-};
+});
 
 // @description Get Top 4 Restaurants
 // @route GET /api/restaurants/top
 // @access Public
-const getTopRestaurants = async (req, res) => {
-  const snapshot = await db
-    .collection('restaurants')
+const getTopRestaurants = asyncHandler(async (req, res) => {
+  const doc = db.collection('restaurants');
+  const restaurants = await doc
     .where('rating', '>=', 4.6)
     .orderBy('rating', 'desc')
     .limit(4)
     .get();
-  try {
-    const restaurants = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
 
-    // const restaurants = snapshot.docs
-    //   .map(doc => ({
-    //     id: doc.id,
-    //     ...doc.data(),
-    //   }))
-    //   .sort((a, b) => b.rating - a.rating)
-    //   .slice(0, 4);
-    if (restaurants) {
-      res.status(200).json(restaurants);
-    } else {
-      res.status(400).send({ messages: 'No restaurants' });
-    }
-  } catch (error) {
-    res.status(400).send(error.message);
+  const data = restaurants.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  if (data.empty) {
+    res.status(200).send({ message: 'No top restaurants found.' });
+  } else {
+    res.status(200).json({
+      status: 'success',
+      result: data.length,
+      data,
+    });
   }
-};
+});
 
 // @description Get Restaurants By Category
-// @route GET /api/restaurants/top
+// @route GET /api/restaurants/:category
 // @access Public
-const getRestaurantsByCategory = async (req, res) => {
-  const snapshot = await db
-    .collection('restaurants')
+const getRestaurantsByCategory = asyncHandler(async (req, res) => {
+  const doc = db.collection('restaurants');
+  const restaurants = await doc
     .where('category', '==', req.params.category)
     .get();
-  try {
-    const restaurants = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
 
-    // const restaurants = snapshot.docs
-    //   .map(doc => ({
-    //     id: doc.id,
-    //     ...doc.data(),
-    //   }))
-    //   .filter(re => re.category === req.params.category);
+  const data = restaurants.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 
-    if (restaurants) {
-      res.status(200).json(restaurants);
-    } else {
-      res.status(400).send({ messages: 'No restaurants' });
-    }
-  } catch (error) {
-    res.status(400).send(error.message);
+  if (data.empty) {
+    res.status(200).send({ message: 'No restaurants.' });
+  } else {
+    res.status(200).json({
+      status: 'success',
+      result: data.length,
+      data,
+    });
   }
-};
+});
 
 // @description Fetch all Restaurants by ID
 // @route GET /api/restaurants/:id
 // @access Public
-const getRestaurantsById = async (req, res) => {
-  const snapshot = await db.collection('restaurants').doc(req.params.id).get();
-
-  try {
-    const id = snapshot.id;
-    const data = snapshot.data();
-    if (id && data) {
-      res.status(200).json({ id, ...data });
-    } else {
-      res.status(400).send({ message: 'Restaurant Not Found' });
-    }
-  } catch (error) {
-    res.status(400).send('An error occurred. ' + error);
+const getRestaurantsById = asyncHandler(async (req, res) => {
+  const doc = db.collection('restaurants');
+  const restaurant = await doc.doc(req.params.id).get();
+  // Get ID & Data separately in order to store them in one object
+  const id = restaurant.id;
+  const data = restaurant.data();
+  if (!id || !data) {
+    res.status(404);
+    throw new Error('No restaurant found.');
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: { id, ...data },
+    });
   }
-};
+});
 
 // @description Get Restaurant Reviews
-// @route GET /api/restaurants/:id/reviews
+// @route GET /api/restaurants/:category/:id/reviews
 // @access Public
-const getRestaurantReviews = async (req, res) => {
-  try {
-    const snapshot = await db
-      .collection('restaurants')
-      .doc(req.params.id)
-      .collection('reviews')
-      .get();
+const getRestaurantReviews = asyncHandler(async (req, res) => {
+  const data = await db
+    .collection('restaurants')
+    .doc(req.params.id)
+    .collection('reviews')
+    .get();
 
-    const reviews = snapshot.docs.map(doc => ({
+  if (data.empty) {
+    res.status(200).send({ message: 'No reviews.' });
+  } else {
+    const reviews = data.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    if (!reviews) {
-      res.status(200).send({ message: 'No reviews' });
-    } else {
-      res.status(200).send(reviews);
-    }
-  } catch (error) {
-    res.status(400).send('An error occurred. ' + error);
+    res.status(200).send({
+      status: 'success',
+      result: reviews.length,
+      data: reviews,
+    });
   }
-};
+});
 
 // @description Create Restaurant Review
 // @route POST /api/restaurants/:id/reviews

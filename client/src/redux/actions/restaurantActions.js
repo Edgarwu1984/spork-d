@@ -22,11 +22,14 @@ export const listRestaurant = () => async dispatch => {
     dispatch({ type: GET_RESTAURANT_LIST_REQUEST });
     const { data } = await axios.get('/api/restaurants');
 
-    dispatch({ type: GET_RESTAURANT_LIST_SUCCESS, payload: data });
+    dispatch({ type: GET_RESTAURANT_LIST_SUCCESS, payload: data.data });
   } catch (error) {
     dispatch({
       type: GET_RESTAURANT_LIST_FAIL,
-      payload: error.response.data.message,
+      payload:
+        error.response && error.response.data.messages
+          ? error.response.data.messages
+          : error.messages,
     });
   }
 };
@@ -36,11 +39,14 @@ export const listTopRestaurant = () => async dispatch => {
     dispatch({ type: GET_TOP_RESTAURANT_REQUEST });
     const { data } = await axios.get('/api/restaurants/top');
 
-    dispatch({ type: GET_TOP_RESTAURANT_SUCCESS, payload: data });
+    dispatch({ type: GET_TOP_RESTAURANT_SUCCESS, payload: data.data });
   } catch (error) {
     dispatch({
       type: GET_TOP_RESTAURANT_FAIL,
-      payload: error.response.data.message,
+      payload:
+        error.response && error.response.data.messages
+          ? error.response.data.messages
+          : error.messages,
     });
   }
 };
@@ -50,11 +56,14 @@ export const listRestaurantByCategory = category => async dispatch => {
     dispatch({ type: GET_RESTAURANT_BY_CATEGORY_REQUEST });
     const { data } = await axios.get(`/api/restaurants/${category}`);
 
-    dispatch({ type: GET_RESTAURANT_BY_CATEGORY_SUCCESS, payload: data });
+    dispatch({ type: GET_RESTAURANT_BY_CATEGORY_SUCCESS, payload: data.data });
   } catch (error) {
     dispatch({
       type: GET_RESTAURANT_BY_CATEGORY_FAIL,
-      payload: error.response.data.message,
+      payload:
+        error.response && error.response.data.messages
+          ? error.response.data.messages
+          : error.messages,
     });
   }
 };
@@ -66,11 +75,14 @@ export const listRestaurantReviews = (category, id) => async dispatch => {
       `/api/restaurants/${category}/${id}/reviews`
     );
 
-    dispatch({ type: GET_RESTAURANT_REVIEWS_SUCCESS, payload: data });
+    dispatch({ type: GET_RESTAURANT_REVIEWS_SUCCESS, payload: data.data });
   } catch (error) {
     dispatch({
       type: GET_RESTAURANT_REVIEWS_FAIL,
-      payload: error.response.data.message,
+      payload:
+        error.response && error.response.data.messages
+          ? error.response.data.messages
+          : error.messages,
     });
   }
 };
@@ -80,11 +92,14 @@ export const getRestaurantDetails = (category, id) => async dispatch => {
     dispatch({ type: GET_RESTAURANT_REQUEST });
     const { data } = await axios.get(`/api/restaurants/${category}/${id}`);
 
-    dispatch({ type: GET_RESTAURANT_SUCCESS, payload: data });
+    dispatch({ type: GET_RESTAURANT_SUCCESS, payload: data.data });
   } catch (error) {
     dispatch({
       type: GET_RESTAURANT_FAIL,
-      payload: error.response.data.message,
+      payload:
+        error.response && error.response.data.messages
+          ? error.response.data.messages
+          : error.messages,
     });
   }
 };

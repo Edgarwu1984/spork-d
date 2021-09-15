@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Rating from './Rating';
 import { Link } from 'react-router-dom';
 
-function Card({ url, image, title, address, category, value, text }) {
+function Card({ url, image, title, address, category, price, value, text }) {
   return (
     <Link to={url} className='card'>
       <div className='card__image-container'>
@@ -15,6 +15,15 @@ function Card({ url, image, title, address, category, value, text }) {
           <div className='card__body-title'>{title}</div>
           <div className='card__body-address'>{address}</div>
           <div className='card__body-category'>{category}</div>
+          <div className='card__body-price'>
+            {price >= 90
+              ? '$$$$'
+              : price >= 70
+              ? '$$$'
+              : price <= 40
+              ? '$$'
+              : '$'}
+          </div>
         </div>
         <Rating value={value} text={text} />
       </div>
@@ -28,6 +37,7 @@ Card.propTypes = {
   title: PropTypes.string,
   address: PropTypes.string,
   category: PropTypes.string,
+  price: PropTypes.number,
 };
 
 Card.defaultProps = {
@@ -36,6 +46,7 @@ Card.defaultProps = {
   title: 'Card Title',
   address: 'restaurant address',
   category: 'category',
+  price: 10,
 };
 
 export default Card;

@@ -69,12 +69,13 @@ function HomePage({ history }) {
             <div className='grid col-4'>
               {restaurants.map(restaurant => (
                 <Card
-                  url={`/restaurants/${restaurant.category}/${restaurant.name}&${restaurant.id}`}
+                  url={`/restaurants/${restaurant.category}/${restaurant.name}&&${restaurant.id}`}
                   key={restaurant.id}
                   image={restaurant.coverImage}
                   title={restaurant.name}
                   address={`${restaurant.address.suburb},${restaurant.address.state}`}
                   category={restaurant.category}
+                  price={restaurant.avgPrice}
                   value={restaurant.rating}
                   text={restaurant.numReviews}
                 />
