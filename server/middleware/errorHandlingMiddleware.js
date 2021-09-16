@@ -3,6 +3,11 @@ const errorHandler = (err, req, res, next) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
 
+  res.locals.status = statusCode;
+  res.locals.message = err.message;
+  res.locals.error = err;
+  console.log(res.locals);
+
   // Show stack trace if node environment is in development mode
   res.json({
     messages: err.message,

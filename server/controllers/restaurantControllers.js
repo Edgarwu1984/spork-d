@@ -5,15 +5,16 @@ const asyncHandler = require('../utils/asyncHandler');
 // @route GET /api/restaurants
 // @access Public
 const getRestaurants = asyncHandler(async (req, res) => {
-  const doc = db.collection('restaurants');
-  const restaurants = await doc.get();
-  const data = restaurants.docs.map(doc => ({
+  const restaurantsRef = db.collection('restaurants');
+  const snapshot = await restaurantsRef.get();
+  const data = snapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data(),
   }));
 
-  if (data.empty) {
-    res.status(200).send({ message: 'No restaurants.' });
+  if (snapshot.empty) {
+    res.status(400);
+    throw new Error('No restaurants.');
   } else {
     res.status(200).json({
       status: 'success',
@@ -27,20 +28,21 @@ const getRestaurants = asyncHandler(async (req, res) => {
 // @route GET /api/restaurants/top
 // @access Public
 const getTopRestaurants = asyncHandler(async (req, res) => {
-  const doc = db.collection('restaurants');
-  const restaurants = await doc
+  const restaurantsRef = db.collection('restaurants');
+  const snapshot = await restaurantsRef
     .where('rating', '>=', 4.6)
     .orderBy('rating', 'desc')
     .limit(4)
     .get();
 
-  const data = restaurants.docs.map(doc => ({
+  const data = snapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data(),
   }));
 
-  if (data.empty) {
-    res.status(200).send({ message: 'No top restaurants found.' });
+  if (snapshot.empty) {
+    res.status(400);
+    throw new Error('No top restaurants found.');
   } else {
     res.status(200).json({
       status: 'success',
@@ -54,18 +56,26 @@ const getTopRestaurants = asyncHandler(async (req, res) => {
 // @route GET /api/restaurants/:category
 // @access Public
 const getRestaurantsByCategory = asyncHandler(async (req, res) => {
-  const doc = db.collection('restaurants');
-  const restaurants = await doc
+  const restaurantsRef = db.collection('restaurants');
+  const snapshot = await restaurantsRef
     .where('category', '==', req.params.category)
     .get();
 
-  const data = restaurants.docs.map(doc => ({
+  const data = snapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data(),
   }));
 
-  if (data.empty) {
-    res.status(200).send({ message: 'No restaurants.' });
+  // Another way to check category
+  // const hasCategory = data.some(i => i.category === 'japanese');
+  // if (!hasCategory) {
+  //   res.status(400);
+  //   throw new Error('No such category of restaurants be found.');
+  // }
+
+  if (snapshot.empty) {
+    res.status(400);
+    throw new Error('No such category of restaurants be found.');
   } else {
     res.status(200).json({
       status: 'success',
@@ -79,18 +89,18 @@ const getRestaurantsByCategory = asyncHandler(async (req, res) => {
 // @route GET /api/restaurants/:id
 // @access Public
 const getRestaurantsById = asyncHandler(async (req, res) => {
-  const doc = db.collection('restaurants');
-  const restaurant = await doc.doc(req.params.id).get();
-  // Get ID & Data separately in order to store them in one object
-  const id = restaurant.id;
-  const data = restaurant.data();
-  if (!id || !data) {
-    res.status(404);
+  const restaurantsRef = db.collection('restaurants');
+  const doc = await restaurantsRef.doc(req.params.id).get();
+  // Get doc ID & And attach to the Object
+  const data = { id: doc.id, ...doc.data() };
+
+  if (!doc.exists) {
+    res.status(400);
     throw new Error('No restaurant found.');
   } else {
     res.status(200).json({
       status: 'success',
-      data: { id, ...data },
+      data,
     });
   }
 });
@@ -99,24 +109,25 @@ const getRestaurantsById = asyncHandler(async (req, res) => {
 // @route GET /api/restaurants/:category/:id/reviews
 // @access Public
 const getRestaurantReviews = asyncHandler(async (req, res) => {
-  const data = await db
-    .collection('restaurants')
+  const restaurantsRef = db.collection('restaurants');
+  const snapshot = await restaurantsRef
     .doc(req.params.id)
     .collection('reviews')
     .get();
 
-  if (data.empty) {
-    res.status(200).send({ message: 'No reviews.' });
-  } else {
-    const reviews = data.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+  const data = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 
+  if (snapshot.empty) {
+    res.status(200);
+    throw new Error('No reviews be found.');
+  } else {
     res.status(200).send({
       status: 'success',
-      result: reviews.length,
-      data: reviews,
+      result: data.length,
+      data,
     });
   }
 });
