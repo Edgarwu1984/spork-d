@@ -5,18 +5,28 @@ const {
   getUserById,
   getUsers,
   deleteUserById,
+  getUserProfile,
+  updateUserProfile,
 } = require('../controllers/userControllers');
+const { protect, isAdmin } = require('../middleware/authMiddleware');
 const {
   registerValidation,
   loginValidation,
 } = require('../policies/authPolicy');
+const userValidation = require('../policies/userPolicy');
 
 const router = express.Router();
 
 // Route '/api/users'
-router.route('/').get(getUsers);
-router.route('/:id').get(getUserById).delete(deleteUserById);
+// USER
 router.route('/login').post(loginValidation, loginUser);
 router.route('/register').post(registerValidation, registerUser);
+router
+  .route('/profile')
+  .get(protect, getUserProfile)
+  .put(userValidation, protect, updateUserProfile);
+// ADMIN
+router.route('/').get(protect, isAdmin, getUsers);
+router.route('/:id').get(getUserById).delete(deleteUserById);
 
 module.exports = router;

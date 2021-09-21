@@ -89,8 +89,8 @@ const getRestaurantsByCategory = asyncHandler(async (req, res) => {
 // @route GET /api/restaurants/:id
 // @access Public
 const getRestaurantsById = asyncHandler(async (req, res) => {
-  const restaurantsRef = db.collection('restaurants');
-  const doc = await restaurantsRef.doc(req.params.id).get();
+  const restaurantsRef = db.collection('restaurants').doc(req.params.id);
+  const doc = await restaurantsRef.get();
   // Get doc ID & And attach to the Object
   const data = { id: doc.id, ...doc.data() };
 

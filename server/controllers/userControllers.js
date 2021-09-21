@@ -1,11 +1,13 @@
 const { db } = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
-
 const hashPassword = require('../utils/hashPassword');
 const matchPassword = require('../utils/matchPasswordCheck');
 const generateToken = require('../utils/tokenGenerator');
 
 /* ============================ USER CONTROLLERS ============================ */
+// @description Register User
+// @route GET /api/users/register
+// @access Public
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
   const user = {
@@ -27,7 +29,9 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Email already in use.');
   } else if (user) {
-    const newUser = await usersRef.add({ ...user, token: generateToken(user) });
+    const token = generateToken(user);
+    res.header('auth-token', token);
+    const newUser = await usersRef.add({ ...user, token: token });
     res.json({
       status: 'Register Success',
       data: newUser.id,
@@ -35,10 +39,13 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @description Login User
+// @route GET /api/users/login
+// @access Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const usersRef = db.collection('users');
-  const snapshot = await usersRef.where('email', '=', email).get();
+  const usersRef = db.collection('users').where('email', '=', email);
+  const snapshot = await usersRef.get();
   const user = snapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data(),
@@ -49,9 +56,10 @@ const loginUser = asyncHandler(async (req, res) => {
       res.status(404);
       throw new Error('User does not exist.');
     } else {
+      const token = generateToken(user);
       res.status(201).json({
         status: 'Login Success',
-        data: { ...user, token: generateToken(user) },
+        data: { ...user, token: token },
       });
     }
   } else {
@@ -60,23 +68,62 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @description Get user profile
+// @route GET /api/users/profile
+// @access Private
+const getUserProfile = asyncHandler(async (req, res) => {
+  const userRef = db.collection('users').doc(req.user.id);
+  const doc = await userRef.get();
+  const data = { id: doc.id, ...doc.data() };
+  if (!doc.exists) {
+    res.status(400);
+    throw new Error('No user found.');
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data,
+    });
+  }
+});
+
+// @description Update user profile
+// @route PUT /api/users/profile
+// @access Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const userRef = db.collection('users').doc(req.user.id);
+
+  await userRef.update({
+    username: req.body.username || req.user.username,
+    email: req.body.email || req.user.email,
+    password: req.body.password || req.user.password,
+    photo: req.body.photo || req.user.photo,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'User updated.',
+  });
+});
+
 /* ============================ ADMIN CONTROLLERS ============================ */
 // @description Get all Users
 // @route GET /api/users
 // @access Private/Admin
-const getUsers = async (req, res) => {
-  const snapshot = await db.collection('users').get();
-  try {
-    const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    if (users) {
-      res.status(200).json(users);
-    } else {
-      res.status(400).send({ messages: 'No users' });
-    }
-  } catch (error) {
-    res.status(400).send(error);
+const getUsers = asyncHandler(async (req, res) => {
+  const usersRef = db.collection('users');
+  const snapshot = await usersRef.get();
+  const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  if (snapshot.empty) {
+    res.status(400);
+    throw new Error('No users');
+  } else {
+    res.status(200).json({
+      status: 'success',
+      results: data.length,
+      data,
+    });
   }
-};
+});
 
 // @description Get all User by ID
 // @route GET /api/users/:id
@@ -105,6 +152,8 @@ const deleteUserById = async (req, res) => {};
 module.exports = {
   registerUser,
   loginUser,
+  getUserProfile,
+  updateUserProfile,
   getUsers,
   getUserById,
   deleteUserById,
