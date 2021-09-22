@@ -75,7 +75,7 @@ function RestaurantPage({ match, history }) {
     }
   }, [dispatch, restaurantCategory, restaurantId, success]);
 
-  const hasReviewed = reviews?.some(review => review.user.id === userInfo.id);
+  const hasReviewed = reviews?.some(review => review.user?.id === userInfo?.id);
 
   return (
     <Layout>
