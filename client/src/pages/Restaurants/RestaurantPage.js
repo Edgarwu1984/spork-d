@@ -75,6 +75,8 @@ function RestaurantPage({ match, history }) {
     }
   }, [dispatch, restaurantCategory, restaurantId, success]);
 
+  const hasReviewed = reviews?.some(review => review.user.id === userInfo.id);
+
   return (
     <Layout>
       {restaurantLoading ? (
@@ -142,8 +144,9 @@ function RestaurantPage({ match, history }) {
                     )}
 
                     <Button
-                      text='Add Review'
+                      text={hasReviewed ? 'Reviewed' : 'Add Review'}
                       styles='btn-primary'
+                      disabled={hasReviewed ? true : false}
                       onClick={
                         userInfo
                           ? showReviewHandler

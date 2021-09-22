@@ -115,3 +115,10 @@ input[type='submit'] {
     color: var(--primary);
   }
 }
+
+.btn-disabled {
+  pointer-events: none;
+  background-color: var(--grey-50);
+  color: var(--text2) !important;
+  border-color: var(--grey-50);
+}
