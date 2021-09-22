@@ -109,11 +109,11 @@ const getRestaurantsById = asyncHandler(async (req, res) => {
 // @route GET /api/restaurants/:category/:id/reviews
 // @access Public
 const getRestaurantReviews = asyncHandler(async (req, res) => {
-  const restaurantsRef = db.collection('restaurants');
-  const snapshot = await restaurantsRef
+  const reviewsRef = db
+    .collection('restaurants')
     .doc(req.params.id)
-    .collection('reviews')
-    .get();
+    .collection('reviews');
+  const snapshot = await reviewsRef.get();
 
   const data = snapshot.docs.map(doc => ({
     id: doc.id,
@@ -121,7 +121,7 @@ const getRestaurantReviews = asyncHandler(async (req, res) => {
   }));
 
   if (snapshot.empty) {
-    res.status(200);
+    res.status(400);
     throw new Error('No reviews be found.');
   } else {
     res.status(200).send({

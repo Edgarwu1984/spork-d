@@ -1,62 +1,79 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
+import React, { useEffect, useState } from 'react';
 // REACT REDUX
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile } from '../redux/actions/userActions';
 // COMPONENTS
 import Layout from '../components/Layout';
 import SubSectionTitle from '../components/SubSectionTitle';
-import Button from '../components/Button';
 import Loader from '../components/Loader';
+import Breadcrumb from '../components/Breadcrumb';
+import UserEditModal from '../components/Modal/UserEditModal';
 
-function ProfilePage() {
-  const getTime = date => {
-    return new Date(date * 1000).toLocaleTimeString();
-  };
+function ProfilePage({ match, history }) {
+  // MODAL HANDLER
+  const [showEdit, setShowEdit] = useState(false);
+  const showEditHandler = () => setShowEdit(!showEdit);
 
   // REDUX
+  const dispatch = useDispatch();
   const userLogin = useSelector(state => state.userLogin);
-  const { loading, error, userInfo } = userLogin;
+  const { userInfo } = userLogin;
+  const userProfile = useSelector(state => state.userProfile);
+  const { loading, error, user } = userProfile;
+  const userProfileUpdate = useSelector(state => state.userProfileUpdate);
+  const { success } = userProfileUpdate;
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login');
+    } else {
+      if (!user || user.id !== userInfo.id) {
+        dispatch(getUserProfile());
+      }
+    }
+    if (success) {
+      setShowEdit(false);
+    }
+  }, [dispatch, history, success, user, userInfo]);
 
   return (
-    <Layout>
+    <Layout pageTitle='- Profile'>
       <div className='container'>
-        <ul className='breadcrumb'>
-          <li className='breadcrumb__item'>
-            <Link to='/'>Home</Link>
-          </li>
-          <li className='breadcrumb__item'>
-            <Link to='/profile'>Profile</Link>
-          </li>
-        </ul>
+        <Breadcrumb match={match} />
         {loading ? (
           <Loader />
         ) : error ? (
           <div>{error}</div>
         ) : (
-          <>
-            <div className='profile__banner'>
-              <div className='profile__banner-wrap'>
-                <div className='text-info'>
-                  <h2 className='title'>
-                    G'day, <span>{userInfo.userData.username}</span>
-                  </h2>
-                  <div className='date'>
-                    Last Login:{' '}
-                    <span>{getTime(userInfo.user.lastLoginAt)}</span>
+          user && (
+            <>
+              <UserEditModal
+                show={showEdit}
+                onClose={() => setShowEdit(false)}
+                data={user}
+              />
+              <div className='profile__banner'>
+                <div className='profile__banner-wrap'>
+                  <div className='greeting'>
+                    <h2 className='title'>
+                      G'day, <span>{user.username}</span>
+                    </h2>
                   </div>
-                  <Button text='Edit Profile' styles='btn-primary' />
+                  <div className='user__info'>
+                    <img
+                      className='user__info-image'
+                      src={user.photo}
+                      alt='user_photo'
+                    />
+                    <div className='user__info-edit' onClick={showEditHandler}>
+                      Edit Profile
+                    </div>
+                  </div>
                 </div>
-                <img
-                  className='image-info'
-                  src={userInfo.userData.photo}
-                  alt='user_photo'
-                />
               </div>
-            </div>
-            <SubSectionTitle title='My Reviews' />
-          </>
+              <SubSectionTitle title='My Reviews' />
+            </>
+          )
         )}
       </div>
     </Layout>

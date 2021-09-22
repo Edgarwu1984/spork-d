@@ -8,22 +8,34 @@ import {
   restaurantReviewsReducer,
   restaurantTopListReducer,
 } from './reducers/restaurantReducers';
-import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
+import {
+  userLoginReducer,
+  userProfileReducer,
+  userProfileUpdateReducer,
+  userRegisterReducer,
+} from './reducers/userReducers';
 
 const reducer = combineReducers({
+  // RESTAURANT
   restaurantList: restaurantListReducer,
   restaurantCategoryList: restaurantCategoryListReducer,
   restaurantTopList: restaurantTopListReducer,
   restaurantDetails: restaurantReducer,
   restaurantReviews: restaurantReviewsReducer,
+  // USER
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userProfile: userProfileReducer,
+  userProfileUpdate: userProfileUpdateReducer,
+  // ADMIN
 });
 
+// Check if local storage has userInfo, if it does, convert to json object;
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null;
 
+// Set initial userInfo
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
 };

@@ -4,17 +4,12 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loginUser } from '../redux/actions/userActions';
 import Loader from '../components/Loader';
+import LoadTheme from '../utils/themeLoader';
 
-function LoginPage({ history, location }) {
+function LoginPage({ history }) {
   const getCurrentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  // EMAIL FORMAT VALIDATOR
-  const emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
-
-  // REDIRECT DIRECTORY
-  const redirect = location.search ? location.search.split('=')[1] : '/';
 
   // REDUX
   const dispatch = useDispatch();
@@ -22,35 +17,23 @@ function LoginPage({ history, location }) {
   const { loading, error, userInfo } = userLogin;
 
   // LOAD THEME
-  useEffect(() => {
-    const root = document.documentElement.classList;
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'light') {
-      root.add('light');
-      root.remove('dark');
-    } else if (currentTheme === 'dark') {
-      root.add('dark');
-      root.remove('light');
-    }
-  }, []);
+  LoadTheme();
 
   // LOGIN CHECK
   useEffect(() => {
     if (userInfo) {
-      history.push(redirect);
+      history.push('/');
       toast.success("Welcome to Spork'S");
     } else if (error) {
       toast.error(error);
     }
-  }, [history, userInfo, redirect, error]);
+  }, [history, userInfo, error]);
 
   // LOGIN FORM HANDLER
   const submitHandler = e => {
     e.preventDefault();
     if (!email || !password) {
       toast.error('Input filed can not be empty.');
-    } else if (!emailFormat) {
-      toast.error('Invalid email format.');
     } else {
       dispatch(loginUser(email, password));
     }

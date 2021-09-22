@@ -19,12 +19,12 @@ const router = express.Router();
 
 // Route '/api/users'
 // USER
-router.route('/login').post(loginValidation, loginUser);
-router.route('/register').post(registerValidation, registerUser);
 router
   .route('/profile')
   .get(protect, getUserProfile)
   .put(userValidation, protect, updateUserProfile);
+router.route('/login').post(loginValidation, loginUser);
+router.route('/register').post(registerValidation, registerUser);
 // ADMIN
 router.route('/').get(protect, isAdmin, getUsers);
 router.route('/:id').get(getUserById).delete(deleteUserById);

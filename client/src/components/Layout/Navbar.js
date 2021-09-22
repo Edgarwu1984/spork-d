@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/actions/userActions';
-
 // MODULE
 import { toast } from 'react-toastify';
-
 // COMPONENTS
 import Searchbar from '../../components/Searchbar';
-
+// UTILITIES
+import LoadTheme from '../../utils/themeLoader';
 // REACT-ICONS
 import { FaBars, FaTimes, FaUser } from 'react-icons/fa';
 import { IoMdSunny, IoMdMoon } from 'react-icons/io';
@@ -30,24 +28,12 @@ function Navbar() {
   const showSearchHandler = () => setShowSearch(true);
 
   // DARK MODE HANDLER
-  const root = document.documentElement.classList;
+  LoadTheme();
   const defaultTheme = localStorage.getItem('theme');
   const [theme, setTheme] = useState(defaultTheme);
 
-  useEffect(() => {
-    if (!defaultTheme) {
-      localStorage.setItem('theme', 'light');
-      window.location.reload();
-    } else if (defaultTheme === 'light') {
-      root.add('light');
-      root.remove('dark');
-    } else if (defaultTheme === 'dark') {
-      root.add('dark');
-      root.remove('light');
-    }
-  }, [root, defaultTheme]);
-
   const themeToggler = () => {
+    const root = document.documentElement.classList;
     setTheme(theme === 'light' ? 'dark' : 'light');
     if (defaultTheme === 'light') {
       root.remove('light');
@@ -85,10 +71,10 @@ function Navbar() {
               <FiSearch className='icon' />
             </Link>
           </li>
-          {userInfo ? (
+          {userInfo && userInfo ? (
             <li className='nav__list-item'>
               <div className='user'>
-                <FaUser /> <span>{userInfo.userData.username}</span>
+                <FaUser /> <span>{userInfo.username}</span>
               </div>
               <ul className='nav__dropdown'>
                 <li className='nav__dropdown-item'>

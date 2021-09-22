@@ -29,12 +29,14 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Email already in use.');
   } else if (user) {
-    const token = generateToken(user);
-    res.header('auth-token', token);
+    const token = generateToken(user.id);
     const newUser = await usersRef.add({ ...user, token: token });
+    const doc = await usersRef.doc(newUser.id).get();
+    const data = { id: doc.id, ...doc.data() };
+
     res.json({
       status: 'Register Success',
-      data: newUser.id,
+      data: data,
     });
   }
 });
@@ -56,7 +58,7 @@ const loginUser = asyncHandler(async (req, res) => {
       res.status(404);
       throw new Error('User does not exist.');
     } else {
-      const token = generateToken(user);
+      const token = generateToken(user.id);
       res.status(201).json({
         status: 'Login Success',
         data: { ...user, token: token },
@@ -72,7 +74,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route GET /api/users/profile
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  const userRef = db.collection('users').doc(req.user.id);
+  const userRef = db.collection('users').doc(req.user);
   const doc = await userRef.get();
   const data = { id: doc.id, ...doc.data() };
   if (!doc.exists) {
@@ -90,18 +92,25 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route PUT /api/users/profile
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const userRef = db.collection('users').doc(req.user.id);
+  const userRef = db.collection('users').doc(req.user);
+  const doc = await userRef.get();
+  const user = { id: doc.id, ...doc.data() };
 
   await userRef.update({
-    username: req.body.username || req.user.username,
-    email: req.body.email || req.user.email,
-    password: req.body.password || req.user.password,
-    photo: req.body.photo || req.user.photo,
+    username: req.body.username || user.username,
+    email: req.body.email || user.email,
+    password: (await hashPassword(req.body.password)) || user.password,
+    photo: req.body.photo || user.photo,
+    updatedAt: Date.now(),
   });
+
+  const updatedDoc = await userRef.get();
+  const updatedUser = { id: updatedDoc.id, ...updatedDoc.data() };
 
   res.status(200).json({
     status: 'success',
     message: 'User updated.',
+    data: updatedUser,
   });
 });
 

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+// REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../redux/actions/userActions';
-import { toast } from 'react-toastify';
+// COMPONENTS
 import Loader from '../components/Loader';
+// UTILITIES
+import LoadTheme from '../utils/themeLoader';
 
 function RegisterPage({ history, location }) {
   const getCurrentYear = new Date().getFullYear();
@@ -11,13 +15,6 @@ function RegisterPage({ history, location }) {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [photo, setPhoto] = useState('');
-
-  // EMAIL FORMAT VALIDATOR
-  const emailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
-
-  // REDIRECT DIRECTORY
-  // const redirect = location.search ? location.search.split('=')[1] : '/';
 
   // REDUX
   const dispatch = useDispatch();
@@ -25,21 +22,11 @@ function RegisterPage({ history, location }) {
   const { loading, error, userInfo } = userRegister;
 
   // LOAD THEME
-  useEffect(() => {
-    const root = document.documentElement.classList;
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'light') {
-      root.add('light');
-      root.remove('dark');
-    } else if (currentTheme === 'dark') {
-      root.add('dark');
-      root.remove('light');
-    }
-  }, []);
+  LoadTheme();
 
   // LOGIN CHECK
   useEffect(() => {
-    if (userInfo) {
+    if (!userInfo) {
       history.push('/login');
     } else if (error) {
       toast.error(error);
@@ -49,14 +36,12 @@ function RegisterPage({ history, location }) {
   // LOGIN FORM HANDLER
   const submitHandler = e => {
     e.preventDefault();
-    if (!email || !password || !confirmPassword || !username || !photo) {
+    if (!email || !password || !confirmPassword || !username) {
       toast.error('Input filed can not be empty.');
-    } else if (!emailFormat) {
-      toast.error('Invalid email format.');
     } else if (password !== confirmPassword) {
       toast.error('Password does not match.');
     } else {
-      dispatch(registerUser(email, password, username, photo));
+      dispatch(registerUser(email, password, username));
     }
   };
 
@@ -112,37 +97,6 @@ function RegisterPage({ history, location }) {
                 className='form-control'
                 onChange={e => setConfirmPassword(e.target.value)}
               />
-            </div>
-            <div className='form-group'>
-              <label htmlFor='description' className='form-label'>
-                Photo
-              </label>
-              <select
-                className='form-control option-form'
-                onChange={e => setPhoto(e.target.value)}
-              >
-                <option value='' hidden>
-                  Select Your Photo
-                </option>
-                <option value='https://randomuser.me/api/portraits/men/36.jpg'>
-                  Photo 1
-                </option>
-                <option value='https://randomuser.me/api/portraits/men/32.jpg'>
-                  Photo 2
-                </option>
-                <option value='https://randomuser.me/api/portraits/men/34.jpg'>
-                  Photo 3
-                </option>
-                <option value='https://randomuser.me/api/portraits/men/31.jpg'>
-                  Photo 4
-                </option>
-                <option value='https://randomuser.me/api/portraits/men/21.jpg'>
-                  Photo 5
-                </option>
-                <option value='https://randomuser.me/api/portraits/men/16.jpg'>
-                  Photo 6
-                </option>
-              </select>
             </div>
             <div className='form-group'>
               <input

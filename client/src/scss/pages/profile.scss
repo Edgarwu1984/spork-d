@@ -35,7 +35,7 @@
     }
   }
 
-  .text-info {
+  .greeting {
     .title {
       color: var(--white);
       margin-bottom: rem(8);
@@ -43,24 +43,32 @@
         text-transform: capitalize;
       }
     }
-
-    .date {
-      color: var(--dark-text1);
-      margin-bottom: rem(16);
-      span {
-        margin-left: rem(8);
-      }
-    }
   }
 
-  .image-info {
-    border-radius: 50%;
-    height: rem(160);
-    width: rem(160);
-    @include breakpoint-down(small) {
+  .user__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    &-image {
+      border-radius: 50%;
+      height: rem(160);
+      width: rem(160);
       margin-bottom: rem(16);
-      height: initial;
-      width: initial;
+      @include breakpoint-down(medium) {
+        margin-bottom: rem(16);
+        height: rem(100);
+        width: rem(100);
+      }
+    }
+
+    &-edit {
+      color: var(--default);
+      cursor: pointer;
+      &:hover {
+        @include transition;
+        color: var(--primary);
+      }
     }
   }
 }

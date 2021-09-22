@@ -85,6 +85,8 @@
           height: 100%;
         }
         @include breakpoint-down(medium) {
+          flex-direction: column;
+          align-items: center;
           margin-bottom: rem(30);
         }
 
@@ -133,6 +135,18 @@
                 @include transition;
                 color: var(--primary);
               }
+            }
+          }
+
+          @include breakpoint-down(medium) {
+            opacity: 1;
+            position: relative;
+            padding: 0;
+            border-bottom: 1px solid var(--dark-grey);
+            &-item {
+              display: flex;
+              align-items: center;
+              justify-content: center;
             }
           }
         }

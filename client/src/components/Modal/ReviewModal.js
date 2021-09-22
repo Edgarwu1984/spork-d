@@ -30,8 +30,8 @@ function ReviewModal({ show, onClick, onClose, data }) {
       {data && (
         <ReviewWrapper>
           <div className='user__photo'>
-            <img src={data.userData.photo} alt={data.userData.username} />
-            <span>{data.userData.username}</span>
+            <img src={data.photo} alt={data.username} />
+            <span>{data.username}</span>
           </div>
           <form>
             <div className='form-group'>
