@@ -15,14 +15,16 @@ import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 import ReviewModal from '../../components/Modal/ReviewModal';
 import MenuModal from '../../components/Modal/MenuModal';
+import MapModal from '../../components/Modal/MapModal';
+import Breadcrumb from '../../components/Breadcrumb';
+
+// UTILITIES
+import { timeFormatter } from '../../utils/timeFormatter';
 
 // REACT-ICONS
 import { BiRestaurant, BiTime } from 'react-icons/bi';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { FiPhone } from 'react-icons/fi';
-import MapModal from '../../components/Modal/MapModal';
-import { timeFormatter } from '../../utils/timeFormatter';
-import Breadcrumb from '../../components/Breadcrumb';
 
 function RestaurantPage({ match, history }) {
   // RESTAURANT ID
@@ -60,10 +62,18 @@ function RestaurantPage({ match, history }) {
     userInfo,
   } = userLogin;
 
+  const restaurantReviewCreate = useSelector(
+    state => state.restaurantReviewCreate
+  );
+  const { success } = restaurantReviewCreate;
+
   useEffect(() => {
-    dispatch(getRestaurantDetails(restaurantCategory, restaurantId));
-    dispatch(listRestaurantReviews(restaurantCategory, restaurantId));
-  }, [dispatch, restaurantCategory, restaurantId]);
+    if (success || restaurantId || restaurantCategory) {
+      setShowReview(false);
+      dispatch(getRestaurantDetails(restaurantCategory, restaurantId));
+      dispatch(listRestaurantReviews(restaurantCategory, restaurantId));
+    }
+  }, [dispatch, restaurantCategory, restaurantId, success]);
 
   return (
     <Layout>
@@ -84,7 +94,9 @@ function RestaurantPage({ match, history }) {
                 alt={restaurant.name}
               />
               <div className='restaurant__card-content'>
-                <div className='restaurant__rating'>{restaurant.rating}</div>
+                <div className='restaurant__rating'>
+                  {restaurant.rating?.toFixed(1)}
+                </div>
                 <ul className='restaurant__card-list'>
                   <li>
                     <h3>{restaurant.name}</h3>
@@ -124,6 +136,8 @@ function RestaurantPage({ match, history }) {
                         show={showReview}
                         onClose={() => setShowReview(false)}
                         data={userInfo}
+                        category={restaurantCategory}
+                        id={restaurantId}
                       />
                     )}
 
@@ -179,20 +193,20 @@ function RestaurantPage({ match, history }) {
               ) : (
                 reviews.map(review => (
                   <div className='review' key={review.id}>
-                    <div className='review__rating'>{review.rating}</div>
+                    <div className='review__rating'>
+                      {review.rating.toFixed(1)}
+                    </div>
                     <div className='review__author'>
                       <img
                         className='review__author-photo'
-                        src={review.author.photo && review.author.photo}
+                        src={review.user?.photo}
                         alt='user_photo'
                       />{' '}
                       <div>
                         <div className='review__author-username'>
-                          {review.author.username && review.author.username}
+                          {review.user?.username}
                         </div>
-                        <small>
-                          {timeFormatter(review.reviewedAt.seconds)}
-                        </small>
+                        <small>{timeFormatter(review.createdAt)}</small>
                       </div>
                     </div>
                     <p className='review__comment'>{review.comment}</p>

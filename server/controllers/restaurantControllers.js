@@ -112,7 +112,8 @@ const getRestaurantReviews = asyncHandler(async (req, res) => {
   const reviewsRef = db
     .collection('restaurants')
     .doc(req.params.id)
-    .collection('reviews');
+    .collection('reviews')
+    .orderBy('createdAt', 'desc');
   const snapshot = await reviewsRef.get();
 
   const data = snapshot.docs.map(doc => ({
@@ -135,23 +136,60 @@ const getRestaurantReviews = asyncHandler(async (req, res) => {
 // @description Create Restaurant Review
 // @route POST /api/restaurants/:id/reviews
 // @access Private
-// const createRestaurantReview = async (req, res) => {
-//   try {
-//     const { rating, comment } = req.body;
-//     const uid = Auth.onAuthStateChanged(user => {
-//       return user.uid;
-//     });
-//     const snapshot = await Restaurants.doc(req.params.id).get();
-//     const data = snapshot.data();
+const createRestaurantReview = asyncHandler(async (req, res) => {
+  const { rating, comment } = req.body;
+  // Get Restaurant
+  const restaurantRef = db.collection('restaurants').doc(req.params.id);
+  const restaurantDoc = await restaurantRef.get();
+  const restaurant = { id: restaurantDoc.id, ...restaurantDoc.data() };
 
-//     const reviews = [{ uid, rating, comment }];
+  // Get User
+  const userRef = db.collection('users').doc(req.user);
+  const userDoc = await userRef.get();
+  const user = { id: userDoc.id, ...userDoc.data() };
 
-//     await Restaurants.doc(req.params.id).update(data, reviews);
-//     res.status(200).send('Review has been added');
-//   } catch (error) {
-//     res.status(400).send('An error occurred. ' + error);
-//   }
-// };
+  // Get Review Ref
+  const reviewsRef = db
+    .collection('restaurants')
+    .doc(req.params.id)
+    .collection('reviews');
+
+  // Check whether User ID in Review List
+  const userSnapshot = await reviewsRef.get();
+  const isExist = userSnapshot.docs.some(
+    doc => doc.data().user.id === req.user
+  );
+
+  if (isExist) {
+    res.status(400).json({
+      message: 'You have already reviewed.',
+    });
+  } else {
+    // Update Restaurant numReviews & totalRating & rating
+    await restaurantRef.update({
+      numReviews: (restaurant.numReviews += 1),
+      totalRating: (restaurant.totalRating += rating),
+      rating: restaurant.totalRating / restaurant.numReviews,
+    });
+
+    // Add Review
+    await reviewsRef.add({
+      user: {
+        id: req.user,
+        username: user.username,
+        photo: user.photo,
+      },
+      rating: rating,
+      comment: comment,
+      createdAt: Date.now(),
+    });
+
+    res.status(201).json({
+      status: 'success',
+      message: 'Review added.',
+    });
+  }
+});
 
 module.exports = {
   getRestaurants,
@@ -159,5 +197,5 @@ module.exports = {
   getRestaurantsByCategory,
   getRestaurantReviews,
   getTopRestaurants,
-  // createRestaurantReview,
+  createRestaurantReview,
 };

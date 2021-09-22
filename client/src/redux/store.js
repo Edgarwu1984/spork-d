@@ -5,6 +5,7 @@ import {
   restaurantCategoryListReducer,
   restaurantListReducer,
   restaurantReducer,
+  restaurantReviewCreateReducer,
   restaurantReviewsReducer,
   restaurantTopListReducer,
 } from './reducers/restaurantReducers';
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   restaurantTopList: restaurantTopListReducer,
   restaurantDetails: restaurantReducer,
   restaurantReviews: restaurantReviewsReducer,
+  restaurantReviewCreate: restaurantReviewCreateReducer,
   // USER
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,

@@ -7,7 +7,7 @@ function Card({ url, image, title, address, category, price, value, text }) {
   return (
     <Link to={url} className='card'>
       <div className='card__image-container'>
-        <div className='card-rating'>{value}</div>
+        <div className='card-rating'>{value.toFixed(1)}</div>
         <img className='card-image' src={image} alt={title} />
       </div>
       <div className='card__container'>
@@ -16,13 +16,14 @@ function Card({ url, image, title, address, category, price, value, text }) {
           <div className='card__body-address'>{address}</div>
           <div className='card__body-category'>{category}</div>
           <div className='card__body-price'>
-            {price >= 90
+            {`$${price.toFixed(2)} for two`}
+            {/* {price >= 90
               ? '$$$$'
               : price >= 70
               ? '$$$'
               : price <= 40
               ? '$$'
-              : '$'}
+              : '$'} */}
           </div>
         </div>
         <Rating value={value} text={text} />

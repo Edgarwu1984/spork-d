@@ -1,4 +1,8 @@
 import {
+  CREATE_RESTAURANT_REVIEWS_FAIL,
+  CREATE_RESTAURANT_REVIEWS_REQUEST,
+  CREATE_RESTAURANT_REVIEWS_RESET,
+  CREATE_RESTAURANT_REVIEWS_SUCCESS,
   GET_RESTAURANT_BY_CATEGORY_FAIL,
   GET_RESTAURANT_BY_CATEGORY_REQUEST,
   GET_RESTAURANT_BY_CATEGORY_SUCCESS,
@@ -68,6 +72,21 @@ export const restaurantReviewsReducer = (state = { reviews: [] }, action) => {
       return { loading: false, reviews: action.payload };
     case GET_RESTAURANT_REVIEWS_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const restaurantReviewCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CREATE_RESTAURANT_REVIEWS_REQUEST:
+      return { loading: true };
+    case CREATE_RESTAURANT_REVIEWS_SUCCESS:
+      return { loading: false, success: true };
+    case CREATE_RESTAURANT_REVIEWS_FAIL:
+      return { loading: false, error: action.payload };
+    case CREATE_RESTAURANT_REVIEWS_RESET:
+      return {};
     default:
       return state;
   }

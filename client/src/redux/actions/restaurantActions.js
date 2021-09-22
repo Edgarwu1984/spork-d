@@ -1,5 +1,9 @@
 import axios from 'axios';
 import {
+  CREATE_RESTAURANT_REVIEWS_FAIL,
+  CREATE_RESTAURANT_REVIEWS_REQUEST,
+  CREATE_RESTAURANT_REVIEWS_RESET,
+  CREATE_RESTAURANT_REVIEWS_SUCCESS,
   GET_RESTAURANT_BY_CATEGORY_FAIL,
   GET_RESTAURANT_BY_CATEGORY_REQUEST,
   GET_RESTAURANT_BY_CATEGORY_SUCCESS,
@@ -86,6 +90,40 @@ export const listRestaurantReviews = (category, id) => async dispatch => {
     });
   }
 };
+
+export const createRestaurantReview =
+  (category, id, review) => async (dispatch, getState) => {
+    try {
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      dispatch({ type: CREATE_RESTAURANT_REVIEWS_REQUEST });
+      await axios.post(
+        `/api/restaurants/${category}/${id}/reviews`,
+        review,
+        config
+      );
+
+      dispatch({ type: CREATE_RESTAURANT_REVIEWS_SUCCESS });
+      dispatch({ type: CREATE_RESTAURANT_REVIEWS_RESET });
+    } catch (error) {
+      dispatch({
+        type: CREATE_RESTAURANT_REVIEWS_FAIL,
+        payload:
+          error.response && error.response.data.messages
+            ? error.response.data.messages
+            : error.messages,
+      });
+    }
+  };
 
 export const getRestaurantDetails = (category, id) => async dispatch => {
   try {
