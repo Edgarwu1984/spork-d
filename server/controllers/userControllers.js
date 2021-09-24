@@ -114,6 +114,17 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   });
 });
 
+// @description Get user reviews
+// @route GET /api/users/profile/reviews
+// @access Private
+const getUserReviews = asyncHandler(async (req, res) => {
+  const userRef = db.collection('users').doc(req.user);
+  const doc = await userRef.get();
+  const data = { ...doc.data() };
+  // const reviews = data.reviews.map(r => r.data());
+  console.log(data);
+});
+
 /* ============================ ADMIN CONTROLLERS ============================ */
 // @description Get all Users
 // @route GET /api/users
@@ -162,6 +173,7 @@ module.exports = {
   registerUser,
   loginUser,
   getUserProfile,
+  getUserReviews,
   updateUserProfile,
   getUsers,
   getUserById,

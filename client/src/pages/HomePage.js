@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listTopRestaurant } from '../redux/actions/restaurantActions';
 // REACT ICONS
 import { FiArrowRight, FiSearch, FiStar, FiPhone } from 'react-icons/fi';
+import SkeletonCard from '../components/SkeletonCard';
 
 function HomePage({ history }) {
   // REDUX - Get top 4 restaurant
@@ -61,8 +62,14 @@ function HomePage({ history }) {
 
         <section className='top-restaurant'>
           <MainSectionTitle title='Popular Restaurant' />
+
           {loading ? (
-            <Loader />
+            <div className='grid col-4'>
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
           ) : error ? (
             <div>{error}</div>
           ) : (

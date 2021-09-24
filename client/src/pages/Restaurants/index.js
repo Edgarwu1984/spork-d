@@ -8,6 +8,7 @@ import Loader from '../../components/Loader';
 import Card from '../../components/Card';
 import TopRestaurantCard from '../../components/TopRestaurantCard';
 import { useLocation } from 'react-router';
+import SkeletonCard from '../../components/SkeletonCard';
 
 function RestaurantsPage({ match }) {
   const dispatch = useDispatch();
@@ -55,7 +56,16 @@ function RestaurantsPage({ match }) {
         <section className='restaurants'>
           <MainSectionTitle title='Restaurants' />
           {loading ? (
-            <Loader />
+            <div className='grid col-4'>
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
           ) : error ? (
             <div>{error.message}</div>
           ) : (

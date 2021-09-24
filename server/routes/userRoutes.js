@@ -7,6 +7,7 @@ const {
   deleteUserById,
   getUserProfile,
   updateUserProfile,
+  getUserReviews,
 } = require('../controllers/userControllers');
 const { protect, isAdmin } = require('../middleware/authMiddleware');
 const {
@@ -23,6 +24,7 @@ router
   .route('/profile')
   .get(protect, getUserProfile)
   .put(userValidation, protect, updateUserProfile);
+router.route('/profile/reviews').get(protect, getUserReviews);
 router.route('/login').post(loginValidation, loginUser);
 router.route('/register').post(registerValidation, registerUser);
 // ADMIN

@@ -1,0 +1,42 @@
+@use "../utils/" as *;
+
+.skeleton-card {
+  background-color: var(--bg-light);
+  width: 100%;
+  height: rem(400);
+  &__image {
+    position: relative;
+    width: 100%;
+    height: rem(200);
+    background-color: var(--grey-50);
+    overflow: hidden;
+    @include skeletonAnimation;
+  }
+  &__body {
+    width: 100%;
+    height: rem(200);
+    padding: rem(16);
+
+    & > * {
+      position: relative;
+      height: rem(24);
+      background-color: var(--grey-50);
+      overflow: hidden;
+      @include skeletonAnimation;
+      margin-bottom: rem(12);
+    }
+
+    .address {
+      width: 80%;
+    }
+    .category {
+      width: 40%;
+    }
+    .price {
+      width: 60%;
+    }
+    .rating {
+      width: 50%;
+    }
+  }
+}
