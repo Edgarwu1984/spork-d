@@ -7,16 +7,19 @@ import MainSectionTitle from '../../components/MainSectionTitle';
 import Loader from '../../components/Loader';
 import Card from '../../components/Card';
 import TopRestaurantCard from '../../components/TopRestaurantCard';
+import { useLocation } from 'react-router';
 
 function RestaurantsPage({ match }) {
   const dispatch = useDispatch();
+  const keyword = useLocation().search.split('=')[1];
 
   const restaurantList = useSelector(state => state.restaurantList);
   const { loading, error, restaurants } = restaurantList;
 
   useEffect(() => {
-    dispatch(listRestaurant());
-  }, [dispatch]);
+    dispatch(listRestaurant(keyword));
+  }, [dispatch, keyword]);
+
   return (
     <Layout>
       <div className='container'>

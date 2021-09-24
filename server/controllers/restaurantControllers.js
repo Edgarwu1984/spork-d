@@ -6,21 +6,46 @@ const asyncHandler = require('../utils/asyncHandler');
 // @access Public
 const getRestaurants = asyncHandler(async (req, res) => {
   const restaurantsRef = db.collection('restaurants');
-  const snapshot = await restaurantsRef.get();
-  const data = snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
 
-  if (snapshot.empty) {
-    res.status(400);
-    throw new Error('No restaurants.');
+  const keyword = req.query.search;
+  if (keyword) {
+    const snapshot = await restaurantsRef
+      .orderBy('name')
+      .where('name', '>=', keyword.toUpperCase())
+      .where('name', '<=', keyword.toLowerCase() + '\uf8ff')
+      .get();
+    const data = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    if (snapshot.empty) {
+      res.status(400);
+      throw new Error('No restaurants.');
+    } else {
+      res.status(200).json({
+        status: 'success',
+        result: data.length,
+        data,
+      });
+    }
   } else {
-    res.status(200).json({
-      status: 'success',
-      result: data.length,
-      data,
-    });
+    const snapshot = await restaurantsRef.get();
+    const data = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    if (snapshot.empty) {
+      res.status(400);
+      throw new Error('No restaurants.');
+    } else {
+      res.status(200).json({
+        status: 'success',
+        result: data.length,
+        data,
+      });
+    }
   }
 });
 

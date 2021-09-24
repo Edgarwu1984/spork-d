@@ -36,29 +36,46 @@
     }
   }
 
-  h1 {
-    color: var(--primary);
-    margin-bottom: rem(32);
-  }
+  .search-form {
+    width: 80%;
 
-  .searchbar {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    &__input {
-      width: 60%;
-      margin: 0;
-      padding: 1rem;
-      border: none;
+    h1 {
+      color: var(--primary);
+      margin-bottom: rem(32);
+      text-align: center;
     }
-    &__btn {
-      font-size: 2rem;
-      background: var(--primary);
-      border: none;
+
+    .searchbar {
+      width: 100%;
+      height: rem(80);
       display: flex;
-      align-items: center;
-      padding: rem(16);
-      cursor: pointer;
+      justify-content: center;
+      &__input {
+        width: 100%;
+        height: rem(80) !important;
+        font-size: rem(24);
+        margin: 0;
+        padding: rem(16);
+        border: none;
+      }
+      &__btn {
+        height: rem(80);
+        width: rem(80);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        background: var(--primary);
+        border: 1px solid var(--primary);
+        padding: rem(16);
+        margin-left: rem(1);
+        cursor: pointer;
+        &:hover {
+          @include transition;
+          background-color: var(--dark-bg);
+          color: var(--primary);
+        }
+      }
     }
   }
 }

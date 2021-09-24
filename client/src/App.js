@@ -33,6 +33,7 @@ function App() {
       <Switch>
         <Route exact path='/' component={HomePage} />
         <Route exact path='/restaurants' component={RestaurantsPage} />
+        <Route exact path='/restaurants?search=' component={RestaurantsPage} />
         <Route
           exact
           path='/restaurants/:category'

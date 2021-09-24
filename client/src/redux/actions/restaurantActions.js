@@ -21,22 +21,24 @@ import {
   GET_TOP_RESTAURANT_SUCCESS,
 } from '../constants/restaurantConstants';
 
-export const listRestaurant = () => async dispatch => {
-  try {
-    dispatch({ type: GET_RESTAURANT_LIST_REQUEST });
-    const { data } = await axios.get('/api/restaurants');
+export const listRestaurant =
+  (keyword = '') =>
+  async dispatch => {
+    try {
+      dispatch({ type: GET_RESTAURANT_LIST_REQUEST });
+      const { data } = await axios.get(`/api/restaurants?search=${keyword}`);
 
-    dispatch({ type: GET_RESTAURANT_LIST_SUCCESS, payload: data.data });
-  } catch (error) {
-    dispatch({
-      type: GET_RESTAURANT_LIST_FAIL,
-      payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
-    });
-  }
-};
+      dispatch({ type: GET_RESTAURANT_LIST_SUCCESS, payload: data.data });
+    } catch (error) {
+      dispatch({
+        type: GET_RESTAURANT_LIST_FAIL,
+        payload:
+          error.response && error.response.data.messages
+            ? error.response.data.messages
+            : error.messages,
+      });
+    }
+  };
 
 export const listTopRestaurant = () => async dispatch => {
   try {
