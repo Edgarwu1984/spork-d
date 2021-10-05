@@ -114,16 +114,25 @@
         // Dropdown Menu
         .nav__dropdown {
           @include transition;
+          @include shadow;
           opacity: 0;
           position: absolute;
           top: rem(12);
           height: max-content;
-          width: rem(140);
-          padding-top: rem(60);
-          padding-bottom: rem(24);
+          width: max-content;
+          padding: rem(60) rem(30) rem(24) rem(30);
           background-color: var(--dark-bg-dark);
           pointer-events: none;
           z-index: -1;
+
+          &-admin {
+            list-style: none;
+            font-size: rem(14);
+            color: var(--primary);
+            border-bottom: 1px solid var(--dark-bg-light);
+            padding-bottom: rem(12);
+            margin-bottom: rem(16);
+          }
 
           &-item {
             width: 100%;
@@ -131,6 +140,12 @@
             list-style: none;
             a {
               text-transform: capitalize;
+              display: flex;
+              align-items: center;
+              svg {
+                margin-right: rem(8);
+                font-size: rem(18);
+              }
               &:hover {
                 @include transition;
                 color: var(--primary);

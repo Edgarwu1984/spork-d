@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
+// REDUX
 import { useDispatch, useSelector } from 'react-redux';
-import { listRestaurantByCategory } from '../../redux/actions/restaurantActions';
-import Breadcrumb from '../../components/Breadcrumb';
-import Layout from '../../components/Layout';
-import MainSectionTitle from '../../components/MainSectionTitle';
-import Loader from '../../components/Loader';
-import Card from '../../components/Card';
-import Hero from '../../components/Layout/Hero';
+import { listRestaurantByCategory } from 'redux/actions/restaurantActions';
+// COMPONENTS
+import Breadcrumb from 'components/Breadcrumb';
+import Layout from 'components/Layout';
+import MainSectionTitle from 'components/MainSectionTitle';
+import Loader from 'components/Loader';
+import Card from 'components/Card';
+import Hero from 'components/Layout/Hero';
 
 function RestaurantCategoryPage({ match }) {
   const category = match.params.category;
@@ -48,20 +50,19 @@ function RestaurantCategoryPage({ match }) {
             <div>{error.message}</div>
           ) : (
             <div className='grid col-4'>
-              {restaurants &&
-                restaurants.map(restaurant => (
-                  <Card
-                    url={`/restaurants/${restaurant.category}/${restaurant.name}&&${restaurant.id}`}
-                    key={restaurant.id}
-                    image={restaurant.coverImage}
-                    title={restaurant.name}
-                    address={`${restaurant.address.suburb},${restaurant.address.state}`}
-                    category={restaurant.category}
-                    price={restaurant.avgPrice}
-                    value={restaurant.rating}
-                    text={restaurant.numReviews}
-                  />
-                ))}
+              {restaurants?.map(restaurant => (
+                <Card
+                  url={`/restaurants/${restaurant.category}/${restaurant.name}&&${restaurant.id}`}
+                  key={restaurant.id}
+                  image={restaurant.coverImage}
+                  title={restaurant.name}
+                  address={`${restaurant.address.suburb},${restaurant.address.state}`}
+                  category={restaurant.category}
+                  price={restaurant.avgPrice}
+                  value={restaurant.rating}
+                  text={restaurant.numReviews}
+                />
+              ))}
             </div>
           )}
           <div className='center'></div>

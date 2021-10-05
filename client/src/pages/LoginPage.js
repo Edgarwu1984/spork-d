@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { loginUser } from '../redux/actions/userActions';
-import Loader from '../components/Loader';
-import LoadTheme from '../utils/themeLoader';
+// REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from 'redux/actions/userActions';
+// COMPONENTS
+import Loader from 'components/Loader';
+import LoadTheme from 'utils/themeLoader';
 
 function LoginPage({ history }) {
   const getCurrentYear = new Date().getFullYear();

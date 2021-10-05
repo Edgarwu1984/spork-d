@@ -29,6 +29,9 @@ router.route('/login').post(loginValidation, loginUser);
 router.route('/register').post(registerValidation, registerUser);
 // ADMIN
 router.route('/').get(protect, isAdmin, getUsers);
-router.route('/:id').get(getUserById).delete(deleteUserById);
+router
+  .route('/:id')
+  .get(protect, isAdmin, getUserById)
+  .delete(protect, isAdmin, deleteUserById);
 
 module.exports = router;

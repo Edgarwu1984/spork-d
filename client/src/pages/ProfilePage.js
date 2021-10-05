@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserProfile } from '../redux/actions/userActions';
+import { getUserProfile } from 'redux/actions/userActions';
 // COMPONENTS
-import Layout from '../components/Layout';
-import SubSectionTitle from '../components/SubSectionTitle';
-import Loader from '../components/Loader';
-import Breadcrumb from '../components/Breadcrumb';
-import UserEditModal from '../components/Modal/UserEditModal';
+import Layout from 'components/Layout';
+import SubSectionTitle from 'components/SubSectionTitle';
+import Loader from 'components/Loader';
+import Breadcrumb from 'components/Breadcrumb';
+import UserEditModal from 'components/Modal/UserEditModal';
 
 function ProfilePage({ match, history }) {
   // MODAL HANDLER

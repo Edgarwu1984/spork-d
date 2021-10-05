@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+// REACT-ICONS
 import { BiError } from 'react-icons/bi';
-import Layout from '../components/Layout';
+// COMPONENTS
+import Layout from 'components/Layout';
 
 function NotFoundPage({ history }) {
   // SET BACK TO HOME PAGE

@@ -13,6 +13,7 @@ import LoadTheme from '../../utils/themeLoader';
 import { FaBars, FaTimes, FaUser } from 'react-icons/fa';
 import { IoMdSunny, IoMdMoon } from 'react-icons/io';
 import { FiSearch } from 'react-icons/fi';
+import { BiLogOut } from 'react-icons/bi';
 
 function Navbar() {
   // Get UserInfo
@@ -77,11 +78,20 @@ function Navbar() {
                 <FaUser /> <span>{userInfo.username}</span>
               </div>
               <ul className='nav__dropdown'>
+                {userInfo?.isAdmin && (
+                  <>
+                    <li className='nav__dropdown-admin'>Logged in as Admin</li>
+                    <li className='nav__dropdown-item'>
+                      <Link to='/dashboard'>Dashboard</Link>
+                    </li>
+                  </>
+                )}
                 <li className='nav__dropdown-item'>
                   <Link to='/profile'>Profile</Link>
                 </li>
                 <li className='nav__dropdown-item'>
                   <Link to='#' onClick={handleLogout}>
+                    <BiLogOut />
                     Logout
                   </Link>
                 </li>

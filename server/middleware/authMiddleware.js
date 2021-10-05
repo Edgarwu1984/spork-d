@@ -1,3 +1,4 @@
+const { db } = require('../config/db');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('../utils/asyncHandler');
 
@@ -22,12 +23,15 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-const isAdmin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+const isAdmin = asyncHandler(async (req, res, next) => {
+  const userRef = db.collection('users').doc(req.user);
+  const doc = await userRef.get();
+  const user = { id: doc.id, ...doc.data() };
+  if (doc.exists && user.isAdmin) {
     next();
   } else {
     res.status(401).send({ message: 'Not authorized user account.' });
   }
-};
+});
 
 module.exports = { protect, isAdmin };

@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 // COMPONENTS
-import Layout from '../components/Layout';
-import Hero from '../components/Layout/Hero';
-import Button from '../components/Button';
-import Card from '../components/Card';
-import Loader from '../components/Loader';
-import Collection from '../components/Collection';
-import MainSectionTitle from '../components/MainSectionTitle';
+import Layout from 'components/Layout';
+import Hero from 'components/Layout/Hero';
+import Button from 'components/Button';
+import Card from 'components/Card';
+import Collection from 'components/Collection';
+import MainSectionTitle from 'components/MainSectionTitle';
+import SkeletonCard from 'components/SkeletonCard';
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
-import { listTopRestaurant } from '../redux/actions/restaurantActions';
+import { listTopRestaurant } from 'redux/actions/restaurantActions';
 // REACT ICONS
 import { FiArrowRight, FiSearch, FiStar, FiPhone } from 'react-icons/fi';
-import SkeletonCard from '../components/SkeletonCard';
 
 function HomePage({ history }) {
   // REDUX - Get top 4 restaurant
@@ -74,7 +73,7 @@ function HomePage({ history }) {
             <div>{error}</div>
           ) : (
             <div className='grid col-4'>
-              {restaurants.map(restaurant => (
+              {restaurants?.map(restaurant => (
                 <Card
                   url={`/restaurants/${restaurant.category}/${restaurant.name}&&${restaurant.id}`}
                   key={restaurant.id}

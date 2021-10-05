@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from 'react';
-
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getRestaurantDetails,
   listRestaurantReviews,
-} from '../../redux/actions/restaurantActions';
-
+} from 'redux/actions/restaurantActions';
 // COMPONENTS
-import Layout from '../../components/Layout';
-import SubSectionTitle from '../../components/SubSectionTitle';
-import Rating from '../../components/Rating';
-import Button from '../../components/Button';
-import Loader from '../../components/Loader';
-import ReviewModal from '../../components/Modal/ReviewModal';
-import MenuModal from '../../components/Modal/MenuModal';
-import MapModal from '../../components/Modal/MapModal';
-import Breadcrumb from '../../components/Breadcrumb';
-
+import Layout from 'components/Layout';
+import SubSectionTitle from 'components/SubSectionTitle';
+import Rating from 'components/Rating';
+import Button from 'components/Button';
+import Loader from 'components/Loader';
+import ReviewModal from 'components/Modal/ReviewModal';
+import MenuModal from 'components/Modal/MenuModal';
+import MapModal from 'components/Modal/MapModal';
+import Breadcrumb from 'components/Breadcrumb';
 // UTILITIES
-import { timeFormatter } from '../../utils/timeFormatter';
-
+import { timeFormatter } from 'utils/timeFormatter';
 // REACT-ICONS
 import { BiRestaurant, BiTime } from 'react-icons/bi';
 import { HiOutlineLocationMarker } from 'react-icons/hi';

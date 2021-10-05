@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../redux/actions/userActions';
+import { registerUser } from 'redux/actions/userActions';
 // COMPONENTS
-import Loader from '../components/Loader';
+import Loader from 'components/Loader';
 // UTILITIES
-import LoadTheme from '../utils/themeLoader';
+import LoadTheme from 'utils/themeLoader';
 
 function RegisterPage({ history, location }) {
   const getCurrentYear = new Date().getFullYear();
@@ -26,8 +26,9 @@ function RegisterPage({ history, location }) {
 
   // LOGIN CHECK
   useEffect(() => {
-    if (!userInfo) {
-      history.push('/login');
+    if (userInfo) {
+      history.push('/');
+      toast.success("Welcome to Spork'S");
     } else if (error) {
       toast.error(error);
     }

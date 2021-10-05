@@ -6,7 +6,7 @@ const generateToken = require('../utils/tokenGenerator');
 
 /* ============================ USER CONTROLLERS ============================ */
 // @description Register User
-// @route GET /api/users/register
+// @route POST /api/users/register
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -42,7 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 // @description Login User
-// @route GET /api/users/login
+// @route POST /api/users/login
 // @access Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;

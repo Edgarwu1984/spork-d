@@ -6,14 +6,15 @@ import {
 } from 'react-router-dom';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import HomePage from './pages/HomePage';
-import RestaurantsPage from './pages/Restaurants';
-import RestaurantPage from './pages/Restaurants/RestaurantPage';
-import NotFoundPage from './pages/NotFoundPage';
-import ProfilePage from './pages/ProfilePage';
-import RestaurantCategoryPage from './pages/Restaurants/RestaurantCategoryPage';
+import LoginPage from 'pages/LoginPage';
+import RegisterPage from 'pages/RegisterPage';
+import HomePage from 'pages/HomePage';
+import RestaurantsPage from 'pages/Restaurants';
+import RestaurantPage from 'pages/Restaurants/RestaurantPage';
+import NotFoundPage from 'pages/NotFoundPage';
+import ProfilePage from 'pages/ProfilePage';
+import RestaurantCategoryPage from 'pages/Restaurants/RestaurantCategoryPage';
+import DashboardPage from 'pages/Dashboard';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path='/register' component={RegisterPage} />
         <Route path='/login' component={LoginPage} />
         <Route path='/profile' component={ProfilePage} />
+        <Route path='/dashboard' component={DashboardPage} />
         <Route path='/404' component={NotFoundPage} />
         <Redirect to='/404' />
       </Switch>

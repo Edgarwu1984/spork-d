@@ -1,0 +1,55 @@
+@use '../utils/' as *;
+
+.tabs {
+  .tab-list {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: rem(40);
+
+    &-item {
+      color: var(--text1);
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: rem(10) rem(40);
+      cursor: pointer;
+
+      &::after {
+        transition: all 0.2s ease;
+        position: absolute;
+        content: ' ';
+        background-color: var(--primary);
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: rem(2);
+        width: rem(24);
+      }
+
+      &:hover {
+        transition: all 0.2s ease;
+        position: relative;
+        color: var(--primary);
+      }
+    }
+
+    &-active {
+      position: relative;
+    }
+  }
+
+  .tab-content {
+    width: 100%;
+  }
+}
+
+.content-hide {
+  display: none;
+}
+
+.content-active {
+  display: block;
+}
