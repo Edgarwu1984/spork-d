@@ -7,10 +7,8 @@ const dotenv = require('dotenv');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const userRoutes = require('./routes/userRoutes');
 // MIDDLEWARE
-const {
-  errorHandler,
-  notFound,
-} = require('./middleware/errorHandlingMiddleware');
+const ApiError = require('./utils/ApiError');
+const apiErrorHandler = require('./middleware/errorHandlingMiddleware');
 
 dotenv.config();
 const app = express();
@@ -26,8 +24,11 @@ app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/users', userRoutes);
 
 // ERROR HANDLING MIDDLEWARE
-app.use(notFound);
-app.use(errorHandler);
+// NOT FOUND ROUTE
+app.use((req, res, next) => {
+  next(ApiError.notFound());
+});
+app.use(apiErrorHandler);
 
 // START SERVER
 const PORT = process.env.PORT || 5000;

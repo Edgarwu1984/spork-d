@@ -1,6 +1,7 @@
 const { db } = require('../config/db');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('../utils/asyncHandler');
+const ApiError = require('../utils/ApiError');
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -18,8 +19,7 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 
   if (!token) {
-    res.status(401);
-    throw new Error('Not authorized, invalid token.');
+    return next(ApiError.notAuthRequest('Not authorized, invalid token.'));
   }
 });
 
@@ -30,7 +30,7 @@ const isAdmin = asyncHandler(async (req, res, next) => {
   if (doc.exists && user.isAdmin) {
     next();
   } else {
-    res.status(401).send({ message: 'Not authorized user account.' });
+    return next(ApiError.notAuthRequest('Not authorized user account.'));
   }
 });
 
