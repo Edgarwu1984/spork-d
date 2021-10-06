@@ -16,7 +16,7 @@ const getRestaurants = asyncHandler(async (req, res, next) => {
         .where('name', '>=', keyword.toUpperCase())
         .where('name', '<=', keyword.toLowerCase() + '\uf8ff')
         .get()
-    : await restaurantsRef.ge();
+    : await restaurantsRef.get();
 
   const data = snapshot.docs.map(doc => ({
     id: doc.id,
@@ -121,10 +121,9 @@ const getRestaurantsById = asyncHandler(async (req, res, next) => {
 // @access Public
 const getRestaurantReviews = asyncHandler(async (req, res, next) => {
   const reviewsRef = db
-    .collection('restaurants')
-    .doc(req.params.id)
     .collection('reviews')
-    .orderBy('createdAt', 'desc');
+    .where('restaurantId', '==', req.params.id);
+
   const snapshot = await reviewsRef.get();
 
   const data = snapshot.docs.map(doc => ({
@@ -159,17 +158,16 @@ const createRestaurantReview = asyncHandler(async (req, res, next) => {
   const user = { id: userDoc.id, ...userDoc.data() };
 
   // Get Review Ref
-  const reviewsRef = db
-    .collection('restaurants')
-    .doc(req.params.id)
-    .collection('reviews');
+  const reviewsRef = db.collection('reviews');
 
-  // Check whether User ID in Review List
-  const userSnapshot = await reviewsRef.get();
-  const isExist = userSnapshot.docs.some(
+  // Check whether User ID in Current Restaurant Review List
+  const currentReviewDoc = await reviewsRef
+    .where('restaurantId', '==', req.params.id)
+    .get();
+
+  const isExist = currentReviewDoc.docs.some(
     doc => doc.data().user.id === req.user
   );
-
   if (isExist) {
     return next(ApiError.badRequest('You have already reviewed.'));
   } else {
@@ -180,17 +178,23 @@ const createRestaurantReview = asyncHandler(async (req, res, next) => {
       rating: restaurant.totalRating / restaurant.numReviews,
     });
 
-    // Add Review
-    await reviewsRef.add({
+    const newReview = {
       user: {
         id: req.user,
         username: user.username,
         photo: user.photo,
       },
+      restaurantId: req.params.id,
+      restaurantName: restaurant.name,
+      restaurantCategory: restaurant.category,
+      restaurantCoverImage: restaurant.coverImage,
       rating: rating,
       comment: comment,
       createdAt: Date.now(),
-    });
+    };
+
+    // Add Review
+    await reviewsRef.add(newReview);
 
     res.status(201).json({
       status: 'success',
