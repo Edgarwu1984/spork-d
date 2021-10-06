@@ -1,58 +1,43 @@
 const { db } = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
+const ApiError = require('../utils/ApiError');
 
 // @description Fetch all Restaurants
 // @route GET /api/restaurants
 // @access Public
-const getRestaurants = asyncHandler(async (req, res) => {
+const getRestaurants = asyncHandler(async (req, res, next) => {
   const restaurantsRef = db.collection('restaurants');
 
   const keyword = req.query.search;
-  if (keyword) {
-    const snapshot = await restaurantsRef
-      .orderBy('name')
-      .where('name', '>=', keyword.toUpperCase())
-      .where('name', '<=', keyword.toLowerCase() + '\uf8ff')
-      .get();
-    const data = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
 
-    if (snapshot.empty) {
-      res.status(400);
-      throw new Error('No restaurants.');
-    } else {
-      res.status(200).json({
-        status: 'success',
-        result: data.length,
-        data,
-      });
-    }
+  const snapshot = keyword
+    ? await restaurantsRef
+        .orderBy('name')
+        .where('name', '>=', keyword.toUpperCase())
+        .where('name', '<=', keyword.toLowerCase() + '\uf8ff')
+        .get()
+    : await restaurantsRef.ge();
+
+  const data = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  if (snapshot.empty) {
+    return next(ApiError.badRequest('No restaurant be found.'));
   } else {
-    const snapshot = await restaurantsRef.get();
-    const data = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    if (snapshot.empty) {
-      res.status(400);
-      throw new Error('No restaurants.');
-    } else {
-      res.status(200).json({
-        status: 'success',
-        result: data.length,
-        data,
-      });
-    }
+    res.status(200).json({
+      status: 'success',
+      result: data.length,
+      data,
+    });
   }
 });
 
 // @description Get Top 4 Restaurants
 // @route GET /api/restaurants/top
 // @access Public
-const getTopRestaurants = asyncHandler(async (req, res) => {
+const getTopRestaurants = asyncHandler(async (req, res, next) => {
   const restaurantsRef = db.collection('restaurants');
   const snapshot = await restaurantsRef
     .where('rating', '>=', 4.6)
@@ -66,8 +51,7 @@ const getTopRestaurants = asyncHandler(async (req, res) => {
   }));
 
   if (snapshot.empty) {
-    res.status(400);
-    throw new Error('No top restaurants found.');
+    return next(ApiError.badRequest('No Top restaurant be found.'));
   } else {
     res.status(200).json({
       status: 'success',
@@ -80,7 +64,7 @@ const getTopRestaurants = asyncHandler(async (req, res) => {
 // @description Get Restaurants By Category
 // @route GET /api/restaurants/:category
 // @access Public
-const getRestaurantsByCategory = asyncHandler(async (req, res) => {
+const getRestaurantsByCategory = asyncHandler(async (req, res, next) => {
   const restaurantsRef = db.collection('restaurants');
   const snapshot = await restaurantsRef
     .where('category', '==', req.params.category)
@@ -99,8 +83,11 @@ const getRestaurantsByCategory = asyncHandler(async (req, res) => {
   // }
 
   if (snapshot.empty) {
-    res.status(400);
-    throw new Error('No such category of restaurants be found.');
+    return next(
+      ApiError.badRequest(
+        `No restaurants be found with ${req.params.category} category.`
+      )
+    );
   } else {
     res.status(200).json({
       status: 'success',
@@ -113,15 +100,14 @@ const getRestaurantsByCategory = asyncHandler(async (req, res) => {
 // @description Fetch all Restaurants by ID
 // @route GET /api/restaurants/:id
 // @access Public
-const getRestaurantsById = asyncHandler(async (req, res) => {
+const getRestaurantsById = asyncHandler(async (req, res, next) => {
   const restaurantsRef = db.collection('restaurants').doc(req.params.id);
   const doc = await restaurantsRef.get();
   // Get doc ID & And attach to the Object
   const data = { id: doc.id, ...doc.data() };
 
   if (!doc.exists) {
-    res.status(400);
-    throw new Error('No restaurant found.');
+    return next(ApiError.badRequest('No restaurant be found.'));
   } else {
     res.status(200).json({
       status: 'success',
@@ -133,7 +119,7 @@ const getRestaurantsById = asyncHandler(async (req, res) => {
 // @description Get Restaurant Reviews
 // @route GET /api/restaurants/:category/:id/reviews
 // @access Public
-const getRestaurantReviews = asyncHandler(async (req, res) => {
+const getRestaurantReviews = asyncHandler(async (req, res, next) => {
   const reviewsRef = db
     .collection('restaurants')
     .doc(req.params.id)
@@ -147,8 +133,7 @@ const getRestaurantReviews = asyncHandler(async (req, res) => {
   }));
 
   if (snapshot.empty) {
-    res.status(400);
-    throw new Error('No reviews be found.');
+    return next(ApiError.badRequest('No reviews be found.'));
   } else {
     res.status(200).send({
       status: 'success',
@@ -161,7 +146,7 @@ const getRestaurantReviews = asyncHandler(async (req, res) => {
 // @description Create Restaurant Review
 // @route POST /api/restaurants/:id/reviews
 // @access Private
-const createRestaurantReview = asyncHandler(async (req, res) => {
+const createRestaurantReview = asyncHandler(async (req, res, next) => {
   const { rating, comment } = req.body;
   // Get Restaurant
   const restaurantRef = db.collection('restaurants').doc(req.params.id);
@@ -186,9 +171,7 @@ const createRestaurantReview = asyncHandler(async (req, res) => {
   );
 
   if (isExist) {
-    res.status(400).json({
-      message: 'You have already reviewed.',
-    });
+    return next(ApiError.badRequest('You have already reviewed.'));
   } else {
     // Update Restaurant numReviews & totalRating & rating
     await restaurantRef.update({
