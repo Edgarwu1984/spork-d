@@ -122,7 +122,8 @@ const getRestaurantsById = asyncHandler(async (req, res, next) => {
 const getRestaurantReviews = asyncHandler(async (req, res, next) => {
   const reviewsRef = db
     .collection('reviews')
-    .where('restaurantId', '==', req.params.id);
+    .where('restaurantId', '==', req.params.id)
+    .orderBy('createdAt', 'desc');
 
   const snapshot = await reviewsRef.get();
 

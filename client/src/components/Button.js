@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Button({ iconLeft, iconRight, text, styles, disabled, onClick }) {
+function Button({ iconLeft, iconRight, text, type, disabled, onClick }) {
   return (
     <button
-      className={disabled ? `btn ${styles} btn-disabled` : `btn ${styles}`}
+      className={disabled ? `btn btn-${type} btn-disabled` : `btn btn-${type}`}
       onClick={onClick}
     >
       <span className='btn-icon'>{iconLeft}</span>
@@ -17,12 +17,13 @@ Button.propTypes = {
   iconLeft: PropTypes.object,
   iconRight: PropTypes.object,
   text: PropTypes.string,
-  styles: PropTypes.string,
+  type: PropTypes.string,
   disabled: PropTypes.bool,
 };
 
 Button.defaultProps = {
   text: 'Button',
+  type: 'default',
   disabled: false,
 };
 

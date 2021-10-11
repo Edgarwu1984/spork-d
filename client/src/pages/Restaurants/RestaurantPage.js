@@ -141,7 +141,7 @@ function RestaurantPage({ match, history }) {
 
                     <Button
                       text={hasReviewed ? 'Reviewed' : 'Add Review'}
-                      styles='btn-primary'
+                      type='primary'
                       disabled={hasReviewed ? true : false}
                       onClick={
                         userInfo
@@ -164,7 +164,11 @@ function RestaurantPage({ match, history }) {
                       show={showMapMenu}
                       onClose={() => setShowMapMenu(false)}
                     />
-                    <Button text='Get Direction' onClick={showMapMenuHandler} />
+                    <Button
+                      type='default'
+                      text='Get Direction'
+                      onClick={showMapMenuHandler}
+                    />
                   </li>
                 </ul>
               </div>

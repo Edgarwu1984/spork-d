@@ -15,6 +15,10 @@ import NotFoundPage from 'pages/NotFoundPage';
 import ProfilePage from 'pages/ProfilePage';
 import RestaurantCategoryPage from 'pages/Restaurants/RestaurantCategoryPage';
 import DashboardPage from 'pages/Dashboard';
+import UserEditPage from 'pages/Dashboard/UserEditPage';
+import RestaurantEditPage from 'pages/Dashboard/RestaurantEditPage';
+import UserListPage from 'pages/Dashboard/UserListPage';
+import RestaurantListPage from 'pages/Dashboard/RestaurantListPage';
 
 function App() {
   return (
@@ -48,7 +52,18 @@ function App() {
         <Route path='/register' component={RegisterPage} />
         <Route path='/login' component={LoginPage} />
         <Route path='/profile' component={ProfilePage} />
-        <Route path='/dashboard' component={DashboardPage} />
+        <Route exact path='/dashboard' component={DashboardPage} />
+        <Route exact path='/dashboard/users' component={UserListPage} />
+        <Route path='/dashboard/users/:id' component={UserEditPage} />
+        <Route
+          exact
+          path='/dashboard/restaurants'
+          component={RestaurantListPage}
+        />
+        <Route
+          path='/dashboard/restaurants/:id'
+          component={RestaurantEditPage}
+        />
         <Route path='/404' component={NotFoundPage} />
         <Redirect to='/404' />
       </Switch>

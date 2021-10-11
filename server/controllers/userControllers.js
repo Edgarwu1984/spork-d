@@ -4,6 +4,7 @@ const ApiError = require('../utils/ApiError');
 const hashPassword = require('../utils/hashPassword');
 const matchPassword = require('../utils/matchPasswordCheck');
 const generateToken = require('../utils/tokenGenerator');
+const storageBucketService = require('../utils/storageBucketServices');
 
 /* ============================ USER CONTROLLERS ============================ */
 // @description Register User
@@ -93,11 +94,21 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   const doc = await userRef.get();
   const user = { id: doc.id, ...doc.data() };
 
+  // Save Image URL to Storage Bucket
+  let url = null;
+  url = await storageBucketService.uploadFile(userPhoto);
+
+  // Form Data
+  const username = req.body.username || user.username;
+  const email = req.body.email || user.email;
+  const password = (await hashPassword(req.body.password)) || user.password;
+  const photo = url || user.photo;
+
   await userRef.update({
-    username: req.body.username || user.username,
-    email: req.body.email || user.email,
-    password: (await hashPassword(req.body.password)) || user.password,
-    photo: req.body.photo || user.photo,
+    username,
+    email,
+    password,
+    photo,
     updatedAt: Date.now(),
   });
 
@@ -115,11 +126,23 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
 // @route GET /api/users/profile/reviews
 // @access Private
 const getUserReviews = asyncHandler(async (req, res, next) => {
-  const userRef = db.collection('users').doc(req.user);
-  const doc = await userRef.get();
-  const data = { ...doc.data() };
-  // const reviews = data.reviews.map(r => r.data());
-  console.log(data);
+  const reviewRef = db.collection('reviews').orderBy('createdAt', 'desc');
+  const snapshot = await reviewRef.get();
+  const myReviewSnapshot = snapshot.docs.filter(
+    doc => doc.data().user.id === req.user
+  );
+
+  const myReviews = myReviewSnapshot.map(doc => doc.data());
+
+  if (snapshot.empty || myReviewSnapshot.length === 0) {
+    return next(ApiError.badRequest('No reviews be found.'));
+  } else {
+    res.status(200).json({
+      status: 'success',
+      result: myReviews.length,
+      data: myReviews,
+    });
+  }
 });
 
 /* ============================ ADMIN CONTROLLERS ============================ */
@@ -127,7 +150,7 @@ const getUserReviews = asyncHandler(async (req, res, next) => {
 // @route GET /api/users
 // @access Private/Admin
 const getUsers = asyncHandler(async (req, res, next) => {
-  const usersRef = db.collection('users');
+  const usersRef = db.collection('users').orderBy('isAdmin', 'desc');
   const snapshot = await usersRef.get();
   const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   if (snapshot.empty) {
@@ -144,26 +167,61 @@ const getUsers = asyncHandler(async (req, res, next) => {
 // @description Get all User by ID
 // @route GET /api/users/:id
 // @access Private/Admin
-const getUserById = async (req, res, next) => {
+const getUserById = asyncHandler(async (req, res, next) => {
   const snapshot = await db.collection('users').doc(req.params.id).get();
-
-  try {
-    const id = snapshot.id;
-    const data = snapshot.data();
-    if (id && data) {
-      res.status(200).json({ id, ...data });
-    } else {
-      return next(ApiError.badRequest('User does not exist.'));
-    }
-  } catch (error) {
-    res.status(400).send(error);
+  const id = snapshot.id;
+  const data = snapshot.data();
+  if (id && data) {
+    res.status(200).json({ id, ...data });
+  } else {
+    return next(ApiError.badRequest('User does not exist.'));
   }
-};
+});
 
-// @description Delete all User by ID
+// @description Update User by ID
+// @route PUT /api/users/:id
+// @access Private/Admin
+const updateUserById = asyncHandler(async (req, res, next) => {
+  const userRef = db.collection('users').doc(req.params.id);
+  const doc = await userRef.get();
+  const user = { id: doc.id, ...doc.data() };
+
+  if (!doc.exists) {
+    return next(ApiError.badRequest('User does not exist'));
+  } else {
+    // Form Date
+    const username = req.body.username || user.username;
+    const email = req.body.email || user.email;
+    const isAdmin = req.body.isAdmin;
+    const isActivated = req.body.isActivated;
+
+    console.log(username);
+
+    await userRef.update({
+      username,
+      email,
+      isAdmin,
+      isActivated,
+    });
+    res.status(200).json({
+      status: 'success',
+      message: 'User has been updated.',
+    });
+  }
+});
+
+// @description Delete User by ID
 // @route DELETE /api/users/:id
 // @access Private/Admin
-const deleteUserById = async (req, res) => {};
+const deleteUserById = asyncHandler(async (req, res, next) => {
+  const userRef = db.collection('users').doc(req.params.id);
+  const response = await userRef.delete({ exists: true });
+  res.status(200).json({
+    status: 'success',
+    message: 'User has been deleted.',
+    deletedAt: response,
+  });
+});
 
 module.exports = {
   registerUser,
@@ -173,5 +231,6 @@ module.exports = {
   updateUserProfile,
   getUsers,
   getUserById,
+  updateUserById,
   deleteUserById,
 };

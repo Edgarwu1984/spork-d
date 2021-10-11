@@ -102,10 +102,16 @@ function RegisterPage({ history, location }) {
             <div className='form-group'>
               <input
                 type='submit'
-                className='btn btn-primary'
+                className='btn btn-primary btn-block'
                 value='Register'
               />
-              <Link to='/' type='submit' className='btn btn-outline'>
+            </div>
+            <div className='form-group'>
+              <Link
+                to='/'
+                type='submit'
+                className='btn btn-primary-outline btn-block'
+              >
                 Back
               </Link>
             </div>

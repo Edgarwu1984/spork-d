@@ -31,7 +31,7 @@ function HomePage({ history }) {
 
           <Button
             text='Go explore'
-            styles='uppercase btn-primary btn-lg'
+            type='primary btn-uppercase'
             iconRight={<FiArrowRight />}
             onClick={() => history.push('/restaurants')}
           />
@@ -91,7 +91,7 @@ function HomePage({ history }) {
           <div className='center'>
             <Button
               text='Find more'
-              styles='uppercase btn-outline'
+              type='primary-outline'
               onClick={() => history.push('/restaurants')}
             />
           </div>
@@ -103,7 +103,7 @@ function HomePage({ history }) {
             </h2>
             <Button
               text='Explore'
-              styles='uppercase btn-primary'
+              type='primary'
               onClick={() => history.push('/restaurants/japanese')}
             />
           </div>
@@ -117,7 +117,7 @@ function HomePage({ history }) {
               <h2 className='collection__content-title'>Spanish Collection</h2>
               <Button
                 text='Explore'
-                styles='uppercase btn-primary'
+                type='primary'
                 onClick={() => history.push('/restaurants/spanish')}
               />
             </div>
@@ -127,7 +127,7 @@ function HomePage({ history }) {
               <h2 className='collection__content-title'>Italian Collection</h2>
               <Button
                 text='Explore'
-                styles='uppercase btn-primary'
+                type='primary'
                 onClick={() => history.push('/restaurants/italian')}
               />
             </div>

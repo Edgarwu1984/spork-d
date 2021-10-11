@@ -33,7 +33,7 @@ function NotFoundPage({ history }) {
             <p className='countdown__message'>
               Back to Home page in <strong>{time}</strong> seconds...
             </p>
-            <Link className='btn btn-outline' to='/'>
+            <Link className='btn btn-primary-outline' to='/'>
               Go Back
             </Link>
           </div>

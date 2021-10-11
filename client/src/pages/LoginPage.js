@@ -75,8 +75,18 @@ function LoginPage({ history }) {
               />
             </div>
             <div className='form-group'>
-              <input type='submit' className='btn btn-primary' value='Login' />
-              <Link to='/' type='submit' className='btn btn-outline'>
+              <input
+                type='submit'
+                className='btn btn-primary btn-block'
+                value='Login'
+              />
+            </div>
+            <div className='form-group'>
+              <Link
+                to='/'
+                type='submit'
+                className='btn btn-primary-outline btn-block'
+              >
                 Back
               </Link>
             </div>

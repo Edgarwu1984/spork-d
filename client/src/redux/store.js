@@ -15,6 +15,11 @@ import {
   userProfileUpdateReducer,
   userRegisterReducer,
 } from './reducers/userReducers';
+import {
+  userListReducer,
+  userReducer,
+  userUpdateReducer,
+} from './reducers/adminReducers';
 
 const reducer = combineReducers({
   // RESTAURANT
@@ -30,6 +35,9 @@ const reducer = combineReducers({
   userProfile: userProfileReducer,
   userProfileUpdate: userProfileUpdateReducer,
   // ADMIN
+  userList: userListReducer,
+  userDetails: userReducer,
+  userUpdate: userUpdateReducer,
 });
 
 // Check if local storage has userInfo, if it does, convert to json object;

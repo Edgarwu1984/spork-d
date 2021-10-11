@@ -25,7 +25,7 @@
 }
 
 .form-group {
-  margin-bottom: rem(36);
+  margin-bottom: rem(24);
 }
 
 .form-control {
@@ -50,7 +50,7 @@
   width: 100%;
   padding: rem(8);
   font-size: rem(16);
-  background-color: var(--bg-light);
+  background-color: var(--bg);
   color: var(--text2);
   border: 1px solid var(--grey);
   @include transition;
