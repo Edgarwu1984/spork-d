@@ -21,7 +21,8 @@
     "firebase-admin": "^9.11.1",
     "helmet": "^4.6.0",
     "joi": "^17.4.2",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "concurrently": "^6.2.1",

@@ -7,6 +7,7 @@ import Layout from 'components/Layout';
 import Breadcrumb from 'components/Breadcrumb';
 import Loader from 'components/Loader';
 import Button from 'components/Button';
+import { Link } from 'react-router-dom';
 
 function RestaurantEditPage({ match, history }) {
   const userId = match.params.id;
@@ -54,6 +55,9 @@ function RestaurantEditPage({ match, history }) {
             </div>
           </div>
         </div>
+        <Link className='back__btn' to='/dashboard/restaurants'>
+          {'<'} Back
+        </Link>
         <form onSubmit={submitHandler}>
           {loading && <Loader />}
           <div className='form-group'>

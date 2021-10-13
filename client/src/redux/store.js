@@ -16,6 +16,7 @@ import {
   userRegisterReducer,
 } from './reducers/userReducers';
 import {
+  userDeleteReducer,
   userListReducer,
   userReducer,
   userUpdateReducer,
@@ -38,6 +39,7 @@ const reducer = combineReducers({
   userList: userListReducer,
   userDetails: userReducer,
   userUpdate: userUpdateReducer,
+  userDelete: userDeleteReducer,
 });
 
 // Check if local storage has userInfo, if it does, convert to json object;

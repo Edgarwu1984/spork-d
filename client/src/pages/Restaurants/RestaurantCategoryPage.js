@@ -6,9 +6,9 @@ import { listRestaurantByCategory } from 'redux/actions/restaurantActions';
 import Breadcrumb from 'components/Breadcrumb';
 import Layout from 'components/Layout';
 import MainSectionTitle from 'components/MainSectionTitle';
-import Loader from 'components/Loader';
 import Card from 'components/Card';
 import Hero from 'components/Layout/Hero';
+import SkeletonCard from 'components/SkeletonCard';
 
 function RestaurantCategoryPage({ match }) {
   const category = match.params.category;
@@ -45,7 +45,12 @@ function RestaurantCategoryPage({ match }) {
         <section className='restaurants'>
           <MainSectionTitle title={`Top 5 ${category} restaurants`} />
           {loading ? (
-            <Loader />
+            <div className='grid col-4'>
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
           ) : error ? (
             <div>{error.message}</div>
           ) : (

@@ -1,5 +1,9 @@
 import axios from 'axios';
 import {
+  DELETE_USER_FAIL,
+  DELETE_USER_REQUEST,
+  DELETE_USER_RESET,
+  DELETE_USER_SUCCESS,
   GET_USERS_FAIL,
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
@@ -88,12 +92,42 @@ export const updateUser = user => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put('/api/users', user, config);
+    const { data } = await axios.put(`/api/users/${user.id}`, user, config);
     dispatch({ type: UPDATE_USER_SUCCESS, payload: data.data });
     dispatch({ type: UPDATE_USER_RESET });
   } catch (error) {
     dispatch({
       type: UPDATE_USER_FAIL,
+      payload:
+        error.response && error.response.data.messages
+          ? error.response.data.messages
+          : error.messages,
+    });
+  }
+};
+
+// DELETE USER
+export const deleteUser = id => async (dispatch, getState) => {
+  try {
+    dispatch({ type: DELETE_USER_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/users/${id}`, config);
+    dispatch({ type: DELETE_USER_SUCCESS });
+    dispatch({ type: DELETE_USER_RESET });
+  } catch (error) {
+    dispatch({
+      type: DELETE_USER_FAIL,
       payload:
         error.response && error.response.data.messages
           ? error.response.data.messages

@@ -4,7 +4,7 @@ const ApiError = require('../utils/ApiError');
 const hashPassword = require('../utils/hashPassword');
 const matchPassword = require('../utils/matchPasswordCheck');
 const generateToken = require('../utils/tokenGenerator');
-const storageBucketService = require('../utils/storageBucketServices');
+const storageBucketServices = require('../utils/storageBucketServices');
 
 /* ============================ USER CONTROLLERS ============================ */
 // @description Register User
@@ -94,15 +94,16 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   const doc = await userRef.get();
   const user = { id: doc.id, ...doc.data() };
 
-  // Save Image URL to Storage Bucket
-  let url = null;
-  url = await storageBucketService.uploadFile(userPhoto);
-
   // Form Data
   const username = req.body.username || user.username;
   const email = req.body.email || user.email;
-  const password = (await hashPassword(req.body.password)) || user.password;
-  const photo = url || user.photo;
+  const password =
+    (req.body.password && (await hashPassword(req.body.password))) ||
+    user.password;
+  const photo =
+    (req.body.photo &&
+      (await storageBucketServices.uploadFile(req.body.photo))) ||
+    user.photo;
 
   await userRef.update({
     username,
@@ -113,6 +114,7 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   });
 
   const updatedDoc = await userRef.get();
+
   const updatedUser = { id: updatedDoc.id, ...updatedDoc.data() };
 
   res.status(200).json({
@@ -194,8 +196,6 @@ const updateUserById = asyncHandler(async (req, res, next) => {
     const email = req.body.email || user.email;
     const isAdmin = req.body.isAdmin;
     const isActivated = req.body.isActivated;
-
-    console.log(username);
 
     await userRef.update({
       username,

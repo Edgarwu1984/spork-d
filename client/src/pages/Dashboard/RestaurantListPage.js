@@ -33,7 +33,7 @@ const RestaurantListPage = ({ match }) => {
         ) : error ? (
           <div>{error}</div>
         ) : (
-          <table>
+          <table className='restaurant__table'>
             <thead>
               <tr>
                 <th>Category</th>
