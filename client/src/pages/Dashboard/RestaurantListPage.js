@@ -54,7 +54,7 @@ const RestaurantListPage = ({ match }) => {
                     <td>
                       <Link
                         to={`/dashboard/restaurants/${restaurant.id}/edit`}
-                        className='btn btn-default-outline'
+                        className='btn btn-sm btn-default-outline'
                       >
                         Edit
                       </Link>

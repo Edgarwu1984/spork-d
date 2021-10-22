@@ -8,7 +8,7 @@ export default function LoadTheme() {
   useEffect(() => {
     if (!defaultTheme) {
       localStorage.setItem('theme', 'light');
-      window.location.reload();
+      // window.location.reload();
     } else if (defaultTheme === 'light') {
       root.add('light');
       root.remove('dark');

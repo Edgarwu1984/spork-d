@@ -70,7 +70,7 @@ const UserListPage = ({ match }) => {
                     <td>
                       <Link
                         to={`/dashboard/users/${user.id}/edit`}
-                        className='btn btn-default-outline'
+                        className='btn btn-sm btn-default-outline'
                       >
                         Edit
                       </Link>

@@ -7,21 +7,14 @@ import Layout from 'components/Layout';
 import SubSectionTitle from 'components/SubSectionTitle';
 import Loader from 'components/Loader';
 import Breadcrumb from 'components/Breadcrumb';
-import UserEditModal from 'components/Modal/UserEditModal';
 
 function ProfilePage({ match, history }) {
-  // MODAL HANDLER
-  const [showEdit, setShowEdit] = useState(false);
-  const showEditHandler = () => setShowEdit(!showEdit);
-
   // REDUX
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
   const userProfile = useSelector(state => state.userProfile);
   const { loading, error, user } = userProfile;
-  const userProfileUpdate = useSelector(state => state.userProfileUpdate);
-  const { success } = userProfileUpdate;
 
   useEffect(() => {
     if (!userInfo) {
@@ -31,10 +24,7 @@ function ProfilePage({ match, history }) {
         dispatch(getUserProfile());
       }
     }
-    if (success) {
-      setShowEdit(false);
-    }
-  }, [dispatch, history, success, user, userInfo]);
+  }, [dispatch, history, user, userInfo]);
 
   return (
     <Layout pageTitle='- Profile'>
@@ -47,11 +37,6 @@ function ProfilePage({ match, history }) {
         ) : (
           user && (
             <>
-              <UserEditModal
-                show={showEdit}
-                onClose={() => setShowEdit(false)}
-                data={user}
-              />
               <div className='profile__banner'>
                 <div className='profile__banner-wrap'>
                   <div className='greeting'>
@@ -65,7 +50,10 @@ function ProfilePage({ match, history }) {
                       src={user.photo}
                       alt='user_photo'
                     />
-                    <div className='user__info-edit' onClick={showEditHandler}>
+                    <div
+                      className='user__info-edit'
+                      onClick={() => history.push(`/profile/edit`)}
+                    >
                       Edit Profile
                     </div>
                   </div>

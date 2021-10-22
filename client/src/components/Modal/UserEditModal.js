@@ -3,8 +3,9 @@ import Modal from '.';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { updateUserProfile } from '../../redux/actions/userActions';
+import { updateUserProfile } from 'redux/actions/userActions';
 import Loader from '../Loader';
+import AlertMessage from 'components/AlertMessage';
 
 const EditWrapper = styled.div`
   .user__photo {
@@ -28,11 +29,21 @@ const EditWrapper = styled.div`
 
 function UserEditModal({ show, onClick, onClose, data }) {
   // UPDATE PROFILE FORM
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // const [username, setUsername] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [photo, setPhoto] = useState('');
+  // const [photo, setPhoto] = useState('');
+  const [user, setUser] = useState({
+    username: '',
+    email: '',
+    password: '',
+    photo: '',
+  });
+
+  const [fileName, setFileName] = useState('Choose File');
+
+  const { username, email, password, photo } = user;
   // REDUX
   const dispatch = useDispatch();
   const userProfileUpdate = useSelector(state => state.userProfileUpdate);
@@ -41,31 +52,45 @@ function UserEditModal({ show, onClick, onClose, data }) {
   useEffect(() => {
     if (success) {
       toast.success('User profile updated, please login again.');
-    } else if (error) {
-      toast.error(error);
     }
-    if (data) {
-      setUsername(data.username);
-      setEmail(data.email);
-      setPhoto(data.photo);
-    }
+    // if (!data.id) {
+    //   setUser({
+    //     username: data.username,
+    //     email: data.email,
+    //     photo: data.photo,
+    //   });
+    //   //   // setUsername(data.username);
+    //   //   // setEmail(data.email);
+    //   //   // setPhoto(data.photo);
+    // }
   }, [data, dispatch, error, success]);
+
+  const handleTextChange = e =>
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+
+  const handleFileChange = e => {
+    const file = e.target.files[0];
+    setUser({
+      ...user,
+      photo: file,
+    });
+    setFileName(e.target.files[0].name);
+  };
 
   const submitHandler = e => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error('Password does not match.');
     } else {
-      dispatch(
-        updateUserProfile({
-          username: username,
-          email: email,
-          password: password,
-          photo: photo,
-        })
-      );
+      dispatch(updateUserProfile(user));
     }
+    // console.log({ id: data.id, ...user });
   };
+
+  // console.log(user);
 
   return (
     <Modal show={show} onClick={onClick} onClose={onClose} title='Edit Profile'>
@@ -73,13 +98,13 @@ function UserEditModal({ show, onClick, onClose, data }) {
         <EditWrapper>
           <form onSubmit={submitHandler}>
             {loading && <Loader />}
+            {error && <AlertMessage message={error} variant='danger' />}
             <div className='user__photo'>
               <img src={data.photo} alt={data.username} />
               <input
                 className='form-control'
-                type='text'
-                defaultValue={data.photo}
-                onChange={e => setPhoto(e.target.value)}
+                type='file'
+                onChange={handleFileChange}
               />
             </div>
             <div className='form-group'>
@@ -87,8 +112,9 @@ function UserEditModal({ show, onClick, onClose, data }) {
               <input
                 className='form-control'
                 type='text'
-                defaultValue={data.username}
-                onChange={e => setUsername(e.target.value)}
+                name='username'
+                defaultValue={username}
+                onChange={handleTextChange}
               />
             </div>
             <div className='form-group'>
@@ -96,8 +122,9 @@ function UserEditModal({ show, onClick, onClose, data }) {
               <input
                 className='form-control'
                 type='text'
-                defaultValue={data.email}
-                onChange={e => setEmail(e.target.value)}
+                name='email'
+                defaultValue={email}
+                onChange={handleTextChange}
               />
             </div>
             <div className='form-group'>
@@ -105,7 +132,8 @@ function UserEditModal({ show, onClick, onClose, data }) {
               <input
                 className='form-control'
                 type='password'
-                onChange={e => setPassword(e.target.value)}
+                name='password'
+                onChange={handleTextChange}
               />
             </div>
             <div className='form-group'>

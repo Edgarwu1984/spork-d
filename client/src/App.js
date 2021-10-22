@@ -12,7 +12,8 @@ import HomePage from 'pages/HomePage';
 import RestaurantsPage from 'pages/Restaurants';
 import RestaurantPage from 'pages/Restaurants/RestaurantPage';
 import NotFoundPage from 'pages/NotFoundPage';
-import ProfilePage from 'pages/ProfilePage';
+import ProfilePage from 'pages/Profile';
+import EditProfilePage from 'pages/Profile/EditProfilePage';
 import RestaurantCategoryPage from 'pages/Restaurants/RestaurantCategoryPage';
 import DashboardPage from 'pages/Dashboard';
 import UserEditPage from 'pages/Dashboard/UserEditPage';
@@ -51,7 +52,8 @@ function App() {
         />
         <Route path='/register' component={RegisterPage} />
         <Route path='/login' component={LoginPage} />
-        <Route path='/profile' component={ProfilePage} />
+        <Route exact path='/profile' component={ProfilePage} />
+        <Route path='/profile/edit' component={EditProfilePage} />
         <Route exact path='/dashboard' component={DashboardPage} />
         <Route exact path='/dashboard/users' component={UserListPage} />
         <Route path='/dashboard/users/:id' component={UserEditPage} />

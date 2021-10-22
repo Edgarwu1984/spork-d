@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
+const fileUpload = require('express-fileupload');
 // ROUTES
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -14,10 +15,12 @@ dotenv.config();
 const app = express();
 
 // GLOBAL MIDDLEWARE
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(fileUpload());
 app.use(cors());
 app.use(morgan('dev'));
 app.use(helmet()); // Set HTTP Headers security
-app.use(express.json());
 
 // ROUTES
 app.use('/api/restaurants', restaurantRoutes);

@@ -33,9 +33,9 @@ export const listRestaurant =
       dispatch({
         type: GET_RESTAURANT_LIST_FAIL,
         payload:
-          error.response && error.response.data.messages
-            ? error.response.data.messages
-            : error.messages,
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
       });
     }
   };
@@ -50,9 +50,9 @@ export const listTopRestaurant = () => async dispatch => {
     dispatch({
       type: GET_TOP_RESTAURANT_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -67,9 +67,9 @@ export const listRestaurantByCategory = category => async dispatch => {
     dispatch({
       type: GET_RESTAURANT_BY_CATEGORY_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -86,9 +86,9 @@ export const listRestaurantReviews = (category, id) => async dispatch => {
     dispatch({
       type: GET_RESTAURANT_REVIEWS_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -120,9 +120,9 @@ export const createRestaurantReview =
       dispatch({
         type: CREATE_RESTAURANT_REVIEWS_FAIL,
         payload:
-          error.response && error.response.data.messages
-            ? error.response.data.messages
-            : error.messages,
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
       });
     }
   };
@@ -137,9 +137,9 @@ export const getRestaurantDetails = (category, id) => async dispatch => {
     dispatch({
       type: GET_RESTAURANT_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

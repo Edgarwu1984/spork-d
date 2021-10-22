@@ -1,0 +1,23 @@
+@use '../utils/' as *;
+
+.alert-message {
+  width: max-content;
+  padding: rem(12) rem(40);
+  margin: rem(24) 0;
+  border-radius: rem(4);
+  background-color: hsl(0, 0%, 60%, 0.2);
+  border: 1px solid var(--default);
+  color: hsl(0, 0%, 60%);
+  text-align: center;
+  @include breakpoint-down(small) {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.danger {
+  background-color: hsl(1, 77%, 46%, 0.2);
+  border: 1px solid var(--danger);
+  color: hsl(1, 77%, 46%);
+}

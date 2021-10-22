@@ -39,8 +39,8 @@ export const loginUser = (email, password) => async dispatch => {
       type: LOGIN_USER_FAIL,
       payload:
         error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -67,8 +67,8 @@ export const registerUser = (email, password, username) => async dispatch => {
       type: REGISTER_USER_FAIL,
       payload:
         error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -103,8 +103,8 @@ export const getUserProfile = () => async (dispatch, getState) => {
       type: GET_USER_PROFILE_FAIL,
       payload:
         error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -120,23 +120,40 @@ export const updateUserProfile = user => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.put('/api/users/profile', user, config);
+    // Form Config
+    // NOTE: It is CRITICAL format the data as it has MIXED data types.  Need to reconstruct the form data and pass in as the PUT call
+    const prepareFormData = data => {
+      let formData = new FormData();
+      formData.append('username', data.username);
+      formData.append('email', data.email);
+      formData.append('password', data.password);
+      formData.append('photo', data.photo);
+      return formData;
+    };
+
+    const { data } = await axios.put(
+      '/api/users/profile',
+      prepareFormData(user),
+      config
+    );
+
     dispatch({ type: UPDATE_USER_PROFILE_SUCCESS, payload: data.data });
     dispatch({ type: UPDATE_USER_PROFILE_RESET });
-    localStorage.removeItem('userInfo');
-    dispatch({ type: LOGOUT_USER });
+    dispatch({ type: LOGIN_USER_SUCCESS, payload: data.data });
+    localStorage.setItem('userInfo', JSON.stringify(data.data));
+    dispatch({ type: GET_USER_PROFILE_SUCCESS, payload: data.data });
   } catch (error) {
     dispatch({
       type: UPDATE_USER_PROFILE_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

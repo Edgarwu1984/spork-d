@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const ApiError = require('../utils/ApiError');
 
 const registerValidation = (req, res, next) => {
   const schema = Joi.object({
@@ -14,19 +15,19 @@ const registerValidation = (req, res, next) => {
   if (error) {
     const errorKey = error.details[0].context.key;
     if (errorKey === 'username') {
-      res.status(400);
-      throw new Error('You must provided a username.');
+      return next(ApiError.notAuthRequest('You must provided a username.'));
     } else if (errorKey === 'email') {
-      res.status(400);
-      throw new Error('You must provided a valid email address.');
+      return next(
+        ApiError.notAuthRequest('You must provided a valid email address.')
+      );
     } else if (errorKey === 'password') {
-      res.status(400);
-      throw new Error(
-        'The password failed to match the requirements: 1. It must contain ONLY the following characters: lowercase, uppercase, numbers; 2. Must be between 6 and 12 characters'
+      return next(
+        ApiError.notAuthRequest(
+          'The password failed to match the requirements: 1. It must contain ONLY the following characters: lowercase, uppercase, numbers; 2. Must be between 6 and 12 characters'
+        )
       );
     } else {
-      res.status(400);
-      throw new Error('Invalid registration information.');
+      return next(ApiError.notAuthRequest('Invalid information provided.'));
     }
   } else {
     next();
@@ -46,14 +47,13 @@ const loginValidation = (req, res, next) => {
   if (error) {
     const errorKey = error.details[0].context.key;
     if (errorKey === 'email') {
-      res.status(400);
-      throw new Error('You must provided a valid email address.');
+      return next(
+        ApiError.notAuthRequest('You must provided a valid email address.')
+      );
     } else if (errorKey === 'password') {
-      res.status(400);
-      throw new Error('You have to provide password.');
+      return next(ApiError.notAuthRequest('You have to provide password.'));
     } else {
-      res.status(400);
-      throw new Error('Invalid registration information.');
+      return next(ApiError.notAuthRequest('Invalid information provided.'));
     }
   } else {
     next();

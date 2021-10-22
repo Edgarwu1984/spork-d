@@ -39,9 +39,9 @@ export const getUsers = () => async (dispatch, getState) => {
     dispatch({
       type: GET_USERS_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -69,9 +69,9 @@ export const getUserDetails = id => async (dispatch, getState) => {
     dispatch({
       type: GET_USER_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -99,9 +99,9 @@ export const updateUser = user => async (dispatch, getState) => {
     dispatch({
       type: UPDATE_USER_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };
@@ -129,9 +129,9 @@ export const deleteUser = id => async (dispatch, getState) => {
     dispatch({
       type: DELETE_USER_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.messages
-          : error.messages,
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

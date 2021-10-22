@@ -49,7 +49,7 @@ export const userRegisterReducer = (state = {}, action) => {
   }
 };
 
-export const userProfileReducer = (state = {}, action) => {
+export const userProfileReducer = (state = { user: {} }, action) => {
   switch (action.type) {
     case GET_USER_PROFILE_REQUEST:
       return { loading: true, ...state };
@@ -69,7 +69,7 @@ export const userProfileUpdateReducer = (state = {}, action) => {
     case UPDATE_USER_PROFILE_REQUEST:
       return { loading: true };
     case UPDATE_USER_PROFILE_SUCCESS:
-      return { loading: false, success: true, userInfo: action.payload };
+      return { loading: false, success: true, user: action.payload };
     case UPDATE_USER_PROFILE_FAIL:
       return { loading: false, error: action.payload };
     case UPDATE_USER_PROFILE_RESET:

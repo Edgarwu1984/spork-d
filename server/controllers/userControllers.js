@@ -4,7 +4,10 @@ const ApiError = require('../utils/ApiError');
 const hashPassword = require('../utils/hashPassword');
 const matchPassword = require('../utils/matchPasswordCheck');
 const generateToken = require('../utils/tokenGenerator');
-const storageBucketServices = require('../utils/storageBucketServices');
+const {
+  storageBucketUploader,
+  fileServerUploader,
+} = require('../utils/fileUploader');
 
 /* ============================ USER CONTROLLERS ============================ */
 // @description Register User
@@ -94,16 +97,21 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   const doc = await userRef.get();
   const user = { id: doc.id, ...doc.data() };
 
+  // Sever Upload
+  let downloadURL = '';
+  if (req.files) {
+    const fileName = fileServerUploader(req.files.photo);
+    downloadURL = await storageBucketUploader(fileName);
+  }
+  // Bucket Upload
+
   // Form Data
   const username = req.body.username || user.username;
   const email = req.body.email || user.email;
   const password =
     (req.body.password && (await hashPassword(req.body.password))) ||
     user.password;
-  const photo =
-    (req.body.photo &&
-      (await storageBucketServices.uploadFile(req.body.photo))) ||
-    user.photo;
+  const photo = downloadURL || user.photo;
 
   await userRef.update({
     username,
@@ -111,6 +119,7 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
     password,
     photo,
     updatedAt: Date.now(),
+    token: generateToken(user.id),
   });
 
   const updatedDoc = await userRef.get();

@@ -4,10 +4,15 @@
   font-family: var(--font-popping);
   font-size: rem(16);
   font-weight: 500;
-  padding: rem(4) rem(16);
+  padding: rem(8) rem(16);
   border: 1px solid var(--default);
   text-align: center;
   cursor: pointer;
+}
+
+.btn-sm {
+  padding: rem(4) rem(14);
+  font-size: rem(14);
 }
 
 .btn-default {
@@ -40,9 +45,9 @@
 
 .btn-disabled {
   pointer-events: none;
-  background-color: var(--grey-50);
+  background-color: var(--grey);
   color: var(--text2) !important;
-  border-color: var(--grey-50);
+  border-color: var(--grey);
 }
 
 .btn-icon {

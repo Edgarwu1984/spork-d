@@ -2,7 +2,7 @@
 
 .form__wrapper {
   @include shadow;
-  background-color: var(--bg);
+  background-color: var(--bg-light);
   width: 60%;
   margin-left: auto;
   margin-right: auto;
@@ -81,4 +81,10 @@
 .form-control[type='checkbox'] {
   width: rem(20);
   height: rem(20);
+}
+
+.user-image {
+  height: rem(120);
+  width: rem(120);
+  margin-bottom: rem(16);
 }

@@ -24,6 +24,7 @@ const router = express.Router();
 router
   .route('/profile')
   .get(protect, getUserProfile)
+  // .put(protect, updateUserProfile);
   .put(userValidation, protect, updateUserProfile);
 router.route('/profile/reviews').get(protect, getUserReviews);
 router.route('/login').post(loginValidation, loginUser);
