@@ -143,7 +143,10 @@ const getUserReviews = asyncHandler(async (req, res, next) => {
     doc => doc.data().user.id === req.user
   );
 
-  const myReviews = myReviewSnapshot.map(doc => doc.data());
+  const myReviews = myReviewSnapshot.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 
   if (snapshot.empty || myReviewSnapshot.length === 0) {
     return next(ApiError.badRequest('No reviews be found.'));

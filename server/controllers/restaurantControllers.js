@@ -191,7 +191,7 @@ const createRestaurantReview = asyncHandler(async (req, res, next) => {
       restaurantCoverImage: restaurant.coverImage,
       rating: rating,
       comment: comment,
-      createdAt: Date.now(),
+      createdAt: new Date(),
     };
 
     // Add Review

@@ -15,6 +15,9 @@ import {
   UPDATE_USER_PROFILE_SUCCESS,
   ERROR_RESET,
   GET_USER_PROFILE_RESET,
+  GET_USER_REVIEWS_REQUEST,
+  GET_USER_REVIEWS_SUCCESS,
+  GET_USER_REVIEWS_FAIL,
 } from '../constants/userConstants';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -74,6 +77,19 @@ export const userProfileUpdateReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case UPDATE_USER_PROFILE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const userReviewsReducer = (state = { reviews: [] }, action) => {
+  switch (action.type) {
+    case GET_USER_REVIEWS_REQUEST:
+      return { loading: true, reviews: [] };
+    case GET_USER_REVIEWS_SUCCESS:
+      return { loading: false, reviews: action.payload };
+    case GET_USER_REVIEWS_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

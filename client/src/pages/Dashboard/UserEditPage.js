@@ -18,8 +18,8 @@ function UserEditPage({ match, history }) {
   const userId = match.params.id;
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [isAdmin, setIsAdmin] = useState();
-  const [isActivated, setIsActivated] = useState();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isActivated, setIsActivated] = useState(true);
 
   // REDUX
   const dispatch = useDispatch();

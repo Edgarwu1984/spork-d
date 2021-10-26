@@ -118,9 +118,12 @@ function RestaurantPage({ match, history }) {
                     <FiPhone className='list__icon' />
                     {`+61 ${restaurant.phoneNumber}`}
                   </li>
-                  <li>
-                    <BiTime className='list__icon' />
-                    Open Hour
+                  <li className='timetable'>
+                    <div className='timetable__title'>
+                      <BiTime className='list__icon' />
+                      Open Hour
+                    </div>
+                    <div className='timetable__text'>{restaurant.openHour}</div>
                   </li>
                 </ul>
                 <ul className='restaurant__card-button'>
