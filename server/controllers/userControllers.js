@@ -7,13 +7,14 @@ const generateToken = require('../utils/tokenGenerator');
 const {
   storageBucketUploader,
   fileServerUploader,
+  validateFile,
 } = require('../utils/fileUploader');
 
 /* ============================ USER CONTROLLERS ============================ */
 // @description Register User
 // @route POST /api/users/register
 // @access Public
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
   const user = {
     username: username,
@@ -96,6 +97,16 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   const userRef = db.collection('users').doc(req.user);
   const doc = await userRef.get();
   const user = { id: doc.id, ...doc.data() };
+
+  let fileFormatError = validateFile(req.files, 1000000);
+  if (fileFormatError) {
+    console.log(fileFormatError);
+    return next(
+      ApiError.badRequest(
+        `Your image does not meet requirements - ${fileFormatError.message}`
+      )
+    );
+  }
 
   // Sever Upload
   let downloadURL = '';

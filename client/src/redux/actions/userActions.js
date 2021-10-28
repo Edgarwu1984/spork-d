@@ -41,8 +41,8 @@ export const loginUser = (email, password) => async dispatch => {
     dispatch({
       type: LOGIN_USER_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message,
     });
   }
@@ -69,8 +69,8 @@ export const registerUser = (email, password, username) => async dispatch => {
     dispatch({
       type: REGISTER_USER_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message,
     });
   }
@@ -105,8 +105,8 @@ export const getUserProfile = () => async (dispatch, getState) => {
     dispatch({
       type: GET_USER_PROFILE_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message,
     });
   }
@@ -155,7 +155,7 @@ export const updateUserProfile = user => async (dispatch, getState) => {
       type: UPDATE_USER_PROFILE_FAIL,
       payload:
         error.response && error.response.data
-          ? error.response.data.message
+          ? error.response.data
           : error.message,
     });
   }
@@ -184,8 +184,8 @@ export const getUserReviews = () => async (dispatch, getState) => {
     dispatch({
       type: GET_USER_REVIEWS_FAIL,
       payload:
-        error.response && error.response.data.messages
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message,
     });
   }

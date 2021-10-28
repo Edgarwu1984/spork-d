@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfile, updateUserProfile } from 'redux/actions/userActions';
@@ -6,8 +7,6 @@ import { getUserProfile, updateUserProfile } from 'redux/actions/userActions';
 import Layout from 'components/Layout';
 import Loader from 'components/Loader';
 import Breadcrumb from 'components/Breadcrumb';
-import AlertMessage from 'components/AlertMessage';
-import { toast } from 'react-toastify';
 
 function EditProfilePage({ match, history }) {
   const [data, setData] = useState({
@@ -92,78 +91,80 @@ function EditProfilePage({ match, history }) {
         <Breadcrumb match={match} />
       </div>
       <div className='container'>
-        <div className='form__wrapper'>
-          <form onSubmit={submitHandler}>
-            {loading && <Loader />}
-            <div className='form-group'>
-              <img
-                className='user-image'
-                src={user.photo}
-                alt={user.username}
-              />
-              <input
-                className='form-control'
-                type='file'
-                // name={fileName}
-                onChange={handleFileChange}
-              />
-              <small>Image only support "png, jpg, jpeg, gif" format.</small>
-            </div>
-            <div className='form-group'>
-              <label className='form-label'>Username</label>
-              <input
-                className='form-control'
-                type='text'
-                name='username'
-                value={username}
-                onChange={handleTextChange}
-              />
-            </div>
-            <div className='form-group'>
-              <label className='form-label'>Email</label>
-              <input
-                className='form-control'
-                type='text'
-                name='email'
-                value={email}
-                onChange={handleTextChange}
-              />
-            </div>
-            <div className='form-group'>
-              <label className='form-label'>Password</label>
-              <input
-                className='form-control'
-                type='password'
-                name='password'
-                onChange={handleTextChange}
-              />
-            </div>
-            <div className='form-group'>
-              <label className='form-label'>Confirm Password</label>
-              <input
-                className='form-control'
-                type='password'
-                name='confirmPassword'
-                onChange={handleTextChange}
-              />
-            </div>
-            <div className='from-group'>
-              <input
-                className={
-                  loading ||
-                  !username ||
-                  !email ||
-                  !password ||
-                  !confirmPassword
-                    ? 'btn btn-primary btn-block btn-disabled'
-                    : 'btn btn-primary btn-block'
-                }
-                type='submit'
-                value={loading ? 'Updating...' : 'Update'}
-              />
-            </div>
-          </form>
-        </div>
+        <section>
+          <div className='form__wrapper'>
+            <form onSubmit={submitHandler}>
+              {loading && <Loader />}
+              <div className='form-group'>
+                <img
+                  className='user-image'
+                  src={user.photo}
+                  alt={user.username}
+                />
+                <input
+                  className='form-control'
+                  type='file'
+                  // name={fileName}
+                  onChange={handleFileChange}
+                />
+                <small>Image only support "png, jpg, jpeg, gif" format.</small>
+              </div>
+              <div className='form-group'>
+                <label className='form-label'>Username</label>
+                <input
+                  className='form-control'
+                  type='text'
+                  name='username'
+                  value={username}
+                  onChange={handleTextChange}
+                />
+              </div>
+              <div className='form-group'>
+                <label className='form-label'>Email</label>
+                <input
+                  className='form-control'
+                  type='text'
+                  name='email'
+                  value={email}
+                  onChange={handleTextChange}
+                />
+              </div>
+              <div className='form-group'>
+                <label className='form-label'>Password</label>
+                <input
+                  className='form-control'
+                  type='password'
+                  name='password'
+                  onChange={handleTextChange}
+                />
+              </div>
+              <div className='form-group'>
+                <label className='form-label'>Confirm Password</label>
+                <input
+                  className='form-control'
+                  type='password'
+                  name='confirmPassword'
+                  onChange={handleTextChange}
+                />
+              </div>
+              <div className='from-group'>
+                <input
+                  className={
+                    loading ||
+                    !username ||
+                    !email ||
+                    !password ||
+                    !confirmPassword
+                      ? 'btn btn-primary btn-block btn-disabled'
+                      : 'btn btn-primary btn-block'
+                  }
+                  type='submit'
+                  value={loading ? 'Updating...' : 'Update'}
+                />
+              </div>
+            </form>
+          </div>
+        </section>
       </div>
     </Layout>
   );

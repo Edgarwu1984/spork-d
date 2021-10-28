@@ -29,7 +29,7 @@ function LoginPage({ history }) {
     } else if (error) {
       toast.error(error);
     }
-  }, [history, userInfo, error]);
+  }, [history, userInfo, error, loading]);
 
   // LOGIN FORM HANDLER
   const submitHandler = e => {
@@ -77,7 +77,11 @@ function LoginPage({ history }) {
             <div className='form-group'>
               <input
                 type='submit'
-                className='btn btn-primary btn-block'
+                className={
+                  loading
+                    ? 'btn btn-primary btn-block btn-disabled'
+                    : 'btn btn-primary btn-block'
+                }
                 value='Login'
               />
             </div>

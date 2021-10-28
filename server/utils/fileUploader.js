@@ -67,11 +67,11 @@ const storageBucketUploader = async filename => {
 
 const validateFile = (file, maxSize, fileTypes) => {
   // (a) Check for file exists
-  if (file === null) {
-    return {
-      message: 'No file uploaded',
-    };
-  }
+  // if (file === null) {
+  //   return {
+  //     message: 'No file uploaded',
+  //   };
+  // }
 
   // (b) Check if file size exceeds set size
   if (file.photo.size > maxSize) {
@@ -91,7 +91,7 @@ const validateFile = (file, maxSize, fileTypes) => {
   // const [png, jpeg, gif, jpg] = fileTypes;
 
   // (iii) Check for restrictions against declared variable strings
-  if (!(ext == 'png' || ext == 'jpeg' || ext == 'jpg' || ext == 'gif')) {
+  if (!(ext === 'png' || ext === 'jpeg' || ext === 'jpg' || ext === 'gif')) {
     return {
       message: `Please upload an accepted image file type`,
     };

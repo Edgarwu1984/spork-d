@@ -31,20 +31,17 @@ function UserEditPage({ match, history }) {
     error: updateError,
     success: updateSuccess,
   } = userUpdate;
-  const userDelete = useSelector(state => state.userDelete);
-  const {
-    loading: deleteLoading,
-    error: deleteError,
-    success: deleteSuccess,
-  } = userDelete;
+  // const userDelete = useSelector(state => state.userDelete);
+  // const {
+  //   loading: deleteLoading,
+  //   error: deleteError,
+  //   success: deleteSuccess,
+  // } = userDelete;
 
   useEffect(() => {
     if (updateSuccess) {
       history.push('/dashboard/users');
       toast.success('User updated.');
-    } else if (deleteSuccess) {
-      history.push('/dashboard/users');
-      toast.success('User deleted.');
     } else {
       if (user.id !== userId) {
         dispatch(getUserDetails(userId));
@@ -65,7 +62,6 @@ function UserEditPage({ match, history }) {
     user.username,
     userId,
     updateSuccess,
-    deleteSuccess,
   ]);
 
   const updateHandler = e => {
@@ -149,7 +145,11 @@ function UserEditPage({ match, history }) {
 
               <div className='form-group'>
                 <input
-                  className='btn btn-primary btn-block disabled'
+                  className={
+                    updateLoading || !email || !username
+                      ? 'btn btn-primary btn-block btn-disabled'
+                      : 'btn btn-primary btn-block'
+                  }
                   type='submit'
                   value='Update'
                 />
