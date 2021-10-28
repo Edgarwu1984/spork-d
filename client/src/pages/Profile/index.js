@@ -83,9 +83,12 @@ function ProfilePage({ match, history }) {
                       </div>
                       <div className='user__review-restaurant__info'>
                         <div className='title__info'>
-                          <h4 className='title__info-title'>
+                          <Link
+                            to={`/restaurants/${review.restaurantCategory}/${review.restaurantName}&&${review.restaurantId}`}
+                            className='title__info-title'
+                          >
                             {review.restaurantName}
-                          </h4>
+                          </Link>
                           <small className='title__info-date'>
                             {timeFormatter(review.createdAt)}
                           </small>
