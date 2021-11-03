@@ -27,8 +27,7 @@ function RegisterPage({ history, location }) {
   // LOGIN CHECK
   useEffect(() => {
     if (userInfo) {
-      history.push('/');
-      toast.success("Welcome to Spork'S");
+      history.push('/login');
     } else if (error) {
       toast.error(error);
     }

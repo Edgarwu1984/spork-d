@@ -40,10 +40,9 @@ export const loginUser = (email, password) => async dispatch => {
   } catch (error) {
     dispatch({
       type: LOGIN_USER_FAIL,
-      payload:
-        error.response && error.response.data
-          ? error.response.data
-          : error.message,
+      payload: error.response
+        ? error.response.data
+        : error.response.data.message,
     });
   }
 };
@@ -66,12 +65,12 @@ export const registerUser = (email, password, username) => async dispatch => {
 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data.data });
   } catch (error) {
+    console.log(error.response);
     dispatch({
       type: REGISTER_USER_FAIL,
-      payload:
-        error.response && error.response.data
-          ? error.response.data
-          : error.message,
+      payload: error.response
+        ? error.response.data
+        : error.response.data.message,
     });
   }
 };
@@ -104,10 +103,9 @@ export const getUserProfile = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_USER_PROFILE_FAIL,
-      payload:
-        error.response && error.response.data
-          ? error.response.data
-          : error.message,
+      payload: error.response
+        ? error.response.data
+        : error.response.data.message,
     });
   }
 };
@@ -153,10 +151,9 @@ export const updateUserProfile = user => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: UPDATE_USER_PROFILE_FAIL,
-      payload:
-        error.response && error.response.data
-          ? error.response.data
-          : error.message,
+      payload: error.response
+        ? error.response.data
+        : error.response.data.message,
     });
   }
 };
@@ -183,10 +180,9 @@ export const getUserReviews = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_USER_REVIEWS_FAIL,
-      payload:
-        error.response && error.response.data
-          ? error.response.data
-          : error.message,
+      payload: error.response
+        ? error.response.data
+        : error.response.data.message,
     });
   }
 };

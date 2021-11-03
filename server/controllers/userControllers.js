@@ -8,7 +8,9 @@ const {
   storageBucketUploader,
   fileServerUploader,
   validateFile,
-} = require('../utils/fileUploader');
+  getFilePathFromUrl,
+  deleteFileFromBucket,
+} = require('../utils/fileServices');
 
 /* ============================ USER CONTROLLERS ============================ */
 // @description Register User
@@ -114,7 +116,13 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
     const fileName = fileServerUploader(req.files.photo);
     downloadURL = await storageBucketUploader(fileName);
   }
-  // Bucket Upload
+
+  // Delete the previous image in bucket
+  if (downloadURL) {
+    const downloadUrl = user.photo;
+    const filePath = getFilePathFromUrl(downloadUrl);
+    await deleteFileFromBucket(filePath);
+  }
 
   // Form Data
   const username = req.body.username || user.username;
@@ -238,12 +246,26 @@ const updateUserById = asyncHandler(async (req, res, next) => {
 // @access Private/Admin
 const deleteUserById = asyncHandler(async (req, res, next) => {
   const userRef = db.collection('users').doc(req.params.id);
-  const response = await userRef.delete({ exists: true });
-  res.status(200).json({
-    status: 'success',
-    message: 'User has been deleted.',
-    deletedAt: response,
-  });
+  const doc = await userRef.get();
+  if (!doc.exists) {
+    return next(ApiError.badRequest('User not exist.'));
+  }
+
+  // Get the image bucket Url
+  const downloadUrl = doc.data().photo;
+  const filePath = getFilePathFromUrl(downloadUrl);
+
+  // Delete the image from the bucket with the Url
+  const bucketResponse = await deleteFileFromBucket(filePath);
+
+  if (bucketResponse) {
+    const response = await userRef.delete({ exists: true });
+    res.status(200).json({
+      status: 'success',
+      message: 'User has been deleted.',
+      deletedAt: response,
+    });
+  }
 });
 
 module.exports = {
