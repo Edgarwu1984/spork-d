@@ -101,8 +101,23 @@
 .user__table,
 .restaurant__table {
   margin-top: rem(60);
+  margin-bottom: rem(60);
 }
 
 .back__btn {
   margin-left: rem(20);
+}
+
+.table-edit__btn,
+.table-delete__btn {
+  font-size: rem(20);
+}
+
+.table-delete__btn {
+  outline: none;
+  border: none;
+  background: none;
+  color: var(--danger);
+  cursor: pointer;
+  margin-left: rem(6);
 }

@@ -17,6 +17,7 @@ import {
   GET_USER_REVIEWS_REQUEST,
   GET_USER_REVIEWS_SUCCESS,
   GET_USER_REVIEWS_FAIL,
+  GET_USER_PROFILE_RESET,
 } from '../constants/userConstants';
 
 // LOGIN USER
@@ -64,6 +65,8 @@ export const registerUser = (email, password, username) => async dispatch => {
     );
 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data.data });
+    dispatch({ type: LOGIN_USER_SUCCESS, payload: data.data });
+    localStorage.setItem('userInfo', JSON.stringify(data.data));
   } catch (error) {
     console.log(error.response);
     dispatch({
@@ -79,6 +82,8 @@ export const registerUser = (email, password, username) => async dispatch => {
 export const logoutUser = () => async dispatch => {
   localStorage.removeItem('userInfo');
   dispatch({ type: LOGOUT_USER });
+  dispatch({ type: GET_USER_PROFILE_RESET });
+  document.location.href = '/';
 };
 
 // GET USER PROFILE
@@ -90,6 +95,7 @@ export const getUserProfile = () => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
+    console.log('From action', userInfo);
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -103,9 +109,10 @@ export const getUserProfile = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: GET_USER_PROFILE_FAIL,
-      payload: error.response
-        ? error.response.data
-        : error.response.data.message,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.response.data,
     });
   }
 };

@@ -3,8 +3,6 @@ import { Link, useHistory } from 'react-router-dom';
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/actions/userActions';
-// MODULE
-import { toast } from 'react-toastify';
 // COMPONENTS
 import Searchbar from '../../components/Searchbar';
 // UTILITIES
@@ -50,7 +48,6 @@ function Navbar() {
   const handleLogout = () => {
     dispatch(logoutUser());
     history.push('/');
-    toast.success('Logged out');
   };
 
   return (

@@ -23,7 +23,7 @@ function ProfilePage({ match, history }) {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push('/login');
+      history.push('/');
     } else {
       dispatch(getUserReviews());
       if (!user || user.id !== userInfo.id) {
