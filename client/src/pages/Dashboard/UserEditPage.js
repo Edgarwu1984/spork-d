@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  deleteUser,
-  getUserDetails,
-  updateUser,
-} from 'redux/actions/adminActions';
+import { getUserDetails, updateUser } from 'redux/actions/adminActions';
 // COMPONENTS
 import Layout from 'components/Layout';
 import Breadcrumb from 'components/Breadcrumb';
 import Loader from 'components/Loader';
-import Button from 'components/Button';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import AlertMessage from 'components/AlertMessage';
 
 function UserEditPage({ match, history }) {
   const userId = match.params.id;
@@ -31,26 +27,20 @@ function UserEditPage({ match, history }) {
     error: updateError,
     success: updateSuccess,
   } = userUpdate;
-  // const userDelete = useSelector(state => state.userDelete);
-  // const {
-  //   loading: deleteLoading,
-  //   error: deleteError,
-  //   success: deleteSuccess,
-  // } = userDelete;
 
   useEffect(() => {
     if (updateSuccess) {
       history.push('/dashboard/users');
       toast.success('User updated.');
+    }
+
+    if (user.id !== userId) {
+      dispatch(getUserDetails(userId));
     } else {
-      if (user.id !== userId) {
-        dispatch(getUserDetails(userId));
-      } else {
-        setUsername(user.username);
-        setEmail(user.email);
-        setIsAdmin(user.isAdmin);
-        setIsActivated(user.isActivated);
-      }
+      setUsername(user.username);
+      setEmail(user.email);
+      setIsAdmin(user.isAdmin);
+      setIsActivated(user.isActivated);
     }
   }, [
     dispatch,
@@ -75,14 +65,6 @@ function UserEditPage({ match, history }) {
     }
   };
 
-  const deleteHandler = id => {
-    if (window.confirm('Are you sure?')) {
-      if (user.id === id) {
-        dispatch(deleteUser(id));
-      }
-    }
-  };
-
   return (
     <Layout pageTitle='- Dashboard'>
       <div className='container'>
@@ -104,8 +86,9 @@ function UserEditPage({ match, history }) {
         ) : (
           <div className='form-wrap'>
             <form onSubmit={updateHandler}>
-              {updateLoading && <Loader />}
-              {updateError && <div>{updateError}</div>}
+              {updateError && (
+                <AlertMessage message={updateError} variant='danger' />
+              )}
               <div className='form-group'>
                 <label className='form-label'>Username</label>
                 <input
@@ -152,14 +135,6 @@ function UserEditPage({ match, history }) {
                   }
                   type='submit'
                   value='Update'
-                />
-              </div>
-              <div className='form-group'>
-                <Button
-                  className='btn btn-danger'
-                  type='danger-outline btn-block'
-                  text='Delete'
-                  onClick={() => deleteHandler(userId)}
                 />
               </div>
             </form>

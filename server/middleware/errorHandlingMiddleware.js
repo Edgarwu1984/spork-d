@@ -37,7 +37,7 @@ const apiErrorHandler = (err, req, res, next) => {
     // [2] Middleware Catch-All: If it doesn't fall within a Pre-Defined Method, it passes to a General Error Message
     console.error(err);
     res.status(500).json({
-      message: `Something went wrong.`,
+      message: `Something went wrong. ${err}`,
       stack: process.env.NODE_ENV === 'production' ? null : err.stack,
     });
   }

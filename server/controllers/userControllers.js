@@ -1,9 +1,11 @@
 const { db } = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
 const ApiError = require('../utils/ApiError');
-const hashPassword = require('../utils/hashPassword');
-const matchPassword = require('../utils/matchPasswordCheck');
-const generateToken = require('../utils/tokenGenerator');
+const {
+  generateToken,
+  hashPassword,
+  matchPassword,
+} = require('../utils/authServices');
 const {
   storageBucketUploader,
   fileServerUploader,
@@ -25,25 +27,33 @@ const registerUser = asyncHandler(async (req, res, next) => {
     password: await hashPassword(password),
     isAdmin: false,
     isActivated: true,
+    updatedAt: null,
   };
   const usersRef = db.collection('users');
   const snapshot = await usersRef.get();
 
-  const isExist = snapshot.docs.some(
-    doc => doc.data().email === req.body.email
-  );
+  const isExist = snapshot.docs.some(doc => doc.data().email === email);
 
   if (isExist) {
     return next(ApiError.badRequest('Email already in use.'));
   } else if (user) {
-    const token = generateToken(user.id);
-    const newUser = await usersRef.add({ ...user, token: token });
+    const newUser = await usersRef.add(user);
     const doc = await usersRef.doc(newUser.id).get();
-    const data = { id: doc.id, ...doc.data() };
+    const token = generateToken(doc.id);
+    const data = { id: doc.id, token: token, ...doc.data() };
 
     res.json({
       status: 'Register Success',
-      data: data,
+      data: {
+        id: data.id,
+        username: data.username,
+        email: data.email,
+        photo: data.photo,
+        isAdmin: data.isAdmin,
+        isActivated: data.isActivated,
+        updatedAt: data.updatedAt,
+        token: data.token,
+      },
     });
   }
 });
@@ -69,7 +79,16 @@ const loginUser = asyncHandler(async (req, res, next) => {
       const token = generateToken(user.id);
       res.status(201).json({
         status: 'Login Success',
-        data: { ...user, token: token },
+        data: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          photo: user.photo,
+          isAdmin: user.isAdmin,
+          isActivated: user.isActivated,
+          updatedAt: user.updatedAt,
+          token: token,
+        },
       });
     }
   }
@@ -81,13 +100,23 @@ const loginUser = asyncHandler(async (req, res, next) => {
 const getUserProfile = asyncHandler(async (req, res, next) => {
   const userRef = db.collection('users').doc(req.user);
   const doc = await userRef.get();
-  const data = { id: doc.id, ...doc.data() };
+  const user = { id: doc.id, ...doc.data() };
+
   if (!doc.exists) {
     return next(ApiError.badRequest('User does not exist.'));
   } else {
     res.status(200).json({
       status: 'success',
-      data,
+      data: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        photo: user.photo,
+        isAdmin: user.isAdmin,
+        isActivated: user.isActivated,
+        updatedAt: user.updatedAt,
+        token: user.token,
+      },
     });
   }
 });
@@ -255,10 +284,18 @@ const deleteUserById = asyncHandler(async (req, res, next) => {
   const downloadUrl = doc.data().photo;
   const filePath = getFilePathFromUrl(downloadUrl);
 
-  // Delete the image from the bucket with the Url
-  const bucketResponse = await deleteFileFromBucket(filePath);
-
-  if (bucketResponse) {
+  // Delete the image from the bucket with the Url, only execute this function while the downloadUrl not start with '/' (Default image Url)
+  if (!downloadUrl.startsWith('/')) {
+    const bucketResponse = await deleteFileFromBucket(filePath);
+    if (bucketResponse) {
+      const response = await userRef.delete({ exists: true });
+      res.status(200).json({
+        status: 'success',
+        message: 'User has been deleted.',
+        deletedAt: response,
+      });
+    }
+  } else {
     const response = await userRef.delete({ exists: true });
     res.status(200).json({
       status: 'success',

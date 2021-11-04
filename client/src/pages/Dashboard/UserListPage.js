@@ -1,23 +1,42 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from 'redux/actions/adminActions';
+import { deleteUser, getUsers } from 'redux/actions/adminActions';
 // COMPONENTS
 import Layout from 'components/Layout';
 import Breadcrumb from 'components/Breadcrumb';
 import Loader from 'components/Loader';
+import AlertMessage from 'components/AlertMessage';
 // REACT ICONS
-import { RiAdminFill } from 'react-icons/ri';
+import { RiAdminFill, RiDeleteBin2Fill, RiPencilFill } from 'react-icons/ri';
 
 const UserListPage = ({ match }) => {
   const dispatch = useDispatch();
   const userList = useSelector(state => state.userList);
   const { loading, error, users } = userList;
+  const userDelete = useSelector(state => state.userDelete);
+  const {
+    loading: deleteLoading,
+    error: deleteError,
+    success: deleteSuccess,
+  } = userDelete;
 
   useEffect(() => {
     dispatch(getUsers());
-  }, [dispatch]);
+    if (deleteSuccess) {
+      toast.success('User deleted.');
+    } else if (deleteError) {
+      toast.error(deleteError);
+    }
+  }, [deleteError, deleteSuccess, dispatch]);
+
+  const deleteHandler = id => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(deleteUser(id));
+    }
+  };
 
   return (
     <Layout pageTitle='- Dashboard'>
@@ -30,10 +49,10 @@ const UserListPage = ({ match }) => {
             </div>
           </div>
         </div>
-        {loading ? (
+        {loading || deleteLoading ? (
           <Loader />
         ) : error ? (
-          <div>{error}</div>
+          <AlertMessage message={error} variant='danger' />
         ) : (
           <table className='user__table'>
             <thead>
@@ -42,7 +61,7 @@ const UserListPage = ({ match }) => {
                 <th>Email</th>
                 <th>Admin</th>
                 <th>Activated</th>
-                <th>Edit</th>
+                <th>Edit / Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -69,11 +88,17 @@ const UserListPage = ({ match }) => {
                     </td>
                     <td>
                       <Link
+                        className='table-edit__btn'
                         to={`/dashboard/users/${user.id}/edit`}
-                        className='btn btn-sm btn-default-outline'
                       >
-                        Edit
+                        <RiPencilFill />
                       </Link>
+                      <button
+                        className='table-delete__btn'
+                        onClick={() => deleteHandler(user.id)}
+                      >
+                        <RiDeleteBin2Fill />
+                      </button>
                     </td>
                   </tr>
                 ))}

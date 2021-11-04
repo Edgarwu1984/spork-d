@@ -13,7 +13,6 @@ import {
   UPDATE_USER_PROFILE_REQUEST,
   UPDATE_USER_PROFILE_RESET,
   UPDATE_USER_PROFILE_SUCCESS,
-  ERROR_RESET,
   GET_USER_PROFILE_RESET,
   GET_USER_REVIEWS_REQUEST,
   GET_USER_REVIEWS_SUCCESS,
@@ -28,8 +27,6 @@ export const userLoginReducer = (state = {}, action) => {
       return { loading: false, userInfo: action.payload };
     case LOGIN_USER_FAIL:
       return { loading: false, error: action.payload };
-    case ERROR_RESET:
-      return {};
     case LOGOUT_USER:
       return {};
     default:
@@ -45,8 +42,6 @@ export const userRegisterReducer = (state = {}, action) => {
       return { loading: false, userInfo: action.payload };
     case REGISTER_USER_FAIL:
       return { loading: false, error: action.payload };
-    case ERROR_RESET:
-      return {};
     default:
       return state;
   }
