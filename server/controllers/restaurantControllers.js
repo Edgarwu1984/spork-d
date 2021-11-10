@@ -1,6 +1,7 @@
 const { db } = require('../config/db');
 const asyncHandler = require('../utils/asyncHandler');
 const ApiError = require('../utils/ApiError');
+const { validateFile } = require('../utils/fileServices');
 
 // @description Fetch all Restaurants
 // @route GET /api/restaurants
@@ -204,7 +205,62 @@ const createRestaurantReview = asyncHandler(async (req, res, next) => {
   }
 });
 
+// @description Fetch all Restaurants
+// @route GET /api/restaurants
+// @access Public
+const createRestaurant = asyncHandler(async (req, res, next) => {
+  // File Validation
+  let fileFormatError = validateFile(req.files, 1000000);
+  if (fileFormatError) {
+    console.log(fileFormatError);
+    return next(
+      ApiError.badRequest(
+        `Your image does not meet requirements - ${fileFormatError.message}`
+      )
+    );
+  }
+
+  // Sever Upload
+  let coverImageDownloadURL = '';
+  let menuImageDownloadURL = '';
+  if (req.files) {
+    const fileName = fileServerUploader(req.files.coverImage);
+    coverImageDownloadURL = await storageBucketUploader('restaurant', fileName);
+  }
+
+  const restaurant = {
+    category: req.body.category,
+    name: req.body.name,
+    description: req.body.description,
+    address: {
+      street: req.body.address.street,
+      suburb: req.body.address.suburb,
+      postcode: req.body.address.postcode,
+      state: req.body.address.state,
+    },
+    openHour: req.body.openHour,
+    phoneNumber: req.body.phoneNumber,
+    rating: 5,
+    numReviews: 0,
+    totalRating: 0,
+    avgPrice: Number(req.body.avgPrice),
+    geolocation: req.body.geolocation,
+    info: req.body.info,
+    menu: req.body.menu,
+    coverImage: coverImageDownloadURL,
+  };
+
+  const restaurantsRef = db.collection('restaurants');
+  const response = await restaurantsRef.add(restaurant);
+
+  res.status(200).json({
+    status: 'success',
+    data: response.id,
+  });
+});
+
 module.exports = {
+  createRestaurant,
   getRestaurants,
   getRestaurantsById,
   getRestaurantsByCategory,

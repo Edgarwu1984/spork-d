@@ -1,6 +1,7 @@
 const express = require('express');
 const {
   getRestaurantReviews,
+  createRestaurant,
   getRestaurants,
   getRestaurantsById,
   getTopRestaurants,
@@ -12,7 +13,7 @@ const { protect } = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // Route '/api/restaurants'
-router.route('/').get(getRestaurants);
+router.route('/').get(getRestaurants).post(createRestaurant);
 router.route('/top').get(getTopRestaurants);
 router.route('/:category').get(getRestaurantsByCategory);
 router.route('/:category/:id').get(getRestaurantsById);

@@ -20,6 +20,7 @@ import UserEditPage from 'pages/Dashboard/UserEditPage';
 import RestaurantEditPage from 'pages/Dashboard/RestaurantEditPage';
 import UserListPage from 'pages/Dashboard/UserListPage';
 import RestaurantListPage from 'pages/Dashboard/RestaurantListPage';
+import RestaurantCreatePage from 'pages/Dashboard/RestaurantCreatePage';
 
 function App() {
   return (
@@ -57,6 +58,11 @@ function App() {
         <Route exact path='/dashboard' component={DashboardPage} />
         <Route exact path='/dashboard/users' component={UserListPage} />
         <Route path='/dashboard/users/:id' component={UserEditPage} />
+        <Route
+          exact
+          path='/dashboard/restaurants/new'
+          component={RestaurantCreatePage}
+        />
         <Route
           exact
           path='/dashboard/restaurants'

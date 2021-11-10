@@ -143,13 +143,13 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   let downloadURL = '';
   if (req.files) {
     const fileName = fileServerUploader(req.files.photo);
-    downloadURL = await storageBucketUploader(fileName);
+    downloadURL = await storageBucketUploader('photo', fileName);
   }
 
   // Delete the previous image in bucket
   if (downloadURL) {
     const downloadUrl = user.photo;
-    const filePath = getFilePathFromUrl(downloadUrl);
+    const filePath = getFilePathFromUrl('photo', downloadUrl);
     await deleteFileFromBucket(filePath);
   }
 
@@ -282,7 +282,7 @@ const deleteUserById = asyncHandler(async (req, res, next) => {
 
   // Get the image bucket Url
   const downloadUrl = doc.data().photo;
-  const filePath = getFilePathFromUrl(downloadUrl);
+  const filePath = getFilePathFromUrl('photo', downloadUrl);
 
   // Delete the image from the bucket with the Url, only execute this function while the downloadUrl not start with '/' (Default image Url)
   if (!downloadUrl.startsWith('/')) {

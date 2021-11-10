@@ -22,7 +22,7 @@ const fileServerUploader = file => {
   return fileName;
 };
 
-const storageBucketUploader = async filename => {
+const storageBucketUploader = async (folder, filename) => {
   // Generate random token (uuid)
   const storageToken = uuid.v4();
 
@@ -32,7 +32,7 @@ const storageBucketUploader = async filename => {
   const destFileName = filename;
 
   const options = {
-    destination: `photo/${destFileName}`,
+    destination: `${folder}/${destFileName}`,
     resumable: false,
     validation: 'crc32c',
     metadata: {
@@ -49,7 +49,7 @@ const storageBucketUploader = async filename => {
   const bucketName = result[0].metadata.bucket;
 
   // Construct our Dynamic URL
-  const downloadUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/photo%2F${destFileName}?alt=media&token=${storageToken}`;
+  const downloadUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${folder}%2F${destFileName}?alt=media&token=${storageToken}`;
 
   // Delete the files from temporary server location after bucket upload (/server/public/uploads)
   fs.unlink(filePath, err => {
@@ -65,12 +65,11 @@ const storageBucketUploader = async filename => {
   return downloadUrl;
 };
 
-const getFilePathFromUrl = downloadUrl => {
+const getFilePathFromUrl = (folder, downloadUrl) => {
   // Slice off the base URL from downloadURL
-  const baseURL =
-    'https://firebasestorage.googleapis.com/v0/b/spork-s.appspot.com/o/photo%2F';
+  const baseURL = `https://firebasestorage.googleapis.com/v0/b/spork-s.appspot.com/o/${folder}%2F`;
 
-  let filePath = downloadUrl.replace(baseURL, 'photo/');
+  let filePath = downloadUrl.replace(baseURL, `${folder}/`);
 
   filePath = filePath.split('?')[0];
 

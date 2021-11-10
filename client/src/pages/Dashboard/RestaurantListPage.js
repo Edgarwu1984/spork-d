@@ -25,6 +25,9 @@ const RestaurantListPage = ({ match }) => {
           <div className='profile__banner-wrap'>
             <div className='greeting'>
               <h2 className='title'>Restaurant List</h2>
+              <Link className='btn btn-primary' to='/dashboard/restaurants/new'>
+                New Restaurant
+              </Link>
             </div>
           </div>
         </div>
