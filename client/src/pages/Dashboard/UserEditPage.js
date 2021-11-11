@@ -51,11 +51,11 @@ function UserEditPage({ match, history }) {
   }, [
     dispatch,
     history,
-    user.email,
-    user.id,
-    user.isActivated,
-    user.isAdmin,
-    user.username,
+    user?.email,
+    user?.id,
+    user?.isActivated,
+    user?.isAdmin,
+    user?.username,
     userId,
     updateSuccess,
     userInfo,
@@ -87,12 +87,12 @@ function UserEditPage({ match, history }) {
         <Link className='back__btn' to='/dashboard/users'>
           {'<'} Back
         </Link>
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <div>{error}</div>
-        ) : (
-          <div className='form-wrap'>
+        <div className='form-wrap'>
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <AlertMessage message={error} variant='danger' />
+          ) : (
             <form onSubmit={updateHandler}>
               {updateError && (
                 <AlertMessage message={updateError} variant='danger' />
@@ -146,8 +146,8 @@ function UserEditPage({ match, history }) {
                 />
               </div>
             </form>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </Layout>
   );
