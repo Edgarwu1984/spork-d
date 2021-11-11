@@ -20,28 +20,34 @@ function EditProfilePage({ match, history }) {
   const { username, email, password, confirmPassword, photo } = data;
 
   // REDUX
+  const dispatch = useDispatch();
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
   const userProfile = useSelector(state => state.userProfile);
   const { user } = userProfile;
-  const dispatch = useDispatch();
   const userProfileUpdate = useSelector(state => state.userProfileUpdate);
   const { loading, error, success } = userProfileUpdate;
 
   useEffect(() => {
-    if (!user.id) {
-      dispatch(getUserProfile());
+    if (!userInfo) {
+      history.push('/404');
     } else {
-      setData({
-        username: user.username,
-        email: user.email,
-        photo: user.photo,
-      });
-    }
+      if (!user) {
+        dispatch(getUserProfile());
+      } else {
+        setData({
+          username: user.username,
+          email: user.email,
+          photo: user.photo,
+        });
+      }
 
-    if (error) {
-      toast.error(error);
-    } else if (success) {
-      toast.success('User updated.');
-      history.push('/profile');
+      if (error) {
+        toast.error(error);
+      } else if (success) {
+        toast.success('User updated.');
+        history.push('/profile');
+      }
     }
   }, [
     dispatch,
@@ -53,6 +59,8 @@ function EditProfilePage({ match, history }) {
     user.username,
     user.photo,
     user.id,
+    userInfo,
+    user,
   ]);
 
   const handleFileChange = e => {

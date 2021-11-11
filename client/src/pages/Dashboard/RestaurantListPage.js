@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 // REACT REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { listRestaurant } from 'redux/actions/restaurantActions';
@@ -7,15 +7,22 @@ import { listRestaurant } from 'redux/actions/restaurantActions';
 import Loader from 'components/Loader';
 import Layout from 'components/Layout';
 import Breadcrumb from 'components/Breadcrumb';
+import AlertMessage from 'components/AlertMessage';
 
-const RestaurantListPage = ({ match }) => {
+const RestaurantListPage = ({ match, history }) => {
   const dispatch = useDispatch();
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
   const restaurantList = useSelector(state => state.restaurantList);
   const { loading, error, restaurants } = restaurantList;
 
   useEffect(() => {
-    dispatch(listRestaurant());
-  }, [dispatch]);
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push('/404');
+    } else {
+      dispatch(listRestaurant());
+    }
+  }, [dispatch, history, userInfo]);
 
   return (
     <Layout pageTitle='- Dashboard'>
@@ -31,7 +38,7 @@ const RestaurantListPage = ({ match }) => {
         {loading ? (
           <Loader />
         ) : error ? (
-          <div>{error}</div>
+          <AlertMessage message={error} variant='danger' />
         ) : (
           <table className='restaurant__table'>
             <thead>
@@ -40,7 +47,7 @@ const RestaurantListPage = ({ match }) => {
                 <th>Name</th>
                 <th>Rating</th>
                 <th>Suburb</th>
-                <th>Edit</th>
+                {/* <th>Edit</th> */}
               </tr>
             </thead>
             <tbody>
@@ -51,14 +58,14 @@ const RestaurantListPage = ({ match }) => {
                     <td data-label='Name'>{restaurant.name}</td>
                     <td data-label='Rating'>{restaurant.rating.toFixed(1)}</td>
                     <td data-label='Suburb'>{restaurant.address?.suburb}</td>
-                    <td>
+                    {/* <td>
                       <Link
                         to={`/dashboard/restaurants/${restaurant.id}/edit`}
                         className='btn btn-sm btn-default-outline'
                       >
                         Edit
                       </Link>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
             </tbody>

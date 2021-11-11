@@ -17,7 +17,6 @@ import EditProfilePage from 'pages/Profile/EditProfilePage';
 import RestaurantCategoryPage from 'pages/Restaurants/RestaurantCategoryPage';
 import DashboardPage from 'pages/Dashboard';
 import UserEditPage from 'pages/Dashboard/UserEditPage';
-import RestaurantEditPage from 'pages/Dashboard/RestaurantEditPage';
 import UserListPage from 'pages/Dashboard/UserListPage';
 import RestaurantListPage from 'pages/Dashboard/RestaurantListPage';
 
@@ -61,10 +60,6 @@ function App() {
           exact
           path='/dashboard/restaurants'
           component={RestaurantListPage}
-        />
-        <Route
-          path='/dashboard/restaurants/:id'
-          component={RestaurantEditPage}
         />
         <Route path='/404' component={NotFoundPage} />
         <Redirect to='/404' />

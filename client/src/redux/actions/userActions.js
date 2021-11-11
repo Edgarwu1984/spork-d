@@ -95,7 +95,6 @@ export const getUserProfile = () => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    console.log('From action', userInfo);
     const config = {
       headers: {
         'Content-Type': 'application/json',

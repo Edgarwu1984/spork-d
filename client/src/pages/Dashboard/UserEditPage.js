@@ -19,6 +19,8 @@ function UserEditPage({ match, history }) {
 
   // REDUX
   const dispatch = useDispatch();
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
   const userDetails = useSelector(state => state.userDetails);
   const { loading, error, user } = userDetails;
   const userUpdate = useSelector(state => state.userUpdate);
@@ -29,18 +31,22 @@ function UserEditPage({ match, history }) {
   } = userUpdate;
 
   useEffect(() => {
-    if (updateSuccess) {
-      history.push('/dashboard/users');
-      toast.success('User updated.');
-    }
-
-    if (user.id !== userId) {
-      dispatch(getUserDetails(userId));
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push('/404');
     } else {
-      setUsername(user.username);
-      setEmail(user.email);
-      setIsAdmin(user.isAdmin);
-      setIsActivated(user.isActivated);
+      if (updateSuccess) {
+        history.push('/dashboard/users');
+        toast.success('User updated.');
+      }
+
+      if (user.id !== userId) {
+        dispatch(getUserDetails(userId));
+      } else {
+        setUsername(user.username);
+        setEmail(user.email);
+        setIsAdmin(user.isAdmin);
+        setIsActivated(user.isActivated);
+      }
     }
   }, [
     dispatch,
@@ -52,6 +58,8 @@ function UserEditPage({ match, history }) {
     user.username,
     userId,
     updateSuccess,
+    userInfo,
+    userInfo.isAdmin,
   ]);
 
   const updateHandler = e => {

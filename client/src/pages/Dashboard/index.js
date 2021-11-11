@@ -17,7 +17,7 @@ function DashboardPage({ match, history }) {
 
   useEffect(() => {
     if (!userInfo || !userInfo.isAdmin) {
-      history.push('/login');
+      history.push('/404');
     }
   }, [dispatch, history, userInfo]);
 

@@ -15,6 +15,7 @@ import ReviewModal from 'components/Modal/ReviewModal';
 import MenuModal from 'components/Modal/MenuModal';
 import MapModal from 'components/Modal/MapModal';
 import Breadcrumb from 'components/Breadcrumb';
+import AlertMessage from 'components/AlertMessage';
 // UTILITIES
 import { timeFormatter } from 'utils/timeFormatter';
 // REACT-ICONS
@@ -78,7 +79,7 @@ function RestaurantPage({ match, history }) {
       {restaurantLoading ? (
         <Loader />
       ) : restaurantError ? (
-        <div>{restaurantError}</div>
+        <AlertMessage variant='danger' message={restaurantError} />
       ) : (
         restaurant && (
           <div className='container'>
@@ -193,7 +194,7 @@ function RestaurantPage({ match, history }) {
               {reviewsLoading ? (
                 <Loader />
               ) : reviewsError ? (
-                <div>{reviewsError}</div>
+                <div>No reviews.</div>
               ) : !reviews ? (
                 <p>No review.</p>
               ) : (

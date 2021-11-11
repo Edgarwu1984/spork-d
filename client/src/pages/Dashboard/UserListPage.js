@@ -12,8 +12,10 @@ import AlertMessage from 'components/AlertMessage';
 // REACT ICONS
 import { RiAdminFill, RiDeleteBin2Fill, RiPencilFill } from 'react-icons/ri';
 
-const UserListPage = ({ match }) => {
+const UserListPage = ({ match, history }) => {
   const dispatch = useDispatch();
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
   const userList = useSelector(state => state.userList);
   const { loading, error, users } = userList;
   const userDelete = useSelector(state => state.userDelete);
@@ -24,13 +26,17 @@ const UserListPage = ({ match }) => {
   } = userDelete;
 
   useEffect(() => {
-    dispatch(getUsers());
-    if (deleteSuccess) {
-      toast.success('User deleted.');
-    } else if (deleteError) {
-      toast.error(deleteError);
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push('/404');
+    } else {
+      dispatch(getUsers());
+      if (deleteSuccess) {
+        toast.success('User deleted.');
+      } else if (deleteError) {
+        toast.error(deleteError);
+      }
     }
-  }, [deleteError, deleteSuccess, dispatch]);
+  }, [deleteError, deleteSuccess, dispatch, history, userInfo]);
 
   const deleteHandler = id => {
     if (window.confirm('Are you sure?')) {
@@ -86,20 +92,22 @@ const UserListPage = ({ match }) => {
                         <span className='text-danger'>No</span>
                       )}
                     </td>
-                    <td>
-                      <Link
-                        className='table-edit__btn'
-                        to={`/dashboard/users/${user.id}/edit`}
-                      >
-                        <RiPencilFill />
-                      </Link>
-                      <button
-                        className='table-delete__btn'
-                        onClick={() => deleteHandler(user.id)}
-                      >
-                        <RiDeleteBin2Fill />
-                      </button>
-                    </td>
+                    {!user.isAdmin && (
+                      <td>
+                        <Link
+                          className='table-edit__btn'
+                          to={`/dashboard/users/${user.id}`}
+                        >
+                          <RiPencilFill />
+                        </Link>
+                        <button
+                          className='table-delete__btn'
+                          onClick={() => deleteHandler(user.id)}
+                        >
+                          <RiDeleteBin2Fill />
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
             </tbody>
