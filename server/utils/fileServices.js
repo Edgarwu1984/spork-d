@@ -85,30 +85,16 @@ const deleteFileFromBucket = async filePath => {
   const file = bucket.file(filePath);
   const fileChecker = await file.exists();
 
-  // [400 ERROR] Check for Item Existing in Storage Bucket
-  // NOTE: To ensure our delete function still works against Firestore DB, we will modify the delete request to prevent an error.
-  if (fileChecker[0] === false) {
-    // [TOGGLE]: Set custom option parameter to prevent error returning
-    const options = {
-      ignoreNotFound: false,
-    };
-
-    //   // Call modified delete request (no deletion from storage bucket)
-    //   // NOTE: Default option is "false", meaning error is issued and delete request fails if file does NOT exist!
-    const data = await file.delete(options);
-    console.log(
-      `The file: ${filePath}, does not exist in Storage.  Please check server for inconsistent data handling & database queries.`
-    );
-
-    //   // Return API response to controller
-    return data[0];
-  } else {
+  // Only delete the file when it exist
+  if (fileChecker[0] === true) {
     // Call standard delete request
     const data = await file.delete();
     console.log(`File deleted from Storage Bucket: ${filePath}`);
 
     //   // Return API response to controller
     return data[0];
+  } else {
+    return;
   }
 };
 

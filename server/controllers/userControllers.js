@@ -23,7 +23,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
   const user = {
     username: username,
     photo:
-      'https://firebasestorage.googleapis.com/v0/b/spork-s.appspot.com/o/photo%2Fuser_picture.jpg?alt=media&token=5f312259-d59b-4fe0-b471-dfca2910fc4a',
+      'https://firebasestorage.googleapis.com/v0/b/spork-s.appspot.com/o/user_picture.jpg?alt=media&token=61cd302a-583c-4b48-9c4d-1e4ac35e5d00',
     email: email,
     password: await hashPassword(password),
     isAdmin: false,
