@@ -32,7 +32,7 @@ function EditProfilePage({ match, history }) {
     if (!userInfo) {
       history.push('/404');
     } else {
-      if (!user) {
+      if (user.id !== userInfo.id) {
         dispatch(getUserProfile());
       } else {
         setData({
@@ -54,11 +54,11 @@ function EditProfilePage({ match, history }) {
     history,
     error,
     success,
-    user.email,
-    user.password,
-    user.username,
-    user.photo,
-    user.id,
+    user?.email,
+    user?.password,
+    user?.username,
+    user?.photo,
+    user?.id,
     userInfo,
     user,
   ]);

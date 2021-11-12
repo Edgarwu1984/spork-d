@@ -22,7 +22,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
   const user = {
     username: username,
-    photo: '/images/user_picture.jpg',
+    photo:
+      'https://firebasestorage.googleapis.com/v0/b/spork-s.appspot.com/o/photo%2Fuser_picture.jpg?alt=media&token=5f312259-d59b-4fe0-b471-dfca2910fc4a',
     email: email,
     password: await hashPassword(password),
     isAdmin: false,
@@ -148,8 +149,8 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
 
   // Delete the previous image in bucket
   if (downloadURL) {
-    const downloadUrl = user.photo;
-    const filePath = getFilePathFromUrl(downloadUrl);
+    const oldUrl = user.photo;
+    const filePath = getFilePathFromUrl(oldUrl);
     await deleteFileFromBucket(filePath);
   }
 
